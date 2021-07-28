@@ -8,6 +8,7 @@ authors = ["jiyolla <jiyolla0919@gmail.com>"]
 python = "^3.8"
 fastapi = {extras = ["all"], version = "^0.67.0"}
 requests = "^2.26.0"
+SQLAlchemy = "^1.4.22"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
