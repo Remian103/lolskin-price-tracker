@@ -7,7 +7,7 @@ from .database import Base
 class Skin(Base):
     __tablename__ = "skins"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=False)
     champion_id = Column(Integer, index=True)
     champion_name = Column(String, index=True)
 
