@@ -1,26 +1,25 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship
 
 from .database import Base
 
 
-class User(Base):
-    __tablename__ = "users"
+class Skin(Base):
+    __tablename__ = "skins"
 
     id = Column(Integer, primary_key=True, index=True)
-    email = Column(String, unique=True, index=True)
-    hashed_password = Column(String)
-    is_active = Column(Boolean, default=True)
+    champion_id = Column(Integer, index=True)
+    champion_name = Column(String, index=True)
 
-    items = relationship("Item", back_populates="owner")
+    sale_records = relationship("Sale_Record", back_populates="skin")
 
 
-class Item(Base):
-    __tablename__ = "items"
+class Sale_Record(Base):
+    __tablename__ = "sale_records"
 
-    id = Column(Integer, primary_key=True, index=True)
-    title = Column(String, index=True)
-    description = Column(String, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"))
+    skin_id = Column(Integer, ForeignKey("skins.id"), primary_key=True, Index=True)
+    timestamp = Column(DateTime, primary_key=True, Index=True)
+    price = Column(Integer)
+    discounted_price = Column(Integer)
 
-    owner = relationship("User", back_populates="items")
+    skin = relationship("Skin", back_populates="sale_records")
