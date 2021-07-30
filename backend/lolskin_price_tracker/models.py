@@ -8,6 +8,7 @@ class Skin(Base):
     __tablename__ = "skins"
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=False)
+    name = Column(String)
     champion_id = Column(Integer, index=True)
     champion_name = Column(String, index=True)
 
@@ -17,8 +18,8 @@ class Skin(Base):
 class Sale_Record(Base):
     __tablename__ = "sale_records"
 
-    skin_id = Column(Integer, ForeignKey("skins.id"), primary_key=True, Index=True)
-    timestamp = Column(DateTime, primary_key=True, Index=True)
+    skin_id = Column(Integer, ForeignKey("skins.id"), primary_key=True)
+    timestamp = Column(DateTime, primary_key=True)
     price = Column(Integer)
     discounted_price = Column(Integer)
 

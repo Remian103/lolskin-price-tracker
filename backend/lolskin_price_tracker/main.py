@@ -40,5 +40,5 @@ def update_champion_skins(champion_name: str, db: Session = Depends(get_db)):
     champion_raw = res.json()['data'][champion_name]
     skins_raw = champion_raw['skins']
     for skin_raw in skins_raw:
-        crud.create_skin(db, skin_raw['id'], champion_raw['key'], champion_raw['name'])
+        crud.create_skin(db, skin_raw['id'], skin_raw['name'], champion_raw['key'], champion_raw['id'])
     return True

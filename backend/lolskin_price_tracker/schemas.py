@@ -16,6 +16,7 @@ class Sale_Record(BaseModel):
 
 class Skin(BaseModel):
     id: int
+    name: str
     champion_id: int
     champion_name: str
     sale_records: List[Sale_Record] = []

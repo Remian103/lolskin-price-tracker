@@ -8,15 +8,15 @@ def get_skin(db: Session, skin_id: int):
 
 
 def get_skins_by_champion_name(db: Session, champion_name: str):
-    return db.query(models.Skin).filter(models.Skin.champion_name == champion_name)
+    return db.query(models.Skin).filter(models.Skin.champion_name == champion_name).all()
 
 
 # def get_users(db: Session, skip: int = 0, limit: int = 100):
 #    return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def create_skin(db: Session, id: int, champion_id: int, champion_name: str):
-    db_skin = models.Skin(id, champion_id, champion_name)
+def create_skin(db: Session, id: int, name: str, champion_id: int, champion_name: str):
+    db_skin = models.Skin(id=id, name=name, champion_id=champion_id, champion_name=champion_name)
     db.add(db_skin)
     db.commit()
     db.refresh(db_skin)
