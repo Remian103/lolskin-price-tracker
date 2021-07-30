@@ -1,37 +1,24 @@
-from typing import List, Optional
+from typing import List
+from datetime import datetime
 
 from pydantic import BaseModel
 
 
-class ItemBase(BaseModel):
-    title: str
-    description: Optional[str] = None
-
-
-class ItemCreate(ItemBase):
-    pass
-
-
-class Item(ItemBase):
-    id: int
-    owner_id: int
+class Sale_Record(BaseModel):
+    skin_id: int
+    timestamp: datetime
+    price: int
+    discounted_price: int
 
     class Config:
         orm_mode = True
 
 
-class UserBase(BaseModel):
-    email: str
-
-
-class UserCreate(UserBase):
-    password: str
-
-
-class User(UserBase):
+class Skin(BaseModel):
     id: int
-    is_active: bool
-    items: List[Item] = []
+    champion_id: int
+    champion_name: str
+    sale_records: List[Sale_Record] = []
 
     class Config:
         orm_mode = True
