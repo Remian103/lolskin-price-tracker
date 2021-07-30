@@ -41,4 +41,32 @@ def update_champion_skins(champion_name: str, db: Session = Depends(get_db)):
     skins_raw = champion_raw['skins']
     for skin_raw in skins_raw:
         crud.create_skin(db, skin_raw['id'], skin_raw['name'], champion_raw['key'], champion_raw['id'])
-    return True
+    return f"Updated {champion_name} skins info."
+
+
+@app.post("/command/update/skin/{skin_id}/sale_records/")
+def update_skin_sale_records(skin_id: int, sale_records: List[schemas.Sale_Record], db: Session = Depends(get_db)):
+    for sale_record in sale_records:
+        assert skin_id == sale_record.skin_id
+        crud.create_sale_record(db, sale_record)
+    return f"Updated {skin_id} sale records."
+
+
+@app.get("/command/populate_test_data")
+def populate_test_data():
+    from datetime import datetime, timedelta
+    import random
+    import json
+    sale_records = []
+    time = datetime.now()
+    for i in range(100):
+        sale_records.append({
+            "skin_id": 104001,        
+            "timestamp": str(time + timedelta(hours=i)),
+            "price": 1820,
+            "discounted_price": 1820 * random.random()
+        })
+    LOCAL_SERVER_ADDRESS = "http://127.0.0.1:8000"
+    # LOCAL_SERVER_ADDRESS = "http://172.26.241.211:8000"
+    requests.post(f"{LOCAL_SERVER_ADDRESS}/command/update/skin/104001/sale_records/", data=json.dumps(sale_records))
+    return "Populated test data."
