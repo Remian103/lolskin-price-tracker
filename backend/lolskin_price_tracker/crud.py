@@ -3,34 +3,33 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
-def get_user(db: Session, user_id: int):
-    return db.query(models.User).filter(models.User.id == user_id).first()
+def get_skin(db: Session, skin_id: int):
+    return db.query(models.Skin).filter(models.Skin.id == skin_id).first()
 
 
-def get_user_by_email(db: Session, email: str):
-    return db.query(models.User).filter(models.User.email == email).first()
+def get_skins_by_champion_name(db: Session, champion_name: str):
+    return db.query(models.Skin).filter(models.Skin.champion_name == champion_name)
 
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.User).offset(skip).limit(limit).all()
+# def get_users(db: Session, skip: int = 0, limit: int = 100):
+#    return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def create_user(db: Session, user: schemas.UserCreate):
-    fake_hashed_password = user.password + "notreallyhashed"
-    db_user = models.User(email=user.email, hashed_password=fake_hashed_password)
-    db.add(db_user)
+def create_skin(db: Session, skin: schemas.Skin):
+    db_skin = models.Skin(id=skin.id, champion_id=skin.champion_id, champion_name=skin.champion_name)
+    db.add(db_skin)
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(db_skin)
+    return db_skin
 
 
-def get_items(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(models.Item).offset(skip).limit(limit).all()
+def get_sale_records(db: Session, skin: schemas.Skin):
+    return db.query(models.Sale_Record).filter(models.Sale_Record.skin_id == skin.id).all()
 
 
-def create_user_item(db: Session, item: schemas.ItemCreate, user_id: int):
-    db_item = models.Item(**item.dict(), owner_id=user_id)
-    db.add(db_item)
+def create_sale_record(db: Session, sale_record: schemas.Sale_Record):
+    db_sale_record = models.Sale_Record(**sale_record.dict())
+    db.add(db_sale_record)
     db.commit()
-    db.refresh(db_item)
-    return db_item
+    db.refresh(db_sale_record)
+    return db_sale_record
