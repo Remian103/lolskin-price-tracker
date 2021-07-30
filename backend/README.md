@@ -26,7 +26,7 @@ source {path_to_venv}\Scripts\activate.bat
 ## Run
 ```bash
 cd some/path/to/backend/
-uvicorn lolskin_price_tracker.main:app --reload
+uvicorn app.main:app --reload
 ```
 The app will be available on localhost:8000.
 
