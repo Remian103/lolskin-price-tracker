@@ -15,16 +15,16 @@ def get_skins_by_champion_name(db: Session, champion_name: str):
 #    return db.query(models.User).offset(skip).limit(limit).all()
 
 
-def create_skin(db: Session, skin: schemas.Skin):
-    db_skin = models.Skin(id=skin.id, champion_id=skin.champion_id, champion_name=skin.champion_name)
+def create_skin(db: Session, id: int, champion_id: int, champion_name: str):
+    db_skin = models.Skin(id, champion_id, champion_name)
     db.add(db_skin)
     db.commit()
     db.refresh(db_skin)
     return db_skin
 
 
-def get_sale_records(db: Session, skin: schemas.Skin):
-    return db.query(models.Sale_Record).filter(models.Sale_Record.skin_id == skin.id).all()
+def get_sale_records(db: Session, skin_id: int):
+    return db.query(models.Sale_Record).filter(models.Sale_Record.skin_id == skin_id).all()
 
 
 def create_sale_record(db: Session, sale_record: schemas.Sale_Record):
