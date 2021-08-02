@@ -1,1 +1,8 @@
-# lolskin_price_tracker
+# lolskin-price-tracker
+
+## Run
+
+```bash
+docker-compose up -d
+```
+This will run the backend app.
