@@ -7,5 +7,5 @@ RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/inst
 COPY ./pyproject.toml ./poetry.lock* /backend/
 RUN poetry install
 COPY ./app/ /backend/app/
-ENV PATH=$PATH:/opt/poetry/venv/bin/
-CMD uvicorn app.main:app --reload --host 172.22.48.10
+ENV PATH="/opt/poetry/venv/bin:${PATH}"
+CMD uvicorn app.main:app --reload --host $(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')
