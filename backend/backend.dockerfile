@@ -8,4 +8,4 @@ COPY ./pyproject.toml ./poetry.lock* /backend/
 RUN poetry install
 COPY ./app/ /backend/app/
 ENV PATH="/opt/poetry/venv/bin:${PATH}"
-CMD uvicorn app.main:app --reload --host $(ip route get 8.8.8.8 | awk -F"src " 'NR==1{split($2,a," ");print a[1]}')
+CMD uvicorn app.main:app --reload --host $(hostname --all-ip-address)
