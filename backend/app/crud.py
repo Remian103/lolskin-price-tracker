@@ -3,6 +3,10 @@ from sqlalchemy.orm import Session
 from . import models, schemas
 
 
+def get_champions(db: Session):
+    return db.query(models.Champion).all()
+
+
 def get_skin(db: Session, skin_id: int):
     return db.query(models.Skin).filter(models.Skin.id == skin_id).first()
 

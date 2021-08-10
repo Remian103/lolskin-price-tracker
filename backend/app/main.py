@@ -22,8 +22,8 @@ def get_db():
         db.close()
 
 @app.get('/api/champions')
-def get_champions():
-    ...
+def get_champions(db: Session = Depends(get_db)):
+    return crud.get_champions(db)
 
 @app.get('/api/champions/{champion_id}/skins')
 def get_champion_skins():

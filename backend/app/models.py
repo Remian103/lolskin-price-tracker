@@ -4,6 +4,14 @@ from sqlalchemy.orm import relationship
 from .database import Base
 
 
+class Champion(Base):
+    __table_name__ = 'champions'
+
+    id = Column(Integer, primary_key=True, index=True, autoincrement=False)
+    name = Column(String)
+    icon_url = Column(String)
+
+
 class Skin(Base):
     __tablename__ = "skins"
 
