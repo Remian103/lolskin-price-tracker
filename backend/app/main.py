@@ -21,7 +21,7 @@ def get_db():
     finally:
         db.close()
 
-@app.get('/api/champions')
+@app.get('/api/champions', response_model=List[schemas.Champion])
 def get_champions(db: Session = Depends(get_db)):
     return crud.get_champions(db)
 
