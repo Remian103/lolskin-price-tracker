@@ -3,6 +3,14 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+class Champion(BaseModel):
+    id: int
+    name: str
+    icon_url: str
+
+    class Config:
+        orm_mode = True
+
 
 class Sale_Record(BaseModel):
     skin_id: int
