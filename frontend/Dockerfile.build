@@ -1,0 +1,12 @@
+FROM node:12 AS build
+WORKDIR /frontend
+COPY package* yarn.lock ./
+RUN yarn install
+COPY public ./public
+COPY src ./src
+RUN yarn run build
+
+FROM nginx
+WORKDIR /usr/share/nginx/html
+COPY --from=build /frontend/build /usr/share/nginx/html
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
