@@ -21,6 +21,21 @@ def get_db():
     finally:
         db.close()
 
+@app.get('/api/champions')
+def get_champions():
+    ...
+
+@app.get('/api/champions/{champion_id}/skins')
+def get_champion_skins():
+    ...
+
+@app.get('/api/recommendations')
+def get_recommendations():
+    ...
+
+@app.get('/api/skins/{skin_id}')
+def get_skin():
+    ...
 
 @app.get("/champion/{champion_name}/skins/", response_model=List[schemas.Skin])
 def get_skins_by_champion_name(champion_name: str, db: Session = Depends(get_db)):
