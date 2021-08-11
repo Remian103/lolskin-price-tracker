@@ -16,14 +16,14 @@ class Champion(Base):
 
 
 class Skin(Base):
-    __tablename__ = "skins"
+    __tablename__ = 'skins'
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=False)
     name = Column(String)
-    champion_id = Column(Integer, index=True)
-    champion_name = Column(String, index=True)
-
-    sale_records = relationship("Sale_Record", back_populates="skin")
+    image_url = Column(String)
+    price = Column(Integer)
+    sale_price = Column(Integer)
+    champion_id = Column(Integer, ForeignKey('champions.id'))
 
 
 class Sale_Record(Base):
