@@ -33,7 +33,7 @@ async def main():
     champions = requests.get(champions_url).json()['data']
 
     print(f'Fetched {len(champions)} champions from version {version}.')
-    print('Do you want to overwrite \'Champion\' table?')
+    print('Do you want to overwrite current \'champions\' and \'skins\' table?')
     input('Press Enter to continue...')
 
     db.query(models.Champion).delete()
