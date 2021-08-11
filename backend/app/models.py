@@ -16,14 +16,18 @@ class Champion(Base):
 
 
 class Skin(Base):
-    __tablename__ = "skins"
+    __tablename__ = 'skins'
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=False)
     name = Column(String)
-    champion_id = Column(Integer, index=True)
-    champion_name = Column(String, index=True)
+    image_url = Column(String)
+    price = Column(Integer)
+    sale_price = Column(Integer)
+    champion_id = Column(Integer, ForeignKey('champions.id'))
 
-    sale_records = relationship("Sale_Record", back_populates="skin")
+    def __repr__(self):
+        return (f'Skin(id={self.id}, name=\'{self.name}\', image_url=\'{self.image_url}\', '
+                + f'price={self.price}, sale_price={self.sale_price}, champion_id={self.champion_id})')
 
 
 class Sale_Record(Base):
@@ -33,5 +37,3 @@ class Sale_Record(Base):
     timestamp = Column(DateTime, primary_key=True)
     price = Column(Integer)
     discounted_price = Column(Integer)
-
-    skin = relationship("Skin", back_populates="sale_records")

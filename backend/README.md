@@ -41,8 +41,8 @@ localhost:8000/docs
 ```
 for available APIs and their documentation.
 
-## Update Champion Table
+## Update Static data
 ```bash
 cd /path/to/backend/
-python -m app.update_champions
+python -m app.update_static
 ```

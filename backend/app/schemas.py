@@ -12,6 +12,18 @@ class Champion(BaseModel):
         orm_mode = True
 
 
+class Skin(BaseModel):
+    id: int
+    name: str
+    image_url: str
+    price: int
+    sale_price: int
+    champion_id: int
+
+    class Config:
+        orm_mode = True
+
+
 class Sale_Record(BaseModel):
     skin_id: int
     timestamp: datetime
@@ -21,13 +33,3 @@ class Sale_Record(BaseModel):
     class Config:
         orm_mode = True
 
-
-class Skin(BaseModel):
-    id: int
-    name: str
-    champion_id: int
-    champion_name: str
-    sale_records: List[Sale_Record] = []
-
-    class Config:
-        orm_mode = True
