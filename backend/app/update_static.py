@@ -14,7 +14,7 @@ def update(db, version, champion):
     skins = requests.get(champion_url).json()['data'][champion['id']]['skins']
     for skin in skins:
         image_url = f'http://ddragon.leagueoflegends.com/cdn/img/champion/splash/{champion["id"]}_{skin["num"]}.jpg'
-        db_skin = models.Skin(id=skin['id'], name=skin['name'], image_url=image_url, price=0, sale_price=0, champion=db_champion)
+        db_skin = models.Skin(id=skin['id'], name=skin['name'], image_url=image_url, champion=db_champion)
         db.add(db_skin)
     
 
