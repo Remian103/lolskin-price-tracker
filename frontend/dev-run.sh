@@ -11,15 +11,15 @@
 # then changes will be reflected in ./testPackage
 # If you want to save this enviroment,
 # 1. replace ./package.json and ./yarn.lock to files in ./testPackage
-# 2. run './dev-images.sh'.
+# 2. run './dev-images.sh cp'.
 #############################################################
 
 # copy and paste files about package to 'testPackage' folder
 if [ ! -d testPackage ]; then
     mkdir testPackage
 fi
-cp $(pwd)/package.json testPackage/package.json
-cp $(pwd)/yarn.lock testPackage/yarn.lock
+cp ./package.json ./testPackage/package.json
+cp ./yarn.lock ./testPackage/yarn.lock
 
 # run docker container
 docker run --rm -it -p 3000:3000 \
