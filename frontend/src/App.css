@@ -15,6 +15,7 @@
 
 .App-header {
   background-color: #282c34;
+  opacity: 0.7;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -33,6 +34,23 @@
     transform: rotate(0deg);
   }
   to {
-    transform: rotate(720deg);
+    transform: rotate(1080deg);
   }
+}
+
+.main-header {
+  position: sticky;
+  background-color: transparent;
+  padding-top: 2rem;
+  top: -2rem;
+  z-index: 3;
+}
+
+.main-background {
+  background-image: url('./images/main_background.jpg');
+  position: absolute;
+  width:100vw;
+  height: 62.5vw;
+  background-size : cover;
+  z-index: -1;
 }
