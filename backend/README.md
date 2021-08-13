@@ -11,17 +11,18 @@ poetry install
 ```bash
 poetry shell
 ```
-which will open a new shell with associated the environment
+to open a new shell with associated environment,
 
 or
 - Linux
     ```bash
-    source {path_to_venv}/bin/activate
+    source /path/to/venv//bin/activate
     ```
  - Windows
     ```bash
-    source {path_to_venv}\Scripts\activate.bat
+    source \path\to\venv\Scripts\activate.bat
     ```
+to activate the environment in current shell.
 
 ## Run
 ```bash
@@ -41,8 +42,14 @@ localhost:8000/docs
 ```
 for available APIs and their documentation.
 
-## Update Static data
+## Update static data
 ```bash
 cd /path/to/backend/
 python -m app.update_static
+```
+
+## Populate dummy price history
+```bash
+cd /path/to/backend/
+python -m app.gen_test_history
 ```

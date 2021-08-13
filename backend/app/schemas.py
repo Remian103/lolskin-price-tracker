@@ -1,7 +1,8 @@
-from typing import List
-from datetime import datetime
+from typing import List, Optional
+from datetime import date
 
 from pydantic import BaseModel
+
 
 class Champion(BaseModel):
     id: int
@@ -24,12 +25,16 @@ class Skin(BaseModel):
         orm_mode = True
 
 
-class Sale_Record(BaseModel):
+class Price_History(BaseModel):
     skin_id: int
-    timestamp: datetime
+    date: date
     price: int
-    discounted_price: int
+    sale_price: int
 
     class Config:
         orm_mode = True
 
+
+class Skin_Full(Skin):
+    description: Optional[str] = None
+    price_history: List[Price_History] = []
