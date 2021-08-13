@@ -3,6 +3,7 @@ from datetime import datetime
 
 from pydantic import BaseModel
 
+
 class Champion(BaseModel):
     id: int
     name: str
