@@ -16,7 +16,8 @@ class Champion(BaseModel):
 class Skin(BaseModel):
     id: int
     name: str
-    image_url: str
+    trimmed_image_url: str
+    full_image_url: str
     price: int
     sale_price: int
     champion_id: int

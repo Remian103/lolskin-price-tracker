@@ -22,7 +22,8 @@ class Skin(Base):
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=False)
     name = Column(String)
-    image_url = Column(String)
+    trimmed_image_url = Column(String)
+    full_image_url = Column(String)
     price = Column(Integer, default=0)
     sale_price = Column(Integer, default=0)
     champion_id = Column(Integer, ForeignKey('champions.id'))
