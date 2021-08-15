@@ -49,10 +49,30 @@
 }
 
 .main-background {
+  display: none;
   background-image: url('../images/main_background.jpg');
   position: absolute;
   width:100vw;
   height: 62.5vw;
   background-size : cover;
   z-index: -1;
+}
+
+.content-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.content-background {
+  position: absolute;
+  width: 100%;
+  max-width: 1024px;
+  height: 100%;
+  z-index: 0;
+}
+
+.content-container > * {
+  z-index: 1;
 }

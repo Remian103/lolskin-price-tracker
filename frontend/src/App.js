@@ -31,61 +31,56 @@ function App() {
 
     return (
         <>
-            {/*<Div className="main-background" />*/}
+            <Div className="main-background" />
             <header className="main-header">
                 <Nav anchorList={anchorList} />
             </header>
-            <> {/* body */}
-                <Div /* title */
-                    d="flex"
-                    h={{ xs: "150px", md: "400px" }}
-                    align="center"
-                    justify="center"
-                    flexDir="column"
+            {/* body */}
+            <Div /* title */
+                d="flex"
+                h={{ xs: "150px", md: "400px" }}
+                align="center"
+                justify="center"
+                flexDir="column"
+            >
+                <Text
+                    p={{ l: "0.5rem", r: "0.5rem" }}
+                    textSize="display3"
+                    textAlign="center"
                 >
-                    <Text
-                        p={{ l: "0.5rem", r: "0.5rem" }}
-                        textSize="display3"
-                        textAlign="center"
-                    >
-                        LOL PRICE TRACKER
-                    </Text>
-                </Div>
+                    LOL PRICE TRACKER
+                </Text>
+            </Div>
 
-                <Div /* main content */
-                    d="flex"
-                    align="center"
-                    flexDir="column"
-                    bg="black400"
+            <Div className="content-container" bg="black400" /* main content */>
+                <Div className="content-background" bg="black600" /* background *//>
+                <CarouselWrapper title="Recommend Skins" list={skinList} option={{ type: "recommend-skins" }} />
+                <ChampBox list={champList} />
+                <Div
+                    h="1000px"
+                    bg="brown"
+                    textSize="display3"
+                    textAlign="center"
                 >
-                    <CarouselWrapper title="Recommend Skins" list={skinList} option={{ type: "recommend-skins" }} />
-                    <ChampBox list={champList} />
-                    <Div
-                        h="1000px"
-                        bg="brown"
-                        textSize="display3"
-                        textAlign="center"
-                    >
-                        Dummy
-                    </Div>
-                    {/*
-                    <div className="App-header">
-                        <img src="/images/logo.svg" className="App-logo" alt="logo" />
-                        <p>
-                            Edit <code>src/App.js</code> and save to reload.
-                        </p>
-                        <a
-                            className="App-link"
-                            href="https://reactjs.org"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            Learn React
-                        </a>
-                    </div>
-                    */}
+                    Dummy
                 </Div>
-            </>
+                {/*
+                <div className="App-header">
+                    <img src="/images/logo.svg" className="App-logo" alt="logo" />
+                    <p>
+                        Edit <code>src/App.js</code> and save to reload.
+                    </p>
+                    <a
+                        className="App-link"
+                        href="https://reactjs.org"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Learn React
+                    </a>
+                </div>
+                */}
+            </Div>
         </>
     );
 }
