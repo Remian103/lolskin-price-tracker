@@ -27,7 +27,7 @@ function Carousel({ list, option }) {
 
     // carousel cell design
     const inside = list.map((item) => {
-        if (option.type === "skins") {
+        if (option.type === "recommend-skins") {
             return (
                 <Anchor
                     key={item.id}

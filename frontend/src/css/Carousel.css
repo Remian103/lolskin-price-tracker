@@ -16,10 +16,6 @@
     fill: white;
 }
 
-.carousel-cell {
-    position: relative;
-}
-
 .carousel-cell img {
     height: 100%;
     width: 100%;

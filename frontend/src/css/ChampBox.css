@@ -1,0 +1,17 @@
+.out > .transition-slide {
+    position: fixed;
+    bottom: -400px;
+    left: 0;
+    background-color: black;
+}
+
+.in > .transition-slide {
+    position: fixed;
+    bottom: -1rem;
+    left: 0;
+    width: 100%;
+    background-color: black;
+    border-radius: 16px;
+    padding: 4rem 0 4rem 0;
+    transition: 1s;
+}

@@ -1,8 +1,9 @@
 import React from 'react';
 import './css/App.css';
+import { Div, Text } from "atomize";
 import Nav from './components/NavAnchor';
 import CarouselWrapper from './components/CarouselWrapper';
-import { Div, Text } from "atomize";
+import ChampBox from './components/ChampBox';
 
 function App() {
 
@@ -22,6 +23,11 @@ function App() {
         { id: 6, src: "/images/thumb-1920-536426.png", description: "thumb-1920-536426.png" },
         { id: 7, src: "/images/thumb-1920-627080.png", description: "thumb-1920-627080.png" }
     ];
+
+    const champList = [
+        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
+        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
+    ]
 
     return (
         <>
@@ -52,7 +58,8 @@ function App() {
                     flexDir="column"
                     bg="black400"
                 >
-                    <CarouselWrapper list={skinList} option={{ type: "skins" }} />
+                    <CarouselWrapper title="Recommend Skins" list={skinList} option={{ type: "recommend-skins" }} />
+                    <ChampBox list={champList} />
                     <Div
                         h="1000px"
                         bg="brown"
@@ -61,6 +68,7 @@ function App() {
                     >
                         Dummy
                     </Div>
+                    {/*
                     <div className="App-header">
                         <img src="/images/logo.svg" className="App-logo" alt="logo" />
                         <p>
@@ -75,6 +83,7 @@ function App() {
                             Learn React
                         </a>
                     </div>
+                    */}
                 </Div>
             </>
         </>
