@@ -11,9 +11,9 @@ function CarouselWrapper({ title, list, option }) {
             w="100%"
             maxW="1024px"
             p={{
-                t: { xs: "64px", md: "64px" }, // header height + 8px
-                l: "8px",
-                b: "8px"
+                t: "32px",
+                l: "1rem",
+                b: "1rem"
             }}
         >
             <Text

@@ -14,17 +14,23 @@ function App() {
 
     // carousel test
     const skinList = [
-        { id: 0, src: "/images/thumb-1920-328327.jpg", description: "thumb-1920-328327.jpg" },
-        { id: 1, src: "/images/thumb-1920-533923.jpg", description: "thumb-1920-533923.jpg" },
-        { id: 2, src: "/images/thumb-1920-536426.png", description: "thumb-1920-536426.png" },
-        { id: 3, src: "/images/thumb-1920-627080.png", description: "thumb-1920-627080.png" },
-        { id: 4, src: "/images/thumb-1920-328327.jpg", description: "thumb-1920-328327.jpg" },
-        { id: 5, src: "/images/thumb-1920-533923.jpg", description: "thumb-1920-533923.jpg" },
-        { id: 6, src: "/images/thumb-1920-536426.png", description: "thumb-1920-536426.png" },
-        { id: 7, src: "/images/thumb-1920-627080.png", description: "thumb-1920-627080.png" }
+        { id: 0, src: "/images/thumb-1920-328327.jpg", description: "thumb-1920-328327.jpg", href:"/test" },
+        { id: 1, src: "/images/thumb-1920-533923.jpg", description: "thumb-1920-533923.jpg", href:"/test" },
+        { id: 2, src: "/images/thumb-1920-536426.png", description: "thumb-1920-536426.png", href:"/test" },
+        { id: 3, src: "/images/thumb-1920-627080.png", description: "thumb-1920-627080.png", href:"/test" },
+        { id: 4, src: "/images/thumb-1920-328327.jpg", description: "thumb-1920-328327.jpg", href:"/test" },
+        { id: 5, src: "/images/thumb-1920-533923.jpg", description: "thumb-1920-533923.jpg", href:"/test" },
+        { id: 6, src: "/images/thumb-1920-536426.png", description: "thumb-1920-536426.png", href:"/test" },
+        { id: 7, src: "/images/thumb-1920-627080.png", description: "thumb-1920-627080.png", href:"/test" }
     ];
 
     const champList = [
+        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
+        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
+        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
+        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
+        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
+        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
         { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
         { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
     ]

@@ -31,7 +31,7 @@ function Carousel({ list, option }) {
             return (
                 <Anchor
                     key={item.id}
-                    href="/test"
+                    href={item.href}
                     target="_blank"
                     d="block"
                     m={{ r: { xs: "0.5rem", md: "2rem" } }}
@@ -41,6 +41,31 @@ function Carousel({ list, option }) {
                         bg="transparent"
                         h={{ xs: "210px", md: "350px" }}
                         w={{ xs: "390px", md: "650px" }}
+                    >
+                        <img
+                            src={item.src}
+                            alt={item.description}
+                        />
+                    </Div>
+                </Anchor>
+            )
+        }
+        else if (option.type === "champion-skins") {
+            return (
+                <Anchor
+                    key={item.id}
+                    href={item.href}
+                    target="_blank"
+                    d="block"
+                    m={{ r: { xs: "0.5rem", md: "2rem" } }}
+                >
+                    <Div
+                        className="carousel-cell"
+                        bg="transparent"
+                        h={{ xs: "336px", md: "336px" }}
+                        w={{ xs: "185px", md: "185px" }}
+                        border="2px solid"
+                        borderColor="gold"
                     >
                         <img
                             src={item.src}
