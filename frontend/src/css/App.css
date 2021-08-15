@@ -38,16 +38,18 @@
   }
 }
 
+/*----------------------------------------------------*/
+
 .main-header {
   position: sticky;
-  background-color: transparent;
-  padding-top: 2rem;
-  top: -2rem;
+  background-color: black;
+  padding-top: 16px;
+  top: -16px;
   z-index: 3;
 }
 
 .main-background {
-  background-image: url('./images/main_background.jpg');
+  background-image: url('../images/main_background.jpg');
   position: absolute;
   width:100vw;
   height: 62.5vw;
