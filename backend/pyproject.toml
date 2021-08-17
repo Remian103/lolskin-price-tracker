@@ -11,6 +11,7 @@ requests = "^2.26.0"
 SQLAlchemy = "^1.4.22"
 aiohttp = "^3.7.4"
 tqdm = "^4.62.0"
+alembic = "^1.6.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
