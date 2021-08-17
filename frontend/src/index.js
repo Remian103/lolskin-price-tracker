@@ -1,14 +1,62 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './css/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Theme
+import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
+import { Client as Styletron } from "styletron-engine-atomic";
+import { ThemeProvider, StyleReset } from 'atomize';
+
+// route
+import {
+    BrowserRouter as Router,
+    Route,
+    Redirect,
+    Switch
+} from "react-router-dom";
+
+const theme = {
+    colors: {
+        primary: 'tomato',
+        accent: 'yellow',
+    },
+};
+
+const debug =
+    process.env.NODE_ENV === "production" ? void 0 : new DebugEngine();
+
+// 1. Create a client engine instance
+const engine = new Styletron();
+
+// 2. Provide the engine to the app
+// debug engine needs inlined source maps
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <StyletronProvider value={engine} debug={debug} debugAfterHydration>
+            <ThemeProvider theme={theme}>
+                <StyleReset />
+                <Router>
+                    <Switch>
+                        <Route exact path="/">
+                            <Redirect to="/home" />
+                        </Route>
+                        <Route exact path="/home">
+                            <App />
+                        </Route>
+                        <Route path="/skins">
+                            <p>skin page</p>
+                        </Route>
+                        <Route path="/">
+                            <p>404 error</p>
+                        </Route>
+                    </Switch>
+                </Router>
+            </ThemeProvider>
+        </StyletronProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function
