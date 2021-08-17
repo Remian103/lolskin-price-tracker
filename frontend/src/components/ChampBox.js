@@ -13,14 +13,14 @@ function ChampBox({ list }) {
     const url = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
     // carousel test
     const skinList = [
-        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", description: "thumb-1920-328327.jpg", href:"/test" },
-        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_1.jpg", description: "thumb-1920-533923.jpg", href:"/test" },
-        { id: 2, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_2.jpg", description: "thumb-1920-536426.png", href:"/test" },
-        { id: 3, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_3.jpg", description: "thumb-1920-627080.png", href:"/test" },
-        { id: 4, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_7.jpg", description: "thumb-1920-328327.jpg", href:"/test" },
-        { id: 5, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_8.jpg", description: "thumb-1920-533923.jpg", href:"/test" },
-        { id: 6, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_9.jpg", description: "thumb-1920-536426.png", href:"/test" },
-        { id: 7, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_11.jpg", description: "thumb-1920-627080.png", href:"/test" }
+        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", description: "thumb-1920-328327.jpg", href:"/skins" },
+        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_1.jpg", description: "thumb-1920-533923.jpg", href:"/skins" },
+        { id: 2, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_2.jpg", description: "thumb-1920-536426.png", href:"/skins" },
+        { id: 3, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_3.jpg", description: "thumb-1920-627080.png", href:"/skins" },
+        { id: 4, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_7.jpg", description: "thumb-1920-328327.jpg", href:"/skins" },
+        { id: 5, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_8.jpg", description: "thumb-1920-533923.jpg", href:"/skins" },
+        { id: 6, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_9.jpg", description: "thumb-1920-536426.png", href:"/skins" },
+        { id: 7, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_11.jpg", description: "thumb-1920-627080.png", href:"/skins" }
     ];
 
     useEffect(() => { }, []);

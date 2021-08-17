@@ -76,3 +76,8 @@
 .content-container > * {
   z-index: 1;
 }
+
+.hash-link {
+  position: relative;
+  top: -40px;
+}
