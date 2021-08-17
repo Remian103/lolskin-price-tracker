@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ $1 == "cp" ]
+if [ $1 == "update" ]
 then
     echo "Replace package.json and yarn.lock"
     cp ./testPackage/package.json ./package.json

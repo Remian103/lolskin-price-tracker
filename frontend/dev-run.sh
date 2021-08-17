@@ -11,7 +11,7 @@
 # then changes will be reflected in ./testPackage
 # If you want to save this enviroment,
 # 1. replace ./package.json and ./yarn.lock to files in ./testPackage
-# 2. run './dev-images.sh cp'.
+# 2. run './dev-images.sh update'.
 #############################################################
 
 # copy and paste files about package to 'testPackage' folder
