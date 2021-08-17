@@ -4,7 +4,7 @@ COPY package* yarn.lock ./
 RUN yarn install
 COPY public ./public
 COPY src ./src
-RUN yarn run build
+RUN yarn build
 
 FROM nginx
 WORKDIR /usr/share/nginx/html

@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#############################################################
+# Script for auto building docker image (development env)
+#
+# arguments
+# - (none) : build image
+# - update : build image from './testPackage'
+#############################################################
+
+# argument
 if [ $1 == "update" ];
 then
     echo "Replace package.json and yarn.lock"
@@ -8,20 +17,22 @@ then
 fi
 
 # save previous image's id
-id=`docker images | grep frontend-dev | awk '{print $3}'`
+id=`docker images | grep remian103/frontend-dev | awk '{print $3}'`
 echo $id
 
-# clear ./testPackage
+# Clear ./testPackage
 rm ./testPackage/package.json
 rm ./testPackage/yarn.lock
 
-echo "Build docker image  \'frontend-dev\'"
-docker build -f Dockerfile.dev -t frontend-dev .
+# Build image
+echo "Build docker image  'remian103/frontend-dev'"
+docker build -f Dockerfile.dev -t remian103/frontend-dev .
 
+# Delete previous image
 if [ -n ${id} ];
 then
     name=`docker images | grep ${id} | awk '{print $1}'`
-    if [ ${name} != "frontend-dev" ];
+    if [ ${name} != "remian103/frontend-dev" ];
     then
         echo "Delete old image.."
         docker rmi ${id}
