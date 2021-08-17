@@ -26,12 +26,12 @@ function dataFetchReducer(state, action) {
     }
 }
 
-function useDataFetch({ initialUrl, initialData }) {
+function useDataFetch(initialUrl, initialData) {
     const [url, setUrl] = useState(initialUrl);
     const [state, dispatch] = useReducer(dataFetchReducer, {
         isLoading: false,
         isError: false,
-        data: initalData
+        data: initialData
     });
 
     useEffect(() => {
@@ -42,6 +42,7 @@ function useDataFetch({ initialUrl, initialData }) {
 
             try {
                 const result = await axios(url);
+
                 if (!didCancel)
                     dispatch({ type: "FETCH_SUCCESS", payload: result.data });
             } catch (error) {
@@ -50,7 +51,8 @@ function useDataFetch({ initialUrl, initialData }) {
             }
         };
 
-        fetchData();
+        if(url !== "initialUrl")
+            fetchData();
 
         return () => {
             didCancel = true;
@@ -59,3 +61,5 @@ function useDataFetch({ initialUrl, initialData }) {
 
     return [state, setUrl];
 }
+
+export default useDataFetch;

@@ -7,8 +7,8 @@ import "../css/Carousel.css";
 
 function Carousel({ list, option }) {
     const flickityOptions = {
-        initialIndex: 1,
-        wrapAround: true,
+        initialIndex: 0,
+        //wrapAround: true,
         //autoPlay: 3000,
     };
 
@@ -53,7 +53,7 @@ function Carousel({ list, option }) {
             return (
                 <Link
                     key={item.id}
-                    to={item.href}
+                    to={`/skins/${item.id}`}
                 >
                     <Div
                         className="carousel-cell"
@@ -65,8 +65,8 @@ function Carousel({ list, option }) {
                         borderColor="gold"
                     >
                         <img
-                            src={item.src}
-                            alt={item.description}
+                            src={item.trimmed_image_url}
+                            alt={item.name}
                         />
                     </Div>
                 </Link>

@@ -1,36 +1,33 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Div, Text, Button, Icon } from "atomize";
 import Carousel from "./Carousel";
+import useDataFetch from "../hooks/useDataFetch";
 import "../css/ChampBox.css";
 
 function ChampBox({ list }) {
 
     const [display, setDisplay] = useState(false);
+    const [skinList, setList] = useState([]);
+    const [{isLoading, isError, data}, doFetch] = useDataFetch("initialUrl", []);
     const onClick = () => {
         setDisplay((prev) => !prev);
     }
 
-    const url = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
-    // carousel test
-    const skinList = [
-        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", description: "thumb-1920-328327.jpg", href:"/skins" },
-        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_1.jpg", description: "thumb-1920-533923.jpg", href:"/skins" },
-        { id: 2, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_2.jpg", description: "thumb-1920-536426.png", href:"/skins" },
-        { id: 3, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_3.jpg", description: "thumb-1920-627080.png", href:"/skins" },
-        { id: 4, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_7.jpg", description: "thumb-1920-328327.jpg", href:"/skins" },
-        { id: 5, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_8.jpg", description: "thumb-1920-533923.jpg", href:"/skins" },
-        { id: 6, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_9.jpg", description: "thumb-1920-536426.png", href:"/skins" },
-        { id: 7, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_11.jpg", description: "thumb-1920-627080.png", href:"/skins" }
-    ];
+    useEffect(() => {
+        if (display)
+            doFetch(`/fastapi/api/champions/266/skins`);
+    }, [display]);
 
-    useEffect(() => { }, []);
+    useEffect(() => {
+        setList(data);
+    }, [data])
 
     const items = list.map((item) =>
         <Div
             key={item.id}
             p="0.5rem"
         >
-            <img src={item.src} alt={item.description} title={item.description} onClick={onClick} />
+            <img src={item.src} alt={item.description} title={item.description} onClick={() => setDisplay((prev) => !prev)} />
         </Div>
     );
 
@@ -63,6 +60,8 @@ function ChampBox({ list }) {
         {/* silde in out css */}
         <Div className={"transition-slide" + (display ? " in" : "")}>
             {!display ? <></> :
+                isLoading ? <p> is loading... </p> :
+                isError ? <p> something error </p> :
                 <>
                     <Button
                         pos="absolute"

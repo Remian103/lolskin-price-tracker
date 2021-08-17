@@ -29,12 +29,12 @@ function App() {
     const champList = [
         { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
         { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
-        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
-        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
-        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
-        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
-        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
-        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
+        { id: 2, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
+        { id: 3, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
+        { id: 4, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
+        { id: 5, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
+        { id: 6, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
+        { id: 7, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
     ]
 
     return (
