@@ -17,12 +17,8 @@ then
 fi
 
 # save previous image's id
-id=`docker images | grep remian103/frontend-dev | awk '{print $3}'`
+id=`docker images | grep frontend-dev | awk '{print $3}'`
 echo $id
-
-# Clear ./testPackage
-rm ./testPackage/package.json
-rm ./testPackage/yarn.lock
 
 # Build image
 echo "Build docker image  'remian103/frontend-dev'"
