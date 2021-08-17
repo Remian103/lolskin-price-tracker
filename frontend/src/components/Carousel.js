@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import Flickity from 'react-flickity-component';
-import { Div, Anchor } from "atomize";
-import '../css/flickity.css';
-import '../css/Carousel.css';
+import React, { useState, useEffect } from "react";
+import Flickity from "react-flickity-component";
+import { Link } from "react-router-dom";
+import { Div } from "atomize";
+import "../css/flickity.css";
+import "../css/Carousel.css";
 
 function Carousel({ list, option }) {
     const flickityOptions = {
@@ -29,16 +30,14 @@ function Carousel({ list, option }) {
     const inside = list.map((item) => {
         if (option.type === "recommend-skins") {
             return (
-                <Anchor
+                <Link
                     key={item.id}
-                    href={item.href}
-                    target="_blank"
-                    d="block"
-                    m={{ r: { xs: "0.5rem", md: "2rem" } }}
+                    to={item.href}
                 >
                     <Div
                         className="carousel-cell"
                         bg="transparent"
+                        m={{ r: { xs: "0.5rem", md: "2rem" } }}
                         h={{ xs: "210px", md: "350px" }}
                         w={{ xs: "390px", md: "650px" }}
                     >
@@ -47,21 +46,19 @@ function Carousel({ list, option }) {
                             alt={item.description}
                         />
                     </Div>
-                </Anchor>
-            )
+                </Link>
+            );
         }
         else if (option.type === "champion-skins") {
             return (
-                <Anchor
+                <Link
                     key={item.id}
-                    href={item.href}
-                    target="_blank"
-                    d="block"
-                    m={{ r: { xs: "0.5rem", md: "2rem" } }}
+                    to={item.href}
                 >
                     <Div
                         className="carousel-cell"
                         bg="transparent"
+                        m={{ r: { xs: "0.5rem", md: "2rem" } }}
                         h={{ xs: "336px", md: "336px" }}
                         w={{ xs: "185px", md: "185px" }}
                         border="2px solid"
@@ -72,8 +69,8 @@ function Carousel({ list, option }) {
                             alt={item.description}
                         />
                     </Div>
-                </Anchor>
-            )
+                </Link>
+            );
         }
         else return (<></>);
     });

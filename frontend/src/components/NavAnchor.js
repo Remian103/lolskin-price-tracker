@@ -2,7 +2,7 @@ import React from 'react';
 import "../css/NavAnchor.css";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import { Anchor, Button } from "atomize";
+import { Button } from "atomize";
 
 function Nav({ anchorList }) {
 
