@@ -1,11 +1,19 @@
 from datetime import date
+import time
 
+from tqdm import tqdm
 from tqdm.asyncio import tqdm_asyncio
 from lcu_driver import Connector
 
 from .database import SessionLocal, engine
 from . import models
     
+
+# For test use
+# with SessionLocal() as db:
+#     db.query(models.Price_History).delete()
+#     db.commit()
+
 
 connector = Connector()
 
@@ -33,6 +41,11 @@ async def update(connection, db, skin):
 
 @connector.ready
 async def update_skins_price(connection):
+    print('League Client detected.')
+    print('Sleeping for 300 secs for stable connection...')
+    for i in tqdm(range(300)):
+        time.sleep(1)
+    print('Starting skin update...')
     with SessionLocal() as db:
         # ----- Remove this line with alembic -----
         models.Base.metadata.create_all(bind=engine)

@@ -16,3 +16,6 @@ Configure
 
 ### Known issues
  - Username on the windows instance is wrong! 'ls**pt**2021' was intended, but not it is 'ls**tp**2021'
+ - League Client, AFAIK, pops EULA when new patch is delivered. Currently, there's no consideration of this behavior.
+ - 'update_*.py' obviously doesn't belong to the 'app'. Wrong hierarchy!
+ - Sometimes, League Client refuse connection!!! ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
