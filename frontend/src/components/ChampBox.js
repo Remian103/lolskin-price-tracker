@@ -4,30 +4,36 @@ import Carousel from "./Carousel";
 import useDataFetch from "../hooks/useDataFetch";
 import "../css/ChampBox.css";
 
-function ChampBox({ list }) {
+function ChampBox() {
 
     const [display, setDisplay] = useState(false);
-    const [skinList, setList] = useState([]);
-    const [{isLoading, isError, data}, doFetch] = useDataFetch("initialUrl", []);
-    const onClick = () => {
-        setDisplay((prev) => !prev);
-    }
+    const [champId, setId] = useState(0);
+    const [{isLoading: skinLoading, isError: skinError, data: skinList}, doFetch] = useDataFetch("initialUrl", []);
+    const [{isLoading: champLoading, isError: champError, data: champList}, _] = useDataFetch("/fastapi/api/champions", []);
 
     useEffect(() => {
         if (display)
-            doFetch(`/fastapi/api/champions/266/skins`);
-    }, [display]);
-
+            doFetch(`/fastapi/api/champions/${champId}/skins`);
+    }, [display, champId, doFetch]);
+    
+    //test log
     useEffect(() => {
-        setList(data);
-    }, [data])
+        console.log(skinList);
+    }, [skinList]);
+    useEffect(() => {
+        console.log(champList);
+    }, [champList]);
 
-    const items = list.map((item) =>
+    const items = champList.map((item) =>
         <Div
             key={item.id}
             p="0.5rem"
         >
-            <img src={item.src} alt={item.description} title={item.description} onClick={() => setDisplay((prev) => !prev)} />
+            <img src={item.icon_url}
+                alt={item.name}
+                title={item.name}
+                onClick={() => {setDisplay(true); setId(item.id);}}
+            />
         </Div>
     );
 
@@ -35,11 +41,7 @@ function ChampBox({ list }) {
         <Div
             w="100%"
             maxW="1024px"
-            p={{
-                t: "32px",
-                l: "1rem",
-                b: "1rem"
-            }}
+            p={{ t: "32px", l: "1rem", b: "1rem" }}
         >
             <Text
                 textSize={{ xs: "1rem", md: "1.5rem" }}
@@ -60,8 +62,8 @@ function ChampBox({ list }) {
         {/* silde in out css */}
         <Div className={"transition-slide" + (display ? " in" : "")}>
             {!display ? <></> :
-                isLoading ? <p> is loading... </p> :
-                isError ? <p> something error </p> :
+                skinLoading ? <p> is loading... </p> :
+                skinError ? <p> something error </p> :
                 <>
                     <Button
                         pos="absolute"
@@ -74,7 +76,7 @@ function ChampBox({ list }) {
                         rounded="circle"
                         shadow="2"
                         hoverShadow="4"
-                        onClick={onClick}
+                        onClick={() => setDisplay(false)}
                     >
                         <Icon name="Cross" size="20px" color="white" />
                     </Button>

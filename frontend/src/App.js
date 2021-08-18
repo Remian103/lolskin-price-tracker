@@ -26,17 +26,6 @@ function App() {
         { id: 7, src: "/images/thumb-1920-627080.png", description: "thumb-1920-627080.png", href:"/skins" }
     ];
 
-    const champList = [
-        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
-        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
-        { id: 2, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
-        { id: 3, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
-        { id: 4, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
-        { id: 5, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
-        { id: 6, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Aatrox.png", description: "Aatrox" },
-        { id: 7, src: "http://ddragon.leagueoflegends.com/cdn/11.16.1/img/champion/Jax.png", description: "Jax" },
-    ]
-
     return (
         <>
             <Div className="main-background" />
@@ -65,7 +54,7 @@ function App() {
                 <div className="hash-link" id="recommend-skins" />
                 <CarouselWrapper title="Recommend Skins" list={skinList} option={{ type: "recommend-skins" }} />
                 <div className="hash-link" id="champions" />
-                <ChampBox list={champList} />
+                <ChampBox />
                 <Div
                     h="1000px"
                     bg="brown"
