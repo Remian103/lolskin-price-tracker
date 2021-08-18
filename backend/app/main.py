@@ -31,9 +31,16 @@ def get_champion_skins(champion_id: int, db: Session = Depends(get_db)):
     return crud.get_skins_by_champion_id(db, champion_id)
 
 
-@app.get('/api/recommendations')
-def get_recommendations():
-    ...
+@app.get('/api/recommendations', response_model=List[schemas.Skin])
+def get_recommendations(db: Session = Depends(get_db)):
+    # Some dummy recommendation for testing
+    ret = [
+        crud.get_skin_by_id(db, 11001),
+        crud.get_skin_by_id(db, 12001),
+        crud.get_skin_by_id(db, 13001),
+        crud.get_skin_by_id(db, 14001)
+    ]
+    return ret
 
 
 @app.get('/api/skins/{skin_id}', response_model=schemas.Skin_Full)
