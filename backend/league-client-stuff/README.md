@@ -13,3 +13,6 @@ Configure
 - register 'update_script.ps1' as daily task
 
 ...
+
+### Known issues
+ - Username on the windows instance is wrong! 'ls**pt**2021' was intended, but not it is 'ls**tp**2021'
