@@ -1,68 +1,68 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Div, Text, Button, Icon } from "atomize";
 import Carousel from "./Carousel";
+import useDataFetch from "../hooks/useDataFetch";
 import "../css/ChampBox.css";
 
-function ChampBox({ list }) {
+function ChampBox() {
+    const [champId, setId] = useState(0);
+    const [{isLoading: champLoading, isError: champError, data: champList}, _] = useDataFetch("/fastapi/api/champions", []);
 
     const [display, setDisplay] = useState(false);
-    const onClick = () => {
-        setDisplay((prev) => !prev);
-    }
+    const [{isLoading: skinLoading, isError: skinError, data: skinList}, doFetch] = useDataFetch("initialUrl", []);
+    useEffect(() => {
+        if (display)
+            doFetch(`/fastapi/api/champions/${champId}/skins`);
+    }, [display, champId, doFetch]);
+    const flickityOptions = {
+        initialIndex: 0,
+        //wrapAround: true,
+        //autoPlay: 3000,
+    };
+    
+    //test log
+    useEffect(() => {
+        console.log(skinList);
+    }, [skinList]);
+    useEffect(() => {
+        console.log(champList);
+    }, [champList]);
 
-    const url = "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/";
-    // carousel test
-    const skinList = [
-        { id: 0, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_0.jpg", description: "thumb-1920-328327.jpg", href:"/skins" },
-        { id: 1, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_1.jpg", description: "thumb-1920-533923.jpg", href:"/skins" },
-        { id: 2, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_2.jpg", description: "thumb-1920-536426.png", href:"/skins" },
-        { id: 3, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_3.jpg", description: "thumb-1920-627080.png", href:"/skins" },
-        { id: 4, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_7.jpg", description: "thumb-1920-328327.jpg", href:"/skins" },
-        { id: 5, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_8.jpg", description: "thumb-1920-533923.jpg", href:"/skins" },
-        { id: 6, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_9.jpg", description: "thumb-1920-536426.png", href:"/skins" },
-        { id: 7, src: "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/Aatrox_11.jpg", description: "thumb-1920-627080.png", href:"/skins" }
-    ];
-
-    useEffect(() => { }, []);
-
-    const items = list.map((item) =>
+    const items = champList.map((item) =>
         <Div
             key={item.id}
             p="0.5rem"
         >
-            <img src={item.src} alt={item.description} title={item.description} onClick={onClick} />
+            <img src={item.icon_url}
+                alt={item.name}
+                title={item.name}
+                onClick={() => {setDisplay(true); setId(item.id);}}
+            />
         </Div>
     );
 
     return (<>
         <Div
-            w="100%"
-            maxW="1024px"
-            p={{
-                t: "32px",
-                l: "1rem",
-                b: "1rem"
-            }}
-        >
-            <Text
-                textSize={{ xs: "1rem", md: "1.5rem" }}
-            >
-                Champion List
-            </Text>
-        </Div>
-        <Div
             d="flex"
+            justify="space-around"
             flexWrap="wrap"
             w="100%"
             maxW="1024px"
             p="0.5rem"
         >
-            {items}
+            {
+                champLoading ? <p> is loading... </p> :
+                champError ? <p> something error </p> :
+                items
+            }
         </Div>
         
         {/* silde in out css */}
         <Div className={"transition-slide" + (display ? " in" : "")}>
-            {!display ? <></> :
+            {
+                !display ? <></> :
+                skinLoading ? <p> is loading... </p> :
+                skinError ? <p> something error </p> :
                 <>
                     <Button
                         pos="absolute"
@@ -75,11 +75,11 @@ function ChampBox({ list }) {
                         rounded="circle"
                         shadow="2"
                         hoverShadow="4"
-                        onClick={onClick}
+                        onClick={() => setDisplay(false)}
                     >
                         <Icon name="Cross" size="20px" color="white" />
                     </Button>
-                    <Carousel list={skinList} option={{ type: "champion-skins" }} />
+                    <Carousel list={skinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
                 </>
             }
         </Div>
