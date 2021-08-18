@@ -5,16 +5,20 @@ import useDataFetch from "../hooks/useDataFetch";
 import "../css/ChampBox.css";
 
 function ChampBox() {
-
-    const [display, setDisplay] = useState(false);
     const [champId, setId] = useState(0);
-    const [{isLoading: skinLoading, isError: skinError, data: skinList}, doFetch] = useDataFetch("initialUrl", []);
     const [{isLoading: champLoading, isError: champError, data: champList}, _] = useDataFetch("/fastapi/api/champions", []);
 
+    const [display, setDisplay] = useState(false);
+    const [{isLoading: skinLoading, isError: skinError, data: skinList}, doFetch] = useDataFetch("initialUrl", []);
     useEffect(() => {
         if (display)
             doFetch(`/fastapi/api/champions/${champId}/skins`);
     }, [display, champId, doFetch]);
+    const flickityOptions = {
+        initialIndex: 0,
+        //wrapAround: true,
+        //autoPlay: 3000,
+    };
     
     //test log
     useEffect(() => {
@@ -39,29 +43,24 @@ function ChampBox() {
 
     return (<>
         <Div
-            w="100%"
-            maxW="1024px"
-            p={{ t: "32px", l: "1rem", b: "1rem" }}
-        >
-            <Text
-                textSize={{ xs: "1rem", md: "1.5rem" }}
-            >
-                Champion List
-            </Text>
-        </Div>
-        <Div
             d="flex"
+            justify="space-around"
             flexWrap="wrap"
             w="100%"
             maxW="1024px"
             p="0.5rem"
         >
-            {items}
+            {
+                champLoading ? <p> is loading... </p> :
+                champError ? <p> something error </p> :
+                items
+            }
         </Div>
         
         {/* silde in out css */}
         <Div className={"transition-slide" + (display ? " in" : "")}>
-            {!display ? <></> :
+            {
+                !display ? <></> :
                 skinLoading ? <p> is loading... </p> :
                 skinError ? <p> something error </p> :
                 <>
@@ -80,7 +79,7 @@ function ChampBox() {
                     >
                         <Icon name="Cross" size="20px" color="white" />
                     </Button>
-                    <Carousel list={skinList} option={{ type: "champion-skins" }} />
+                    <Carousel list={skinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
                 </>
             }
         </Div>

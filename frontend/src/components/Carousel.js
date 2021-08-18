@@ -5,12 +5,7 @@ import { Div } from "atomize";
 import "../css/flickity.css";
 import "../css/Carousel.css";
 
-function Carousel({ list, option }) {
-    const flickityOptions = {
-        initialIndex: 0,
-        //wrapAround: true,
-        //autoPlay: 3000,
-    };
+function Carousel({ list, flktyOption, cellOption }) {
 
     // use flickity API
     const [flkty, setFlkty] = useState(undefined);
@@ -25,14 +20,14 @@ function Carousel({ list, option }) {
         }
     }, [flkty]);
 
-
+    
     // carousel cell design
     const inside = list.map((item) => {
-        if (option.type === "recommend-skins") {
+        if (cellOption.type === "recommend-skins") {
             return (
                 <Link
                     key={item.id}
-                    to={item.href}
+                    to={`/skins/${item.id}`}
                 >
                     <Div
                         className="carousel-cell"
@@ -42,14 +37,15 @@ function Carousel({ list, option }) {
                         w={{ xs: "390px", md: "650px" }}
                     >
                         <img
-                            src={item.src}
-                            alt={item.description}
+                            src={item.full_image_url}
+                            alt={item.name}
+                            title={item.name}
                         />
                     </Div>
                 </Link>
             );
         }
-        else if (option.type === "champion-skins") {
+        else if (cellOption.type === "champion-skins") {
             return (
                 <Link
                     key={item.id}
@@ -67,6 +63,7 @@ function Carousel({ list, option }) {
                         <img
                             src={item.trimmed_image_url}
                             alt={item.name}
+                            title={item.name}
                         />
                     </Div>
                 </Link>
@@ -81,7 +78,7 @@ function Carousel({ list, option }) {
         >
             <Flickity
                 className="carousel"
-                options={flickityOptions}
+                options={flktyOption}
                 flickityRef={getFlickityRef}
             >
                 {inside}
