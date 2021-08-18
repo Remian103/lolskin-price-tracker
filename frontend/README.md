@@ -13,7 +13,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### in Docker Enviroment
 
 1. install docker
-2. `./dev-image.sh`
+2. (optional) `./dev-image.sh` - run after you modifying any package files.
 
 ## Development
 

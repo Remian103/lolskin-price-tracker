@@ -9,7 +9,7 @@
 #############################################################
 
 # argument
-if [ $1 == "update" ];
+if [ ${1:-no-update} == "update" ];
 then
     echo "Replace package.json and yarn.lock"
     cp ./testPackage/package.json ./package.json
