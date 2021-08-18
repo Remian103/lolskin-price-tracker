@@ -27,14 +27,10 @@ to activate the environment in current shell.
 ## Run
 ```bash
 cd /path/to/backend/
-uvicorn app.main:app --reload
-```
-In WSL
-```bash
-uvicorn app.main:app --reload --host [wsl_ip]
+./run.sh [port=8000]
 ```
 
-The app will be available on localhost:8000.
+The app will run on $(hostname --all-ip-address):port(=8000), which is often the desired behavior.
 
 Visit
 ```
@@ -53,3 +49,8 @@ python -m app.update_static
 cd /path/to/backend/
 python -m app.gen_test_history
 ```
+
+## Logs
+Log files are available in `/path/to/backend/logs`
+
+Note that logs are cleared at next run.
