@@ -2,7 +2,7 @@ import React from 'react';
 import "../css/NavAnchor.css";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import { Button } from "atomize";
+import { Button, Anchor } from "atomize";
 
 function Nav({ anchorList }) {
 
@@ -25,21 +25,39 @@ function Nav({ anchorList }) {
                             </Button>
                         </HashLink>
                     );
-                else return (
-                    <Link
-                        key={item.id}
-                        to={item.link}
-                    >
-                        <Button
-                            bg="info700"
-                            hoverBg="info600"
-                            cursor="pointer"
-                            rounded="md"
+                else if (item.type === "new-tab")
+                    return (
+                        <Anchor
+                            key={item.id}
+                            href={item.link}
+                            target="_blank"
                         >
-                            {item.name}
-                        </Button>
-                    </Link>
-                );
+                            <Button
+                                bg="info700"
+                                hoverBg="info600"
+                                cursor="pointer"
+                                rounded="md"
+                            >
+                                {item.name}
+                            </Button>
+                        </Anchor>
+                    );
+                else 
+                    return (
+                        <Link
+                            key={item.id}
+                            to={item.link}
+                        >
+                            <Button
+                                bg="info700"
+                                hoverBg="info600"
+                                cursor="pointer"
+                                rounded="md"
+                            >
+                                {item.name}
+                            </Button>
+                        </Link>
+                    );
             }
             )}
         </nav>

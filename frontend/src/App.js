@@ -1,103 +1,52 @@
 import React from 'react';
 import './css/App.css';
-import { Div, Text } from "atomize";
+import { Div } from "atomize";
 
-import Nav from './components/NavAnchor';
-import RecommendCarousel from './components/RecommendCarousel';
-import ChampBox from './components/ChampBox';
+// route
+import {
+    BrowserRouter as Router,
+    Route,
+    Redirect,
+    Switch
+} from "react-router-dom";
+
+import Nav from "./components/NavAnchor";
+import Home from "./pages/Home";
+import Skins from "./pages/Skins";
 
 function App() {
 
     const anchorList = [
         { id: 0, name: "추천 스킨", link: "#recommend-skins", type: "hash" },
         { id: 1, name: "챔피언 목록", link: "#champions", type: "hash" },
-        { id: 2, name: "새 페이지", link: "/skins" }
+        { id: 2, name: "새 페이지", link: "/skins", type: "new-tab" },
+        { id: 3, name: "스킨", link: "/skins", type: "link" }
     ];
 
-    return (
-        <>
-            <Div className="main-background" />
-            <header className="main-header">
-                <Nav anchorList={anchorList} />
-            </header>
-            {/* body */}
-            <Div /* title */
-                d="flex"
-                h={{ xs: "150px", md: "400px" }}
-                align="center"
-                justify="center"
-                flexDir="column"
-            >
-                <Text
-                    p={{ l: "0.5rem", r: "0.5rem" }}
-                    textSize="display3"
-                    textAlign="center"
-                >
-                    LOL PRICE TRACKER
-                </Text>
-            </Div>
+    return (<>
+        <Div className="main-background" />
+        <header className="main-header">
+            <Nav anchorList={anchorList} />
+        </header>
 
-            <Div className="content-container" bg="black400" /* main content */ >
-                <Div className="content-background" bg="black600" /* background */ />
-
-                <div className="hash-link" id="recommend-skins" />
-                <Div
-                    w="100%"
-                    maxW="1024px"
-                    p={{
-                        t: "32px",
-                        l: "1rem",
-                        b: "1rem"
-                    }}
-                >
-                    <Text
-                        textSize={{ xs: "1rem", md: "1.5rem" }}
-                    >
-                        Recommend Skins
-                    </Text>
-                </Div>
-                <RecommendCarousel />
-
-                <div className="hash-link" id="champions" />
-                <Div
-                    w="100%"
-                    maxW="1024px"
-                    p={{ t: "32px", l: "1rem", b: "1rem" }}
-                >
-                    <Text
-                        textSize={{ xs: "1rem", md: "1.5rem" }}
-                    >
-                        Champion List
-                    </Text>
-                </Div>
-                <ChampBox />
-                <Div
-                    h="1000px"
-                    bg="brown"
-                    textSize="display3"
-                    textAlign="center"
-                >
-                    Dummy
-                </Div>
-                {/*
-                <div className="App-header">
-                    <img src="/images/logo.svg" className="App-logo" alt="logo" />
-                    <p>
-                        Edit <code>src/App.js</code> and save to reload.
-                    </p>
-                    <a
-                        className="App-link"
-                        href="https://reactjs.org"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
-                        Learn React
-                    </a>
-                </div>
-                */}
-            </Div>
-        </>
-    );
+        <Switch>
+            <Route exact path="/">
+                <Redirect to="/home" />
+            </Route>
+            <Route exact path="/home">
+                <Home />
+            </Route>
+            <Route path="/skins/:skinId">
+                <Skins />
+            </Route>
+            <Route exect path="/skins">
+                <p>skin page</p>
+            </Route>
+            <Route path="/">
+                <p>404 error</p>
+            </Route>
+        </Switch>
+    </>);
 }
 
 export default App;

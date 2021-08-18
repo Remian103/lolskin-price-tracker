@@ -1,21 +1,14 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './css/index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./css/index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
 
 // Theme
 import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
-import { ThemeProvider, StyleReset } from 'atomize';
-
-// route
-import {
-    BrowserRouter as Router,
-    Route,
-    Redirect,
-    Switch
-} from "react-router-dom";
+import { ThemeProvider, StyleReset } from "atomize";
+import { BrowserRouter as Router } from "react-router-dom";
 
 const theme = {
     colors: {
@@ -38,20 +31,7 @@ ReactDOM.render(
             <ThemeProvider theme={theme}>
                 <StyleReset />
                 <Router>
-                    <Switch>
-                        <Route exact path="/">
-                            <Redirect to="/home" />
-                        </Route>
-                        <Route exact path="/home">
-                            <App />
-                        </Route>
-                        <Route path="/skins">
-                            <p>skin page</p>
-                        </Route>
-                        <Route path="/">
-                            <p>404 error</p>
-                        </Route>
-                    </Switch>
+                    <App />
                 </Router>
             </ThemeProvider>
         </StyletronProvider>
