@@ -25,35 +25,23 @@ function Home() {
             <Div className="content-background" bg="black600" /* background */ />
 
             <div className="hash-link" id="recommend-skins" />
-            <Div
-                w="100%"
-                maxW="1024px"
-                p={{
-                    t: "32px",
-                    l: "1rem",
-                    b: "1rem"
-                }}
-            >
+            <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
                 >
                     Recommend Skins
                 </Text>
-            </Div>
+            </div>
             <RecommendCarousel />
 
             <div className="hash-link" id="champions" />
-            <Div
-                w="100%"
-                maxW="1024px"
-                p={{ t: "32px", l: "1rem", b: "1rem" }}
-            >
+            <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
                 >
                     Champion List
                 </Text>
-            </Div>
+            </div>
             <ChampBox />
             <Div
                 h="1000px"
