@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Div, Image, Text } from "atomize";
 import { useRouteMatch } from "react-router-dom";
+import { Chart, registerables } from 'chart.js';
 
 import useDataFetch from "../hooks/useDataFetch";
 import Carousel from "../components/Carousel";
@@ -15,15 +16,67 @@ import Carousel from "../components/Carousel";
 
 function Skins() {
     const { params } = useRouteMatch("/skins/:skinId");
+    // update when skin id changed
     useEffect(() => {
         doSkinFetch(`/fastapi/api/skins/${params.skinId}`);
     }, [params]);
 
+    // skin data fetch
     const [{ isLoading, isError, data: skin }, doSkinFetch] = useDataFetch(
         `/fastapi/api/skins/${params.skinId}`,
         {}
     );
 
+    //chart data
+    const chartRef = useRef(null);
+    useEffect(() => {
+        const ctx = chartRef.current.getContext("2d");
+        Chart.register(...registerables);
+        
+        const history = skin.price_history || [];
+        console.log(history);
+
+        history.sort();
+        const labels = history.map(item => item.date);
+        const datas = history.map(item => item.price);
+        // dummy
+        //const labels = ["a", "b", "c", "d", "a", "b", "c", "d", "a", "b", "c", "d", "a", "b", "c", "d", "a", "b", "c", "d"];
+        //const datas = [65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55, 40, 65, 59, 80, 81, 56, 55];
+
+        const data = {
+          labels: labels,
+          datasets: [{
+            label: 'My First Dataset',
+            data: datas,
+            fill: false,
+            borderColor: 'rgb(75, 192, 192)',
+            tension: 0
+          }]
+        };
+        
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stackWeight: 1
+                    }
+                }
+            }
+        });
+        console.log(chart);
+
+        return () => {
+            console.log("chart destroy...");
+            chart.destroy();
+        };
+    }, [skin]);
+
+    // skin list fetch
     const [{data: championSkinList}, doChampionFetch] = useDataFetch(
         "initialUrl",
         []
@@ -44,6 +97,7 @@ function Skins() {
             pos="fixed"
             w="100%"
             h="100%"
+            minW="700px"
         >
             <Image
                 src={skin.full_image_url}
@@ -60,6 +114,9 @@ function Skins() {
                     {skin.name}
                 </Text>
             </div>
+            <div className="chart-container">
+                <canvas ref={chartRef}></canvas>
+            </div>
             <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
@@ -68,8 +125,8 @@ function Skins() {
                 </Text>
             </div>
             <Div
-                p={{y:"1rem"}} 
-                w="100%"
+                p={{y:"1rem"}}
+                maxW="100%"
             >
                 <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
             </Div>
