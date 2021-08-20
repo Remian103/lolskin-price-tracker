@@ -3,7 +3,8 @@
 #############################################################
 # Script for auto running docker container (development env)
 #
-# It makes the container run the react app in development mode
+# It makes the container ready to run the react app
+# Run `yarn start`, then react app activated in development mode
 # and automatically reload if you make changes to the code.
 #
 # In container, (by 'docker exec -it react bash')
@@ -28,8 +29,9 @@ cp ./yarn.lock ./testPackage/yarn.lock
 docker run --rm -it -p 3000:3000 \
     -v $(pwd)/src:/frontend/src \
     -v $(pwd)/public:/frontend/public \
+    -v $(pwd)/build:/frontend/build \
     -v $(pwd)/testPackage/package.json:/frontend/package.json \
     -v $(pwd)/testPackage/yarn.lock:/frontend/yarn.lock \
     --name=react \
     remian103/frontend-dev \
-    yarn start
+    bash
