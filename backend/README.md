@@ -27,14 +27,14 @@ to activate the environment in current shell.
 ## Run
 ```bash
 cd /path/to/backend/
-./run.sh [port=8000]
+./run.sh [port=80]
 ```
 
-The app will run on $(hostname --all-ip-address):port(=8000), which is often the desired behavior.
+The app will run on $(hostname --all-ip-address):port(=80), which is often the desired behavior.
 
 Visit
 ```
-localhost:8000/docs
+localhost:80/docs
 ```
 for available APIs and their documentation.
 
