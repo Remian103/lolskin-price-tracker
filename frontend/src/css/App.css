@@ -43,8 +43,7 @@
 .main-header {
   position: sticky;
   background-color: black;
-  padding-top: 16px;
-  top: -16px;
+  top: 0;
   z-index: 3;
 }
 
@@ -74,7 +73,18 @@
 }
 
 .content-container > * {
+  width: 100%;
+  max-width: 1024px;
   z-index: 1;
+}
+
+.content-container > .content-title {
+  padding: 32px 0 1rem 1rem; 
+}
+
+.chart-container {
+  position: relative;
+  height:400px;
 }
 
 .hash-link {
