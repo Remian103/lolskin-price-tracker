@@ -18,12 +18,12 @@ function Skins() {
     const { params } = useRouteMatch("/skins/:skinId");
     // update when skin id changed
     useEffect(() => {
-        doSkinFetch(`/fastapi/api/skins/${params.skinId}`);
+        doSkinFetch(`/api/skins/${params.skinId}`);
     }, [params]);
 
     // skin data fetch
     const [{ isLoading, isError, data: skin }, doSkinFetch] = useDataFetch(
-        `/fastapi/api/skins/${params.skinId}`,
+        `/api/skins/${params.skinId}`,
         {}
     );
 
@@ -82,13 +82,13 @@ function Skins() {
         []
     );
     const flickityOptions = {
-        initialIndex: 1,
-        wrapAround: true,
-        autoPlay: 3000,
+        initialIndex: 0,
+        //wrapAround: true,
+        //autoPlay: 3000,
     };
     useEffect(() => {
         if (skin.champion_id !== undefined) {
-            doChampionFetch(`/fastapi/api/champions/${skin.champion_id}/skins`);
+            doChampionFetch(`/api/champions/${skin.champion_id}/skins`);
         }
     }, [skin]);
 

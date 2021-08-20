@@ -6,13 +6,13 @@ import "../css/ChampBox.css";
 
 function ChampBox() {
     const [champId, setId] = useState(0);
-    const [{isLoading: champLoading, isError: champError, data: champList}, _] = useDataFetch("/fastapi/api/champions", []);
+    const [{isLoading: champLoading, isError: champError, data: champList}, _] = useDataFetch("/api/champions", []);
 
     const [display, setDisplay] = useState(false);
     const [{isLoading: skinLoading, isError: skinError, data: skinList}, doFetch] = useDataFetch("initialUrl", []);
     useEffect(() => {
         if (display)
-            doFetch(`/fastapi/api/champions/${champId}/skins`);
+            doFetch(`/api/champions/${champId}/skins`);
     }, [display, champId, doFetch]);
     const flickityOptions = {
         initialIndex: 0,

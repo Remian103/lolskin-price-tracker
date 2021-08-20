@@ -6,7 +6,7 @@ import useDataFetch from "../hooks/useDataFetch";
 function RecommendCarousel() {
 
     const [{isLoading, isError, data : skinList}, _] = useDataFetch(
-        "/fastapi/api/recommendations",
+        "/api/recommendations",
         []
     );
     
