@@ -4,12 +4,14 @@ const server = require('./server.json');
 // restart app when modified
 module.exports = function(app) {
     app.use(
-        createProxyMiddleware("/fastapi", {
+        createProxyMiddleware("/api", {
             target: server.fastapi,
             changeOrigin: true,
+            /*
             pathRewrite: {
-                "^/fastapi": "" // URL ^/fastapi -> 공백 변경
+                "^/api": "" // URL ^/fastapi -> 공백 변경
             }
+            */
         })
     );
 };
