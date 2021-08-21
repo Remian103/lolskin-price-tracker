@@ -28,7 +28,7 @@ async def update(connection, db, skin):
     try:
         sale_price = skin_data['sale']['prices'][0]['cost']
     except Exception:
-        sale_price = 0
+        sale_price = price
 
     db_price_history = models.Price_History(skin=skin, date=date.today(), price=price, sale_price=sale_price)
     db.add(db_price_history)
