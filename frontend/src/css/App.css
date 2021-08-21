@@ -62,24 +62,38 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  background-color: rgb(1 10 19);
+}
+.content-container::before {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  content: "";
+  background: url(https://store.leagueoflegends.co.kr/assets/bg.jpg);
+  background-repeat: repeat;
+  background-size: 100% auto;
 }
 
 .content-background {
   position: absolute;
-  width: 100%;
-  max-width: 1024px;
   height: 100%;
+  background-color: rgb(63,99,105);
+  opacity: 0.4;
   z-index: 0;
 }
 
 .content-container > * {
+  margin: 0 auto;
   width: 100%;
   max-width: 1024px;
   z-index: 1;
 }
 
 .content-container > .content-title {
-  padding: 32px 0 1rem 1rem; 
+  padding: 32px 0 1rem 1rem;
+  box-sizing: border-box;
 }
 
 .chart-container {

@@ -1,3 +1,8 @@
+.champion-icon {
+    border-style: groove;
+    border-color: rgb(121, 110, 110);
+}
+
 .transition-slide {
     position: fixed;
     bottom: -600px;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Flickity from "react-flickity-component";
 import { Link } from "react-router-dom";
-import { Div } from "atomize";
+import { Div, Anchor } from "atomize";
 import "../css/flickity.css";
 import "../css/Carousel.css";
 
@@ -25,7 +25,7 @@ function Carousel({ list, flktyOption, cellOption }) {
     const inside = list.map((item) => {
         if (cellOption.type === "recommend-skins") {
             return (
-                <Link
+                <a
                     key={item.id}
                     to={`/skins/${item.id}`}
                 >
@@ -42,14 +42,14 @@ function Carousel({ list, flktyOption, cellOption }) {
                             title={item.name}
                         />
                     </Div>
-                </Link>
+                </a>
             );
         }
         else if (cellOption.type === "champion-skins") {
             return (
-                <Link
+                <a
                     key={item.id}
-                    to={`/skins/${item.id}`}
+                    href={`/skins/${item.id}`}
                 >
                     <Div
                         className="carousel-cell"
@@ -66,7 +66,7 @@ function Carousel({ list, flktyOption, cellOption }) {
                             title={item.name}
                         />
                     </Div>
-                </Link>
+                </a>
             );
         }
         else return (<></>);

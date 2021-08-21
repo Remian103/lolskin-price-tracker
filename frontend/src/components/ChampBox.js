@@ -16,6 +16,8 @@ function ChampBox() {
     }, [display, champId, doFetch]);
     const flickityOptions = {
         initialIndex: 0,
+        cellAlign: "left",
+        contain: "true",
         //wrapAround: true,
         //autoPlay: 3000,
     };
@@ -32,8 +34,10 @@ function ChampBox() {
         <Div
             key={item.id}
             p="0.5rem"
+            cursor="pointer"
         >
-            <img src={item.icon_url}
+            <img className="champion-icon"
+                src={item.icon_url}
                 alt={item.name}
                 title={item.name}
                 onClick={() => {setDisplay(true); setId(item.id);}}
@@ -44,10 +48,8 @@ function ChampBox() {
     return (<>
         <Div
             d="flex"
-            justify="space-around"
+            justify="space-evenly"
             flexWrap="wrap"
-            w="100%"
-            maxW="1024px"
             p="0.5rem"
         >
             {
@@ -58,7 +60,9 @@ function ChampBox() {
         </Div>
         
         {/* silde in out css */}
-        <Div className={"transition-slide" + (display ? " in" : "")}>
+        <Div className={"transition-slide" + (display ? " in" : "")}
+            maxW="100%"    
+        >
             {
                 !display ? <></> :
                 skinLoading ? <p> is loading... </p> :

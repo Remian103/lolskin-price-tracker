@@ -27,6 +27,7 @@ function Skins() {
         {}
     );
 
+
     //chart data
     const chartRef = useRef(null);
     useEffect(() => {
@@ -76,13 +77,16 @@ function Skins() {
         };
     }, [skin]);
 
-    // skin list fetch
+
+    // skin list of champion
     const [{data: championSkinList}, doChampionFetch] = useDataFetch(
         "initialUrl",
         []
     );
     const flickityOptions = {
         initialIndex: 0,
+        cellAlign: "left",
+        contain: "true",
         //wrapAround: true,
         //autoPlay: 3000,
     };
@@ -91,6 +95,7 @@ function Skins() {
             doChampionFetch(`/api/champions/${skin.champion_id}/skins`);
         }
     }, [skin]);
+
 
     return (<>
         <Div
@@ -126,17 +131,8 @@ function Skins() {
             </div>
             <Div
                 p={{y:"1rem"}}
-                maxW="100%"
             >
                 <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
-            </Div>
-            <Div
-                h="1000px"
-                bg="brown"
-                textSize="display3"
-                textAlign="center"
-            >
-                Dummy
             </Div>
         </Div>
     </>);
