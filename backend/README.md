@@ -2,35 +2,30 @@
 ## Install Poetry
 https://python-poetry.org/docs/#installation
 
+## Clone repository
+```bash
+$ git clone https://github.com/Remian103/lolskin-price-tracker.git
+```
+
 ## Setup environment
 ```bash
-poetry install
+$ cd /path/to/backend/
+$ poetry install
 ```
 
-## Activate environment
+<br/>
+<br/>
+
+
+# Run
+## Run the app on uvicorn
 ```bash
-poetry shell
-```
-to open a new shell with associated environment,
-
+$ cd /path/to/backend/
+$ ./run.sh
 or
-- Linux
-    ```bash
-    source /path/to/venv//bin/activate
-    ```
- - Windows
-    ```bash
-    source \path\to\venv\Scripts\activate.bat
-    ```
-to activate the environment in current shell.
-
-## Run
-```bash
-cd /path/to/backend/
-./run.sh [port=8000]
+$ ./run.sh [port_num]
 ```
-
-The app will run on $(hostname --all-ip-address):port(=8000), which is often the desired behavior.
+The app will run on $(hostname --all-ip-address):port(default=8000), which is often the desired behavior.
 
 Visit
 ```
@@ -38,19 +33,41 @@ localhost:8000/docs
 ```
 for available APIs and their documentation.
 
-## Update static data
+<br/>
+<br/>
+
+
+# Activate environment
+You can also activate the environment to do some custom call upon the app for testing purpose.
+
+## Activate the environment in a new shell
 ```bash
-cd /path/to/backend/
-python -m app.update_static
+$ poetry shell
 ```
 
-## Populate dummy price history
-```bash
-cd /path/to/backend/
-python -m app.gen_test_history
-```
+## Activate the environment in current shell
+- Linux
+    ```bash
+    $ source /path/to/venv//bin/activate
+    ```
+ - Windows
+    ```bash
+    > source \path\to\venv\Scripts\activate.bat
+    ```
+<br/>
+<br/>
 
-## Logs
+
+# Update static data
+```bash
+$ cd /path/to/backend/
+$ python -m app.update_static
+```
+<br/>
+<br/>
+
+
+# Logs
 Log files are available in `/path/to/backend/logs`
 
 Note that logs are cleared at next run.
