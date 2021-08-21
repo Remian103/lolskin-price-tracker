@@ -48,7 +48,7 @@ async def update_skins_price(connection):
 
         await tqdm_asyncio.gather(*[update(connection, db, skin) for skin in db.query(models.Skin).all()])
         db.commit()
-    EALRY_STOP_CALL_URL = 'https://prod-75.eastus.logic.azure.com:443/workflows/01e6a089cd9b48a0a40ad361d5034a15/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=Camo7oo65aflNe7aIFl8-rQ6oKfNJSzJj7zragpdwTQ'
+    EALRY_STOP_CALL_URL = 'Make_your_own_url_by_Azure_Logic_App'
     requests.get(EALRY_STOP_CALL_URL)
 
 
