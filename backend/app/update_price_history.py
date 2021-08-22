@@ -11,7 +11,7 @@ from . import models
     
 
 pre_connector = Connector()
-pre_connector.ready
+@pre_connector.ready
 async def get_ready(connection):
     print('League Client detected.')
     print('Sleeping for 300 secs for stable connection...')
