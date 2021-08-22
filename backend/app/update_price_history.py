@@ -1,5 +1,6 @@
-from datetime import date
 import time
+import asyncio
+from datetime import date
 
 import requests
 from tqdm import tqdm
@@ -23,6 +24,14 @@ pre_connector.start()
 
 connector = Connector()
 
+
+async def gather_with_concurrency(n, *tasks):
+    semaphore = asyncio.Semaphore(n)
+
+    async def sem_task(task):
+        async with semaphore:
+            return await task
+    return await tqdm_asyncio.gather(*(sem_task(task) for task in tasks))
 
 async def update(connection, db, skin):
     skin_api_uri = f'/lol-store/v1/skins/{skin.id}'
@@ -53,7 +62,7 @@ async def update_skins_price(connection):
         models.Base.metadata.create_all(bind=engine)
         # ----- Remove this line with alembic -----
 
-        await tqdm_asyncio.gather(*[update(connection, db, skin) for skin in db.query(models.Skin).all()])
+        await gather_with_concurrency(50, *[update(connection, db, skin) for skin in db.query(models.Skin).all()])
         db.commit()
     EALRY_STOP_CALL_URL = 'Make_your_own_url_by_Azure_Logic_App'
     requests.get(EALRY_STOP_CALL_URL)
