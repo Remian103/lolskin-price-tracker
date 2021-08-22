@@ -8,6 +8,20 @@ from lcu_driver import Connector
 
 from .database import SessionLocal, engine
 from . import models
+<<<<<<< HEAD
+=======
+    
+
+pre_connector = Connector()
+pre_connector.ready
+async def get_ready(connection):
+    print('League Client detected.')
+    print('Sleeping for 300 secs for stable connection...')
+    for i in tqdm(range(300)):
+        time.sleep(1)
+
+pre_connector.start()
+>>>>>>> Fix League Client connection issue
 
 
 connector = Connector()
@@ -36,10 +50,6 @@ async def update(connection, db, skin):
 
 @connector.ready
 async def update_skins_price(connection):
-    print('League Client detected.')
-    print('Sleeping for 300 secs for stable connection...')
-    for i in tqdm(range(300)):
-        time.sleep(1)
     print('Starting skin update...')
     with SessionLocal() as db:
         # ----- Remove this line with alembic -----
