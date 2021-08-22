@@ -8,8 +8,6 @@ from lcu_driver import Connector
 
 from .database import SessionLocal, engine
 from . import models
-<<<<<<< HEAD
-=======
     
 
 pre_connector = Connector()
@@ -21,7 +19,6 @@ async def get_ready(connection):
         time.sleep(1)
 
 pre_connector.start()
->>>>>>> Fix League Client connection issue
 
 
 connector = Connector()
