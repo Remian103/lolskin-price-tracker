@@ -18,4 +18,15 @@ Configure
  - Username on the windows instance is wrong! 'ls**pt**2021' was intended, but not it is 'ls**tp**2021'
  - League Client, AFAIK, pops EULA when new patch is delivered. Currently, there's no consideration of this behavior.
  - 'update_*.py' obviously doesn't belong to the 'app'. Wrong hierarchy!
- - Sometimes, League Client refuse connection!!! ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+
+
+ - ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
+
+   It seems to happen when calling too early. connector.ready() seems not reliable.
+
+ - ConnectionResetError: [WinError 10054] An existing connection was forcibly closed by the remote host
+
+   It seems to happen when calling too late. connector seems to have time out.
+
+### Current Fix
+- Use two connectors, one just to detect the league client and initiate 5min wait, and the other to actually fetch data after the 5min wait.

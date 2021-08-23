@@ -6,8 +6,9 @@ from sqlalchemy.orm import Session
 from . import crud, models, schemas
 from .database import SessionLocal, engine
 
-
+# ----- Remove this lines with alembic -----
 models.Base.metadata.create_all(bind=engine)
+# ----- Remove this lines with alembic -----
 
 app = FastAPI()
 
