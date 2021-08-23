@@ -1,8 +1,8 @@
 import requests
 from tqdm import tqdm
 
-from .database import SessionLocal, engine
-from . import models
+from app.database import SessionLocal
+from app import models
 
 
 def update(db, version, champion):
@@ -31,12 +31,15 @@ def main():
     input('Press Enter to continue...')
 
     with SessionLocal() as db:
+        # ----- Replace these lines with SQL Update logic -----
         db.query(models.Champion).delete()
         db.query(models.Skin).delete()
+        # ----- Replace these lines with SQL Update logic -----
 
         for champion in tqdm(champions.values()):
             update(db, version, champion)
         db.commit()
 
 
-main()
+if __name__ == '__main__':
+    main()
