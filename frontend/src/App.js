@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './css/App.css';
 import { Div } from "atomize";
 
@@ -7,7 +7,8 @@ import {
     BrowserRouter as Router,
     Route,
     Redirect,
-    Switch
+    Switch,
+    useLocation
 } from "react-router-dom";
 
 import Nav from "./components/NavAnchor";
@@ -15,6 +16,11 @@ import Home from "./pages/Home";
 import Skins from "./pages/Skins";
 
 function App() {
+    // scroll top
+    const { pathname } = useLocation();
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]);
 
     const anchorList = [
         { id: 0, name: "홈", link: "/home", type: "link" },
@@ -37,7 +43,7 @@ function App() {
             <Route exact path="/home">
                 <Home />
             </Route>
-            <Route path="/skins/:skinId">
+            <Route exact path="/skins/:skinId">
                 <Skins />
             </Route>
             <Route exect path="/skins">

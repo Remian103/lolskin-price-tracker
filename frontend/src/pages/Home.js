@@ -21,7 +21,7 @@ function Home() {
             </Text>
         </Div>
 
-        <Div className="content-container" bg="black400" /* main content */ >
+        <Div className="content-container"/* main content */ >
             <Div className="content-background" bg="black600" /* background */ />
 
             <div className="hash-link" id="recommend-skins" />
@@ -43,6 +43,7 @@ function Home() {
                 </Text>
             </div>
             <ChampBox />
+            {/*}
             <Div
                 h="1000px"
                 bg="brown"
