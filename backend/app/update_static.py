@@ -31,11 +31,8 @@ def main():
     input('Press Enter to continue...')
 
     with SessionLocal() as db:
-        # ----- Remove these lines with alembic -----
-        models.Base.metadata.create_all(bind=engine)
         db.query(models.Champion).delete()
         db.query(models.Skin).delete()
-        # ----- Remove these lines with alembic -----
 
         for champion in tqdm(champions.values()):
             update(db, version, champion)

@@ -58,9 +58,6 @@ async def update(connection, db, skin):
 async def update_skins_price(connection):
     print('Starting skin update...')
     with SessionLocal() as db:
-        # ----- Remove this line with alembic -----
-        models.Base.metadata.create_all(bind=engine)
-        # ----- Remove this line with alembic -----
 
         await gather_with_concurrency(50, *[update(connection, db, skin) for skin in db.query(models.Skin).all()])
         db.commit()
