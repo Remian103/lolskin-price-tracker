@@ -2,15 +2,10 @@
 
 .flickity-button {
     background: transparent;
-    display: none;
-}
-@media screen and (max-width: 800px) {
-    .flickity-button {
-        display: inline-block;;
-    }
 }
 .flickity-button:hover {
-    background: transparent;
+    background: gray;
+    opacity: 0.8;
 }
 .flickity-button-icon {
     fill: white;

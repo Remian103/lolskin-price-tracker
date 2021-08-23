@@ -69,7 +69,6 @@ function Skins() {
     const flickityOptions = {
         initialIndex: 0,
         cellAlign: "left",
-        contain: "true",
         //wrapAround: true,
         //autoPlay: 3000,
     };
@@ -99,10 +98,12 @@ function Skins() {
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
                 >
-                    {skin.name}
+                    {skin.name === "default" ? "기본 스킨" : skin.name}
                 </Text>
             </div>
-            <HistoryChart option={chartOption} labels={chartLabels} data={chartData} />
+            {skin.name === "default" ? null :
+                <HistoryChart option={chartOption} labels={chartLabels} data={chartData} />
+            }
             <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}

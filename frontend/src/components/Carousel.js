@@ -31,12 +31,6 @@ function Carousel({ list, flktyOption, cellOption }) {
         }
     }, [flkty]);
 
-    const [isDrag, setDrag] = useState(false);
-    const onDrag = (e) => {
-        e.preventDefault();
-        setDrag(true);
-        console.log("drag start");
-    }
 
     // carousel cell design
     const inside = list.map((item) => {

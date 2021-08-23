@@ -25,7 +25,6 @@ function HistoryChart({ option, labels, data }) {
             },
             options: option
         });
-        console.log(chart);
 
         return () => {
             console.log("chart destroy...");
@@ -34,16 +33,10 @@ function HistoryChart({ option, labels, data }) {
     }, [option, labels, data]);
 
     return (
-        <Div
-            p={{x: "2rem"}}
-        >
-            <Div className="chart-container"
-                border="1px solid"
-                borderColor="#F7F8F9"
-                shadow="4"
-            >
+        <Div p={{x: "2rem"}}>
+            <div className="chart-container shadowDiv">
                 <canvas ref={chartRef}></canvas>
-            </Div>
+            </div>
         </Div>
     );
 }
