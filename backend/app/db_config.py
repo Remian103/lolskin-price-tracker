@@ -1,14 +1,15 @@
-from pathlib import Path
+from configparser import ConfigParser
 
 
-SQLITE_URL = "sqlite:///./sqlite3.db"
-
-if Path('db_account').exists(): # and False:
-    with open('db_account', 'r') as f:
-        DB_USERNAME = f.readline().strip()
-        DB_PASSWORD = f.readline().strip()
-        DB_ENDPOINT = f.readline().strip()
-        DB_NAME = f.readline().strip()
-        POSTGRESQL_URL = f'postgresql://{DB_USERNAME}:{DB_PASSWORD}@{DB_ENDPOINT}/{DB_NAME}'
-else:
-    POSTGRESQL_URL = None
+# Try to load 'db_config.ini'.
+# Will use local SQlite on any kind of failure(e.g. 'db_config.ini' not exists, not properly written...)
+# Note that this does not guarantee that the DB_URL is actually reachable.
+try: 
+    config = ConfigParser()
+    config.read('db_config.ini')
+    db_config = config[config['active']['profile']]
+    DB_URL = f'{db_config["dialect"]}+{db_config["driver"]}://{db_config["username"]}:{db_config["password"]}@{db_config["host"]}:{db_config["port"]}/{db_config["database_name"]}'
+    print(f'Using {db_config["prompt_name"]}...')
+except Exception:
+    DB_URL = 'sqlite:///./sqlite3.db'
+    print(f'Using local SQLite...')
