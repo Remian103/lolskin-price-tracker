@@ -82,9 +82,11 @@
     z-index: 0;
     background-color: rgb(63,99,105);
     opacity: 0.4;
+    border-radius: 1rem;
 }
 .skins .content-background {
     opacity: 0.9;
+    background: white;
 }
 
 .content-container > * {
@@ -100,11 +102,14 @@
 }
 
 .chart-container {
-  position: relative;
-  height:400px;
+    position: relative;
+    height:400px;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
 }
 
 .hash-link {
-  position: relative;
-  top: -40px;
+    position: relative;
+    top: -40px;
 }
