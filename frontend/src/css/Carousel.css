@@ -2,22 +2,24 @@
 
 .flickity-button {
     background: transparent;
-    display: none;
-}
-@media screen and (max-width: 400px) {
-    .flickity-button {
-        display: inline-block;;
-    }
 }
 .flickity-button:hover {
-    background: transparent;
+    background: gray;
+    opacity: 0.8;
 }
 .flickity-button-icon {
     fill: white;
 }
 
-.carousel-cell img {
+.carousel-cell {
+    background-color: white;
+}
+
+.carousel-cell > img {
     height: 100%;
     width: 100%;
+}
+
+.recommand > img {
     border-radius: 16px;
 }

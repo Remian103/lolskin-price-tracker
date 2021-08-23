@@ -1,7 +1,8 @@
 import React from "react";
 import { Div, Text } from "atomize";
-import RecommendCarousel from '../components/RecommendCarousel';
-import ChampBox from '../components/ChampBox';
+
+import RecommendCarousel from "../components/RecommendCarousel";
+import ChampBox from "../components/ChampBox";
 
 function Home() {
     return (<>
@@ -21,8 +22,8 @@ function Home() {
             </Text>
         </Div>
 
-        <Div className="content-container"/* main content */ >
-            <Div className="content-background" bg="black600" /* background */ />
+        <div className="content-container home"/* main content */ >
+            <div className="content-background" /* background */ />
 
             <div className="hash-link" id="recommend-skins" />
             <div className="content-title">
@@ -68,7 +69,7 @@ function Home() {
                 </a>
             </div>
             */}
-        </Div>
+        </div>
     </>);
 }
 

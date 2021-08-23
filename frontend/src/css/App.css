@@ -1,107 +1,121 @@
 .App {
-  text-align: center;
+    text-align: center;
 }
 
 .App-logo {
-  height: 40vmin;
-  pointer-events: none;
+    height: 40vmin;
+    pointer-events: none;
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+    .App-logo {
+        animation: App-logo-spin infinite 20s linear;
+    }
 }
 
 .App-header {
-  background-color: #282c34;
-  opacity: 0.7;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+    background-color: #282c34;
+    opacity: 0.7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
 }
 
 .App-link {
-  color: #61dafb;
+    color: #61dafb;
 }
 
 @keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(1080deg);
-  }
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(1080deg);
+    }
 }
 
 /*----------------------------------------------------*/
 
 .main-header {
-  position: sticky;
-  background-color: black;
-  top: 0;
-  z-index: 3;
-}
-
-.main-background {
-  display: none;
-  background-image: url('../images/main_background.jpg');
-  position: absolute;
-  width:100vw;
-  height: 62.5vw;
-  background-size : cover;
-  z-index: -1;
+    position: sticky;
+    background-color: black;
+    top: 0;
+    z-index: 3;
 }
 
 .content-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: rgb(1 10 19);
-}
-.content-container::before {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  content: "";
-  background: url(https://store.leagueoflegends.co.kr/assets/bg.jpg);
-  background-repeat: repeat;
-  background-size: 100% auto;
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(1, 10, 19);
 }
 
 .content-background {
-  position: absolute;
-  height: 100%;
-  background-color: rgb(63,99,105);
-  opacity: 0.4;
-  z-index: 0;
+    position: absolute;
+    height: 100%;
+    z-index: 0;
+    background-color: rgb(63,99,105);
+    opacity: 0.4;
+    border-radius: 1rem;
 }
 
 .content-container > * {
-  margin: 0 auto;
-  width: 100%;
-  max-width: 1024px;
-  z-index: 1;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1024px;
+    z-index: 1;
 }
 
 .content-container > .content-title {
-  padding: 32px 0 1rem 1rem;
-  box-sizing: border-box;
+    padding: 32px 0 1rem 1rem;
+    box-sizing: border-box;
 }
 
 .chart-container {
-  position: relative;
-  height:400px;
+    position: relative;
+    height:400px;
+    background-color: white;
+    border-radius: 1rem;
+    padding: 1rem;
 }
 
 .hash-link {
-  position: relative;
-  top: -40px;
+    position: relative;
+    top: -40px;
+}
+
+
+/* home page custom */
+.content-container.home::before {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    content: "";
+    background-image: url(https://store.leagueoflegends.co.kr/assets/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+
+
+/* skin page custom */
+.content-container.skins {
+    background-color: transparent;
+}
+
+.skins .content-background {
+    opacity: 0.9;
+    background: white;
+}
+
+
+/* content div style */
+.shadowDiv {
+    border: 1px solid #F7F8F9;
+    border-radius: 1rem;
+    box-shadow: 0 0 1px 0 rgb(8 11 14 / 6%), 0 16px 16px -1px rgb(8 11 14 / 10%); /* reference : atomize shadow=4 */
 }

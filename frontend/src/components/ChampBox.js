@@ -60,9 +60,7 @@ function ChampBox() {
         </Div>
         
         {/* silde in out css */}
-        <Div className={"transition-slide" + (display ? " in" : "")}
-            maxW="100%"    
-        >
+        <div className={"transition-slide" + (display ? " in" : "")}>
             {
                 !display ? <></> :
                 skinLoading ? <p> is loading... </p> :
@@ -86,7 +84,7 @@ function ChampBox() {
                     <Carousel list={skinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
                 </>
             }
-        </Div>
+        </div>
     </>);
 }
 
