@@ -1,4 +1,17 @@
 FROM node:12 AS build
+
+# if you met error with "groups: cannot find name for group ID" in ./dev-run.sh,
+# below code will resolve the error
+#
+# ARG USER_ID
+# ARG GROUP_ID
+# RUN addgroup --gid $GROUP_ID user
+# RUN adduser --disabled-password --gecos '' --uid $USER_ID --gid $GROUP_ID user
+# USER user
+
+# if you add above code, delete below `User node`
+USER node
+
 WORKDIR /frontend
 COPY package* yarn.lock ./
 RUN yarn install
