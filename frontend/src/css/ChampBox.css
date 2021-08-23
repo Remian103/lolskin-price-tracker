@@ -8,6 +8,7 @@
     bottom: -600px;
     left: 0;
     width: 100%;
+    max-width: 100%;
     border-radius: 16px;
     padding: 4rem 0 4rem 0;
     background-color: black;

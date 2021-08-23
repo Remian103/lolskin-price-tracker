@@ -110,8 +110,8 @@ function Skins() {
             />
         </Div>
         <Div p="200px"></Div>
-        <Div className="content-container" bg="transparent" /* main content */ >
-            <Div className="content-background" bg="black600" />
+        <div className="content-container skins" /* main content */ >
+            <div className="content-background"/>
             <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
@@ -134,7 +134,7 @@ function Skins() {
             >
                 <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
             </Div>
-        </Div>
+        </div>
     </>);
 }
 

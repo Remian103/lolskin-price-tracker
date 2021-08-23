@@ -15,13 +15,15 @@ function Carousel({ list, flktyOption, cellOption }) {
     }
     useEffect(() => {
         if (flkty !== undefined) {
+            /*
             flkty.on('settle', () => {
                 console.log(`current index is ${flkty.selectedIndex}`)
             });
+            */
 
-            flkty.on('staticClick', function( event, pointer, cellElement, cellIndex ) {
-                if ( !cellElement ) {
-                  return;
+            flkty.on('staticClick', function (event, pointer, cellElement, cellIndex) {
+                if (!cellElement) {
+                    return;
                 }
                 history.push(`/skins/${cellElement.id}`);
                 flkty.reposition();
@@ -35,7 +37,7 @@ function Carousel({ list, flktyOption, cellOption }) {
         setDrag(true);
         console.log("drag start");
     }
-    
+
     // carousel cell design
     const inside = list.map((item) => {
         if (cellOption.type === "recommend-skins") {
@@ -44,7 +46,7 @@ function Carousel({ list, flktyOption, cellOption }) {
                     key={item.id}
                     id={item.id}
                     className="carousel-cell recommand"
-                    m={{ r: { xs: "0.5rem", md: "2rem" } }}
+                    m={{ l: { xs: "0.5rem", md: "2rem" } }}
                     h={{ xs: "210px", md: "350px" }}
                     w={{ xs: "390px", md: "650px" }}
                 >
@@ -61,18 +63,21 @@ function Carousel({ list, flktyOption, cellOption }) {
                 <Div
                     key={item.id}
                     id={item.id}
-                    className="carousel-cell champion"
-                    m={{ r: { xs: "0.5rem", md: "2rem" } }}
-                    h={{ xs: "336px", md: "336px" }}
-                    w={{ xs: "185px", md: "185px" }}
-                    border="2px solid"
-                    borderColor="gold"
+                    p={{ l: { xs: "0.5rem", md: "2rem" } }}
                 >
-                    <img
-                        src={item.trimmed_image_url}
-                        alt={item.name}
-                        title={item.name}
-                    />
+                    <Div
+                        className="carousel-cell champion"
+                        h={{ xs: "336px", md: "336px" }}
+                        w={{ xs: "185px", md: "185px" }}
+                        border="4px solid"
+                        borderColor="gold"
+                    >
+                        <img
+                            src={item.trimmed_image_url}
+                            alt={item.name}
+                            title={item.name}
+                        />
+                    </Div>
                 </Div>
             );
         }
