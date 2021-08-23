@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Flickity from "react-flickity-component";
-import { Link } from "react-router-dom";
-import { Div, Anchor } from "atomize";
+import { useHistory } from "react-router-dom";
+import { Div } from "atomize";
 import "../css/flickity.css";
 import "../css/Carousel.css";
 
 function Carousel({ list, flktyOption, cellOption }) {
+    const history = useHistory();
 
     // use flickity API
     const [flkty, setFlkty] = useState(undefined);
@@ -17,56 +18,62 @@ function Carousel({ list, flktyOption, cellOption }) {
             flkty.on('settle', () => {
                 console.log(`current index is ${flkty.selectedIndex}`)
             });
+
+            flkty.on('staticClick', function( event, pointer, cellElement, cellIndex ) {
+                if ( !cellElement ) {
+                  return;
+                }
+                history.push(`/skins/${cellElement.id}`);
+                flkty.reposition();
+            });
         }
     }, [flkty]);
 
+    const [isDrag, setDrag] = useState(false);
+    const onDrag = (e) => {
+        e.preventDefault();
+        setDrag(true);
+        console.log("drag start");
+    }
     
     // carousel cell design
     const inside = list.map((item) => {
         if (cellOption.type === "recommend-skins") {
             return (
-                <a
+                <Div
                     key={item.id}
-                    to={`/skins/${item.id}`}
+                    id={item.id}
+                    className="carousel-cell recommand"
+                    m={{ r: { xs: "0.5rem", md: "2rem" } }}
+                    h={{ xs: "210px", md: "350px" }}
+                    w={{ xs: "390px", md: "650px" }}
                 >
-                    <Div
-                        className="carousel-cell"
-                        bg="transparent"
-                        m={{ r: { xs: "0.5rem", md: "2rem" } }}
-                        h={{ xs: "210px", md: "350px" }}
-                        w={{ xs: "390px", md: "650px" }}
-                    >
-                        <img
-                            src={item.full_image_url}
-                            alt={item.name}
-                            title={item.name}
-                        />
-                    </Div>
-                </a>
+                    <img
+                        src={item.full_image_url}
+                        alt={item.name}
+                        title={item.name}
+                    />
+                </Div>
             );
         }
         else if (cellOption.type === "champion-skins") {
             return (
-                <a
+                <Div
                     key={item.id}
-                    href={`/skins/${item.id}`}
+                    id={item.id}
+                    className="carousel-cell champion"
+                    m={{ r: { xs: "0.5rem", md: "2rem" } }}
+                    h={{ xs: "336px", md: "336px" }}
+                    w={{ xs: "185px", md: "185px" }}
+                    border="2px solid"
+                    borderColor="gold"
                 >
-                    <Div
-                        className="carousel-cell"
-                        bg="transparent"
-                        m={{ r: { xs: "0.5rem", md: "2rem" } }}
-                        h={{ xs: "336px", md: "336px" }}
-                        w={{ xs: "185px", md: "185px" }}
-                        border="2px solid"
-                        borderColor="gold"
-                    >
-                        <img
-                            src={item.trimmed_image_url}
-                            alt={item.name}
-                            title={item.name}
-                        />
-                    </Div>
-                </a>
+                    <img
+                        src={item.trimmed_image_url}
+                        alt={item.name}
+                        title={item.name}
+                    />
+                </Div>
             );
         }
         else return (<></>);

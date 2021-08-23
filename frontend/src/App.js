@@ -14,16 +14,13 @@ import {
 import Nav from "./components/NavAnchor";
 import Home from "./pages/Home";
 import Skins from "./pages/Skins";
-import RecommendCarousel from './components/RecommendCarousel';
 
 function App() {
     // scroll top
-    /* required with Link
     const { pathname } = useLocation();
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [pathname]);
-    */
 
     const anchorList = [
         { id: 0, name: "홈", link: "/home", type: "link" },
