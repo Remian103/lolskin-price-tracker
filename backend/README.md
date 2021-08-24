@@ -60,8 +60,25 @@ $ poetry shell
 
 # Update static data
 ```bash
-$ cd /path/to/backend/
-$ python -m app.update_static
+$ cd /path/to/update_scripts
+$ poetry run python update_static.py
+```
+<br/>
+<br/>
+
+
+# Migrate database
+In `backend` directory
+```bash
+$ cd /path/to/backend
+```
+Check current database revision
+```bash
+$ poetry run alembic current
+```
+Upgrade database to latest revision
+```bash
+$ poetry run alembic upgrade head
 ```
 <br/>
 <br/>

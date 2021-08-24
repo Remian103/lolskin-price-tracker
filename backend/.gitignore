@@ -1,5 +1,5 @@
-# Profile
-db_account
+# Database configuration
+db_config.ini
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
