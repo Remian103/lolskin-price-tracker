@@ -1,5 +1,5 @@
 import React from 'react';
-import "../css/NavAnchor.css";
+import "../css/Nav.css";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Button, Anchor } from "atomize";
