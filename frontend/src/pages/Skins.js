@@ -80,18 +80,10 @@ function Skins() {
 
 
     return (<>
-        <Div
-            pos="fixed"
-            w="100%"
-            h="100%"
-            minW="700px"
-        >
-            <Image
-                src={skin.full_image_url}
-                w="100%"
-            />
-        </Div>
+        <Div className="background-skin" bgImg= {skin.full_image_url} />
+
         <Div p="200px"></Div>
+        
         <div className="content-container skins" /* main content */ >
             <div className="content-background" />
             <div className="content-title">

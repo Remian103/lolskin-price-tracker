@@ -103,6 +103,15 @@
 
 
 /* skin page custom */
+.background-skin {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .content-container.skins {
     background-color: transparent;
 }
