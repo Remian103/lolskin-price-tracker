@@ -1,0 +1,11 @@
+nav {
+    display         : flex;
+    align-items     : center;
+    background-color: transparent;
+}
+
+nav button {
+    margin-top   : 8px;
+    margin-left  : 8px;
+    margin-bottom: 8px;
+}

@@ -26,10 +26,9 @@ function Carousel({ list, flktyOption, cellOption }) {
                     return;
                 }
                 history.push(`/skins/${cellElement.id}`);
-                flkty.reposition();
             });
         }
-    }, [flkty]);
+    }, [flkty, history]);
 
 
     // carousel cell design
@@ -39,8 +38,12 @@ function Carousel({ list, flktyOption, cellOption }) {
                 <Div
                     key={item.id}
                     id={item.id}
-                    className="carousel-cell recommand"
-                    m={{ l: { xs: "0.5rem", md: "2rem" } }}
+                    className="carousel-cell recommand shadowDiv"
+                    m={{
+                        r: { xs: "0.25rem", md: "1rem" },
+                        l: { xs: "0.25rem", md: "1rem" },
+                        b: "30px"
+                    }}
                     h={{ xs: "210px", md: "350px" }}
                     w={{ xs: "390px", md: "650px" }}
                 >
@@ -57,14 +60,16 @@ function Carousel({ list, flktyOption, cellOption }) {
                 <Div
                     key={item.id}
                     id={item.id}
-                    p={{ l: { xs: "0.5rem", md: "2rem" } }}
+                    p={{
+                        r: { xs: "0.25rem", md: "1rem" },
+                        l: { xs: "0.25rem", md: "1rem" }
+                    }}
                 >
                     <Div
-                        className="carousel-cell champion"
+                        className="carousel-cell champion-skin shadowDiv"
                         h={{ xs: "336px", md: "336px" }}
                         w={{ xs: "185px", md: "185px" }}
-                        border="4px solid"
-                        borderColor="gold"
+                        m={{ b: "30px" }}
                     >
                         <img
                             src={item.trimmed_image_url}
@@ -79,17 +84,13 @@ function Carousel({ list, flktyOption, cellOption }) {
     });
 
     return (
-        <Div /* responsive */
-            p={{ b: "30px" }}
+        <Flickity
+            className="carousel"
+            options={flktyOption}
+            flickityRef={getFlickityRef}
         >
-            <Flickity
-                className="carousel"
-                options={flktyOption}
-                flickityRef={getFlickityRef}
-            >
-                {inside}
-            </Flickity>
-        </Div>
+            {inside}
+        </Flickity>
     );
 }
 

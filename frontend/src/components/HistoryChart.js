@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Div, Image, Text } from "atomize";
+import { Div } from "atomize";
 import { Chart, registerables } from 'chart.js';
 
 function HistoryChart({ option, labels, data }) {
@@ -25,6 +25,7 @@ function HistoryChart({ option, labels, data }) {
             },
             options: option
         });
+        console.log("chart generated");
 
         return () => {
             console.log("chart destroy...");

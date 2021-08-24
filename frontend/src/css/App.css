@@ -42,8 +42,14 @@
 
 .main-header {
     position: sticky;
-    background-color: black;
     top: 0;
+    z-index: 3;
+}
+
+button.go-to-top {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
     z-index: 3;
 }
 
@@ -103,6 +109,17 @@
 
 
 /* skin page custom */
+.background-skin {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
 .content-container.skins {
     background-color: transparent;
 }
@@ -115,7 +132,7 @@
 
 /* content div style */
 .shadowDiv {
-    border: 1px solid #F7F8F9;
+    border: 0px solid #F7F8F9;
     border-radius: 1rem;
     box-shadow: 0 0 1px 0 rgb(8 11 14 / 6%), 0 16px 16px -1px rgb(8 11 14 / 10%); /* reference : atomize shadow=4 */
 }
