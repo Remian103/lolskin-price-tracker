@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import './css/App.css';
 
 // route
@@ -21,12 +21,9 @@ function App() {
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    const anchorList = [
-        { id: 0, name: "홈", link: "/home", type: "link" },
-        { id: 1, name: "추천 스킨", link: "#recommend-skins", type: "hash" },
-        { id: 2, name: "챔피언 목록", link: "#champions", type: "hash" },
-        { id: 3, name: "새 페이지", link: "/skins", type: "new-tab" }
-    ];
+
+
+    const [anchorList, setList] = useState([]);
 
     return (<>
         <header className="main-header">
@@ -38,10 +35,10 @@ function App() {
                 <Redirect to="/home" />
             </Route>
             <Route exact path="/home">
-                <Home />
+                <Home setNav={setList}/>
             </Route>
             <Route exact path="/skins/:skinId">
-                <Skins />
+                <Skins setNav={setList}/>
             </Route>
             <Route exect path="/skins">
                 <p>skin page</p>

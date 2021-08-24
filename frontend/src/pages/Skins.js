@@ -14,9 +14,17 @@ import HistoryChart from "../components/HistoryChart";
  * 
  */
 
-function Skins() {
+function Skins({ setNav }) {
     const { params } = useRouteMatch("/skins/:skinId");
 
+    // header navigation tab
+    useEffect(() => {
+        setNav([
+            { id: 0, name: "홈", link: "/home", type: "link" },
+            { id: 1, name: "가격 그래프", link: "#chart", type: "hash" },
+            { id: 2, name: "다른 스킨들", link: "#champions", type: "hash" }
+        ]);
+    }, [setNav]);
 
     // skin data fetch
     const [{ data: skin }, doSkinFetch] = useDataFetch(
@@ -80,12 +88,13 @@ function Skins() {
 
 
     return (<>
-        <Div className="background-skin" bgImg= {skin.full_image_url} />
+        <Div className="background-skin" bgImg={skin.full_image_url} />
 
         <Div p="200px"></Div>
-        
+
         <div className="content-container skins" /* main content */ >
             <div className="content-background" />
+           
             <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
@@ -93,9 +102,15 @@ function Skins() {
                     {skin.name === "default" ? "기본 스킨" : skin.name}
                 </Text>
             </div>
+
             {skin.name === "default" ? null :
-                <HistoryChart option={chartOption} labels={chartLabels} data={chartData} />
+                <>
+                    <div className="hash-link" id="chart" />
+                    <HistoryChart option={chartOption} labels={chartLabels} data={chartData} />
+                </>
             }
+            
+            <div className="hash-link" id="champions" />
             <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
