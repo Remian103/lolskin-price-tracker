@@ -55,7 +55,7 @@ function Carousel({ list, flktyOption, cellOption }) {
                 </Div>
             );
         }
-        else if(cellOption.type === "champion-skins") {
+        else if (cellOption.type === "champion-skins") {
             return (
                 <Div
                     key={item.id}
@@ -69,47 +69,17 @@ function Carousel({ list, flktyOption, cellOption }) {
                         className="carousel-cell champion-skin shadowDiv"
                         h={{ xs: "336px", md: "336px" }}
                         w={{ xs: "185px", md: "185px" }}
-                        m={{b: "30px"}}
+                        m={{ b: "30px" }}
                     >
-                            <img
-                                src={item.trimmed_image_url}
-                                alt={item.name}
-                                title={item.name}
-                            />
+                        <img
+                            src={item.trimmed_image_url}
+                            alt={item.name}
+                            title={item.name}
+                        />
                     </Div>
                 </Div>
             );
-        }/*
-        else if (cellOption.type === "champion-skins") {
-            return (
-                <Div
-                    key={item.id}
-                    id={item.id}
-                    p={{
-                        r: { xs: "0.25rem", md: "1rem" },
-                        l: { xs: "0.25rem", md: "1rem" }
-                    }}
-                >
-                    <Div
-                        className="carousel-cell champion"
-                        h={{ xs: "336px", md: "336px" }}
-                        w={{ xs: "185px", md: "185px" }}
-                        border="4px outset"
-                        borderColor="#b8860b"
-                    >
-                        <Div
-                            border="4px inset"
-                            borderColor="#b8860b">
-                            <img
-                                src={item.trimmed_image_url}
-                                alt={item.name}
-                                title={item.name}
-                            />
-                        </Div>
-                    </Div>
-                </Div>
-            );
-        }*/
+        }
         else return (<></>);
     });
 

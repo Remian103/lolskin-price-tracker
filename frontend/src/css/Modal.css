@@ -1,0 +1,55 @@
+.modal {
+    position        : fixed;
+    display         : none;
+    top             : 0;
+    right           : 0;
+    left            : 0;
+    bottom          : 0;
+    margin          : 0;
+    max-width       : 100%;
+    z-index         : 99;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal>section {
+    position        : fixed;
+    bottom          : -1rem;
+    left            : 0;
+    right           : 0;
+    border-radius   : 1rem;
+    padding-top     : 4rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    animation       : modal-show 1s;
+}
+
+.modal>section>button {
+    position: absolute;
+    top     : 0.5rem;
+    right   : 0.5rem;
+}
+
+.modal.openModal {
+    display  : inherit;
+    /* 팝업이 열릴때 스르륵 열리는 효과 */
+    animation: modal-bg-show .3s;
+}
+
+@keyframes modal-bg-show {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes modal-show {
+    from {
+        bottom: -600px;
+    }
+
+    to {
+        bottom: -1rem;
+    }
+}
