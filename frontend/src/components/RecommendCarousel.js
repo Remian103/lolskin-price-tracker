@@ -1,11 +1,11 @@
 import React from "react";
-import { Div, Text } from "atomize";
+import { Div } from "atomize";
 import Carousel from "./Carousel";
 import useDataFetch from "../hooks/useDataFetch";
 
 function RecommendCarousel() {
 
-    const [{isLoading, isError, data : skinList}, _] = useDataFetch(
+    const [{isLoading, isError, data : skinList}] = useDataFetch(
         "/api/recommendations",
         []
     );

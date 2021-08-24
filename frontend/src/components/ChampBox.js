@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Div, Text, Button, Icon } from "atomize";
+import { Div, Button, Icon } from "atomize";
 import Carousel from "./Carousel";
 import useDataFetch from "../hooks/useDataFetch";
 import "../css/ChampBox.css";
 
 function ChampBox() {
     const [champId, setId] = useState(0);
-    const [{isLoading: champLoading, isError: champError, data: champList}, _] = useDataFetch("/api/champions", []);
+    const [{isLoading: champLoading, isError: champError, data: champList}] = useDataFetch("/api/champions", []);
 
     const [display, setDisplay] = useState(false);
     const [{isLoading: skinLoading, isError: skinError, data: skinList}, doFetch] = useDataFetch("initialUrl", []);

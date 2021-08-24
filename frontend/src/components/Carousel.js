@@ -26,10 +26,9 @@ function Carousel({ list, flktyOption, cellOption }) {
                     return;
                 }
                 history.push(`/skins/${cellElement.id}`);
-                flkty.reposition();
             });
         }
-    }, [flkty]);
+    }, [flkty, history]);
 
 
     // carousel cell design

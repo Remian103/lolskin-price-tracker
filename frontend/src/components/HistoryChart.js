@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Div, Image, Text } from "atomize";
+import { Div } from "atomize";
 import { Chart, registerables } from 'chart.js';
 
 function HistoryChart({ option, labels, data }) {

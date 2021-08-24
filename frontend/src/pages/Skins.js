@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Div, Image, Text } from "atomize";
+import { Div, Text } from "atomize";
 import { useRouteMatch } from "react-router-dom";
 
 import useDataFetch from "../hooks/useDataFetch";
