@@ -2,6 +2,7 @@
 
 .flickity-button {
     background: transparent;
+    z-index: 2;
 }
 .flickity-button:hover {
     background: gray;
@@ -9,6 +10,38 @@
 }
 .flickity-button-icon {
     fill: white;
+}
+
+.carousel::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 4rem;
+    content:"";
+    background: linear-gradient(0.25turn, black, hsla(0,0%,100%,0));
+    z-index: 1;
+}
+.carousel::after {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 4rem;
+    content:"";
+    background: linear-gradient(0.75turn, black, hsla(0,0%,100%,0));
+    z-index: 1;
+}
+
+.skins .carousel::before {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+    opacity: 0.9;
+}
+.skins .carousel::after {
+    -webkit-filter: invert(1);
+    filter: invert(1);
+    opacity: 0.9;
 }
 
 .carousel-cell {
