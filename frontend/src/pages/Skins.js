@@ -77,6 +77,8 @@ function Skins({ setNav }) {
     const flickityOptions = {
         initialIndex: 0,
         cellAlign: "left",
+        contain: true,
+        pageDots: false,
         //wrapAround: true,
         //autoPlay: 3000,
     };

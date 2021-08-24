@@ -14,6 +14,7 @@ function RecommendCarousel() {
         initialIndex: 1,
         wrapAround: true,
         autoPlay: 3000,
+        pageDots: false,
     };
 
     return (<>{

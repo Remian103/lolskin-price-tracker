@@ -17,7 +17,8 @@ function ChampBox() {
     const flickityOptions = {
         initialIndex: 0,
         cellAlign: "left",
-        contain: "true",
+        contain: true,
+        pageDots: false,
         //wrapAround: true,
         //autoPlay: 3000,
     };

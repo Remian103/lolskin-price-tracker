@@ -25,6 +25,7 @@ function HistoryChart({ option, labels, data }) {
             },
             options: option
         });
+        console.log("chart generated");
 
         return () => {
             console.log("chart destroy...");

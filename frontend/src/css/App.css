@@ -124,7 +124,7 @@
 
 /* content div style */
 .shadowDiv {
-    border: 1px solid #F7F8F9;
+    border: 0px solid #F7F8F9;
     border-radius: 1rem;
     box-shadow: 0 0 1px 0 rgb(8 11 14 / 6%), 0 16px 16px -1px rgb(8 11 14 / 10%); /* reference : atomize shadow=4 */
 }
