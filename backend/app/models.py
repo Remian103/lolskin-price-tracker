@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Date, DDL
+from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -26,7 +26,6 @@ class Skin(Base):
     full_image_url = Column(String)
     price = Column(Integer, default=0)
     sale_price = Column(Integer, default=0)
-    update_date = Column(Date)
     champion_id = Column(Integer, ForeignKey('champions.id'))
 
     description = Column(String, default='')
@@ -51,13 +50,3 @@ class Price_History(Base):
 
     def __repr__(self) -> str:
         return f'Price_History(skin_id={self.skin_id!r}, date={self.date!r}, price={self.price!r}, sale_price={self.sale_price!r})'
-
-
-update_prices_ddl = DDL('''\
-    CREATE TRIGGER update_prices INSERT ON price_history
-        BEGIN
-            UPDATE skins SET price = NEW.price WHERE (id = NEW.skin_id) AND (update_date is NULL or update_date<=NEW.date);
-            UPDATE skins SET sale_price = NEW.sale_price WHERE (id = NEW.skin_id) AND (update_date is NULL or update_date<=NEW.date);
-        END;''')
-drop_update_prices_ddl = DDL('DROP TRIGGER update_prices;')
-# event.listen(Table, 'after_create', update_prices_ddl)
