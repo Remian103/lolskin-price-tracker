@@ -5,6 +5,7 @@ import { useRouteMatch } from "react-router-dom";
 import useDataFetch from "../hooks/useDataFetch";
 import Carousel from "../components/Carousel";
 import HistoryChart from "../components/HistoryChart";
+import CommentList from "../components/CommentList";
 
 
 /**
@@ -22,7 +23,8 @@ function Skins({ setNav }) {
         setNav([
             { id: 0, name: "홈", link: "/home", type: "link" },
             { id: 1, name: "가격 그래프", link: "#chart", type: "hash" },
-            { id: 2, name: "다른 스킨들", link: "#champions", type: "hash" }
+            { id: 2, name: "다른 스킨들", link: "#champions", type: "hash" },
+            { id: 3, name: "댓글", link: "#comments", type: "hash" }
         ]);
     }, [setNav]);
 
@@ -96,7 +98,7 @@ function Skins({ setNav }) {
 
         <div className="content-container skins" /* main content */ >
             <div className="content-background" />
-           
+
             <div className="content-title">
                 <Text
                     textSize={{ xs: "1rem", md: "1.5rem" }}
@@ -105,13 +107,15 @@ function Skins({ setNav }) {
                 </Text>
             </div>
 
+
             {skin.name === "default" ? null :
                 <>
                     <div className="hash-link" id="chart" />
                     <HistoryChart option={chartOption} labels={chartLabels} data={chartData} />
                 </>
             }
-            
+
+
             <div className="hash-link" id="champions" />
             <div className="content-title">
                 <Text
@@ -124,6 +128,19 @@ function Skins({ setNav }) {
                 p={{ y: "1rem" }}
             >
                 <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
+            </Div>
+
+
+            <div className="hash-link" id="comments" />
+            <div className="content-title">
+                <Text
+                    textSize={{ xs: "1rem", md: "1.5rem" }}
+                >
+                    Comments
+                </Text>
+            </div>
+            <Div p={{ x: "1rem" }}>
+                <CommentList skinId={params.skinId} />
             </Div>
         </div>
     </>);

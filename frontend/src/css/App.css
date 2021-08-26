@@ -55,6 +55,8 @@ button.go-to-top {
 
 .content-container {
     position: relative;
+    margin-bottom: 4rem;
+    padding-bottom: 2rem;
     display: flex;
     align-items: center;
     flex-direction: column;
