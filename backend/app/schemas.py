@@ -18,6 +18,8 @@ class Price_History(BaseModel):
     date: date
     price: int
     sale_price: int
+    is_available: bool
+    is_on_sale: bool
 
     class Config:
         orm_mode = True
