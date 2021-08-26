@@ -111,7 +111,9 @@ function Skins({ setNav }) {
             {skin.name === "default" ? null :
                 <>
                     <div className="hash-link" id="chart" />
-                    <HistoryChart option={chartOption} labels={chartLabels} data={chartData} />
+                    <Div p={{x: "1rem"}}>
+                        <HistoryChart className="shadowDiv" option={chartOption} labels={chartLabels} data={chartData} />
+                    </Div>
                 </>
             }
 

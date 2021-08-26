@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Div } from "atomize";
 import { Chart, registerables } from 'chart.js';
 
-function HistoryChart({ option, labels, data }) {
+function HistoryChart({ className, option, labels, data }) {
     //chart data
     const chartRef = useRef(null);
     useEffect(() => {
@@ -34,11 +34,9 @@ function HistoryChart({ option, labels, data }) {
     }, [option, labels, data]);
 
     return (
-        <Div p={{x: "2rem"}}>
-            <div className="chart-container shadowDiv">
-                <canvas ref={chartRef}></canvas>
-            </div>
-        </Div>
+        <div className={(className || "") + " chart-container shadowDiv"}>
+            <canvas ref={chartRef}></canvas>
+        </div>
     );
 }
 
