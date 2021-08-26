@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Input, Button } from "atomize";
 
 import Comment from "../components/Comment";
-import useDataFetch from "../hooks/useDataFetch";
+//import useDataFetch from "../hooks/useDataFetch";
 
 function CommentList({ skinId }) {
-    const [{ isLoading, isError, data: comments }, doFetch] = useDataFetch("initialUrl", []);
+    //const [{ isLoading, isError, data: comments }, doFetch] = useDataFetch("initialUrl", []);
     /** /api/skins/:skinId/comments 에서 comment list가 넘어온다고 가정 */
+    
     const dummyComments = [
         { id: 0, comment: "test comment!", likes: 38 },
         { id: 1, comment: "awesome skin!", likes: 37 },
@@ -15,23 +16,23 @@ function CommentList({ skinId }) {
         { id: 4, comment: "test comment!", likes: 2 },
         { id: 5, comment: "test comment!", likes: 10 },
         { id: 6, comment: "test comment!", likes: 0 },
-        { id: 7, comment: "test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
-        test long comment! test long comment! test ", likes: 1 },
+        { id: 7, comment: `test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! test long comment! \
+            test long comment! test long comment! test `, likes: 1 },
     ];
 
     // form state
@@ -63,7 +64,7 @@ function CommentList({ skinId }) {
                 value={comment}
                 onChange={handleCommentChange}
                 placeholder="comment here!"
-                p={{ r: "80px" }}
+                p={{ l: "1rem", r: "6rem" }}
                 suffix={
                     <Button
                         pos="absolute"

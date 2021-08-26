@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Div, Text, Icon } from "atomize";
+import React from "react";
+import { Div, Icon } from "atomize";
+import "../css/Comment.css";
 
 function Comment({ id, comment, like }) {
-    const [likes, setLike] = useState(like);
 
     return (
         <Div
-            className="shadowDiv"
+            className="comment shadowDiv"
             pos="relative"
             m={{y:"0.5rem"}}
             p="1rem"
@@ -19,7 +19,7 @@ function Comment({ id, comment, like }) {
                 top="1rem"
                 right="1rem"
             >
-                {likes}
+                {like}
                 <Icon name="Heart" size="20px" color="info700" />
             </Div>
             <Div

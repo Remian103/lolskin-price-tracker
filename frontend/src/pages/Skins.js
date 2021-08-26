@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Div, Text } from "atomize";
 import { useRouteMatch } from "react-router-dom";
 
@@ -28,6 +28,7 @@ function Skins({ setNav }) {
         ]);
     }, [setNav]);
 
+
     // skin data fetch
     const [{ data: skin }, doSkinFetch] = useDataFetch(
         `/api/skins/${params.skinId}`,
@@ -42,29 +43,31 @@ function Skins({ setNav }) {
 
 
     //generate chart data
-    const [chartLabels, setLabel] = useState([]);
+    const [chartLabel, setLabel] = useState([]);
     const [chartData, setData] = useState([]);
-    const chartOption = {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            y: {
-                beginAtZero: true,
-                stackWeight: 1,
-                ticks: {
-                    color: "black"
+    const chartOption = useMemo(() => {
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    stackWeight: 1,
+                    ticks: {
+                        color: "black"
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: "black"
+                    }
                 }
             },
-            x: {
-                ticks: {
-                    color: "black"
-                }
+            plugins: {
+                legend: false
             }
-        },
-        plugins: {
-            legend: false
-        }
-    }
+        };
+    }, []);
     useEffect(() => {
         const history = skin.price_history || [];
 
@@ -77,12 +80,12 @@ function Skins({ setNav }) {
     // skin list of champion
     const [{ data: championSkinList }, doChampionFetch] = useDataFetch("initialUrl", []);
     const flickityOptions = {
-        initialIndex: 0,
-        cellAlign: "left",
-        contain: true,
-        pageDots: false,
-        //wrapAround: true,
-        //autoPlay: 3000,
+            initialIndex: 0,
+            cellAlign: "left",
+            contain: true,
+            pageDots: false,
+            //wrapAround: true,
+            //autoPlay: 3000,
     };
     useEffect(() => {
         if (skin.champion_id !== undefined) {
@@ -111,8 +114,11 @@ function Skins({ setNav }) {
             {skin.name === "default" ? null :
                 <>
                     <div className="hash-link" id="chart" />
-                    <Div p={{x: "1rem"}}>
-                        <HistoryChart className="shadowDiv" option={chartOption} labels={chartLabels} data={chartData} />
+                    <Div p={{
+                        x: "1rem",
+                        b: "2rem"
+                    }}>
+                        <HistoryChart className="shadowDiv" chartOption={chartOption} chartLabel={chartLabel} chartData={chartData} />
                     </Div>
                 </>
             }
@@ -126,12 +132,7 @@ function Skins({ setNav }) {
                     챔피언의 다른 스킨들
                 </Text>
             </div>
-            <Div
-                p={{ y: "1rem" }}
-            >
-                <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
-            </Div>
-
+            <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
 
             <div className="hash-link" id="comments" />
             <div className="content-title">

@@ -40,9 +40,8 @@ function Carousel({ list, flktyOption, cellOption }) {
                     id={item.id}
                     className="carousel-cell recommand shadowDiv"
                     m={{
-                        r: { xs: "0.25rem", md: "1rem" },
-                        l: { xs: "0.25rem", md: "1rem" },
-                        b: "30px"
+                        x: { xs: "0.25rem", md: "1rem" },
+                        b: "2rem"
                     }}
                     h={{ xs: "210px", md: "350px" }}
                     w={{ xs: "390px", md: "650px" }}
@@ -60,16 +59,13 @@ function Carousel({ list, flktyOption, cellOption }) {
                 <Div
                     key={item.id}
                     id={item.id}
-                    p={{
-                        r: { xs: "0.25rem", md: "1rem" },
-                        l: { xs: "0.25rem", md: "1rem" }
-                    }}
+                    p={{ x: "1rem" }}
                 >
                     <Div
                         className="carousel-cell champion-skin shadowDiv"
                         h={{ xs: "336px", md: "336px" }}
                         w={{ xs: "185px", md: "185px" }}
-                        m={{ b: "30px" }}
+                        m={{ b: "2rem" }}
                     >
                         <img
                             src={item.trimmed_image_url}
