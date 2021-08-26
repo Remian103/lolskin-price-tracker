@@ -73,7 +73,7 @@ function Skins({ setNav }) {
 
         history.sort();
         setLabel(history.map(item => item.date));
-        setData(history.map(item => item.price));
+        setData(history.map(item => item.sale_price));
     }, [skin]);
 
 
