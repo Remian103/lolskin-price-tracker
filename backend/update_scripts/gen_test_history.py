@@ -18,10 +18,18 @@ def main():
     with SessionLocal() as db:
         db.query(models.Price_History).delete()
         for skin in tqdm(db.query(models.Skin).all()):
-            for i in range(50):
-                price = random.randrange(3000)
-                sale_price = price * random.random()
-                db_price_history = models.Price_History(skin=skin, price=price, sale_price=sale_price, date=date.today() - timedelta(days=i))
+            for i in range(20):
+                if random.random() > 0.8:
+                    # Not for sale
+                    db_price_history = models.Price_History(skin=skin, date=date.today() - timedelta(days=i))
+                else:
+                    price = random.choice([390, 520, 750, 975, 1350, 1820, 2775, 3250])
+                    if random.random() > 0.3:
+                        # Not on sale
+                        db_price_history = models.Price_History(skin=skin, price=price, is_available=True, date=date.today() - timedelta(days=i))
+                    else:
+                        sale_price = price * random.random()
+                        db_price_history = models.Price_History(skin=skin, price=price, sale_price=sale_price, is_available=True, is_on_sale=True, date=date.today() - timedelta(days=i))
                 db.add(db_price_history)
 
         db.commit()
