@@ -24,8 +24,12 @@ class Skin(Base):
     name = Column(String)
     trimmed_image_url = Column(String)
     full_image_url = Column(String)
+
+    # ----- To be deprecated -----
     price = Column(Integer, default=0)
     sale_price = Column(Integer, default=0)
+    # ----- To be deprecated -----
+
     champion_id = Column(Integer, ForeignKey('champions.id'))
 
     description = Column(String, default='')
