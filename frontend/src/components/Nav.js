@@ -2,7 +2,7 @@ import React from 'react';
 import "../css/Nav.css";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
-import { Button, Anchor } from "atomize";
+import { Button } from "atomize";
 
 function Nav({ anchorList }) {
 
@@ -27,10 +27,11 @@ function Nav({ anchorList }) {
                     );
                 else if (item.type === "new-tab")
                     return (
-                        <Anchor
+                        <a
                             key={item.id}
                             href={item.link}
                             target="_blank"
+                            rel="noreferrer"
                         >
                             <Button
                                 bg="info700"
@@ -40,7 +41,7 @@ function Nav({ anchorList }) {
                             >
                                 {item.name}
                             </Button>
-                        </Anchor>
+                        </a>
                     );
                 else 
                     return (
@@ -58,8 +59,7 @@ function Nav({ anchorList }) {
                             </Button>
                         </Link>
                     );
-            }
-            )}
+            })}
         </nav>
     );
 }

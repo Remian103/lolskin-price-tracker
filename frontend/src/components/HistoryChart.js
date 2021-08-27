@@ -1,21 +1,18 @@
 import React, { useEffect, useRef } from "react";
-import { Div } from "atomize";
 import { Chart, registerables } from 'chart.js';
 
-function HistoryChart({ option, labels, data }) {
-    //chart data
+function HistoryChart({ className, chartOption, chartLabel, chartData }) {
     const chartRef = useRef(null);
     useEffect(() => {
         const ctx = chartRef.current.getContext("2d");
         Chart.register(...registerables);
-
+        let data = chartData.slice();
 
         const chart = new Chart(ctx, {
             type: "line",
             data: {
-                labels: labels,
+                labels: chartLabel,
                 datasets: [{
-                    label: 'My First Dataset',
                     data: data,
                     fill: false,
                     borderColor: "green",
@@ -23,22 +20,20 @@ function HistoryChart({ option, labels, data }) {
                     tension: 0
                 }]
             },
-            options: option
+            options: chartOption
         });
         console.log("chart generated");
 
         return () => {
-            console.log("chart destroy...");
             chart.destroy();
+            console.log("chart destroy...");
         };
-    }, [option, labels, data]);
+    }, [chartOption, chartLabel, chartData]);
 
     return (
-        <Div p={{x: "2rem"}}>
-            <div className="chart-container shadowDiv">
-                <canvas ref={chartRef}></canvas>
-            </div>
-        </Div>
+        <div className={(className || "") + " chart-container"}>
+            <canvas ref={chartRef}></canvas>
+        </div>
     );
 }
 

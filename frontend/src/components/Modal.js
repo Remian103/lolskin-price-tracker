@@ -18,8 +18,12 @@ function SkinModal(props) {
     const className = (props.className || "") + " modal" + (isOpen ? " openModal" : "");
     /* silde in out css */
     return (<>
-        <div className={className}>
-            <section>
+        <div className={className}
+            onClick={close}
+        >
+            <section
+                onClick={(e)=>{e.stopPropagation();}}
+            >
                 <Button
                     h="2.5rem"
                     w="2.5rem"
