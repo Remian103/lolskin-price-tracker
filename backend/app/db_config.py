@@ -6,7 +6,7 @@ from configparser import ConfigParser
 # Will use local SQlite on any kind of failure(e.g. 'db_config.ini' not exists, not properly written...)
 # Note that this does not guarantee that the DB_URL is actually reachable.
 try:
-    raise()
+    # raise()
     config = ConfigParser()
     config_file = os.path.join(os.path.dirname(__file__), '../db_config.ini')
     config.read(config_file)

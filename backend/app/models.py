@@ -49,8 +49,8 @@ class Price_History(Base):
     date = Column(Date, primary_key=True)
     price = Column(Integer, default=0)
     sale_price = Column(Integer, default=0)
-    is_available = Column(Boolean, nullable=False, server_default='false', default=False)
-    is_on_sale = Column(Boolean, nullable=False, server_default='false', default=False)
+    is_available = Column(Boolean, nullable=False, server_default='false')
+    is_on_sale = Column(Boolean, nullable=False, server_default='false')
 
     skin = relationship('Skin', back_populates='price_history')
 

@@ -26,7 +26,13 @@ def upgrade():
     connection = op.get_bind()
     table = models.Price_History.__table__
     connection.execute(sa.update(table).where(table.c.price != 0).values(is_available=True))
-    connection.execute(sa.update(table).where(table.c.is_available == True and table.c.price != table.c.sale_price and table.c.sale_price != 0).values(is_on_sale=True))
+    connection.execute(sa.update(table).where(
+        sa.and_(
+            table.c.is_available == True,
+            table.c.price != table.c.sale_price,
+            table.c.sale_price != 0
+        )
+    ).values(is_on_sale=True))
     
     # ### end Alembic commands ###
 
