@@ -71,7 +71,7 @@ function Skins({ setNav }) {
     useEffect(() => {
         const history = skin.price_history || [];
 
-        history.sort();
+        history.sort((a,b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
         setLabel(history.map(item => item.date));
         setData(history.map(item => item.sale_price));
     }, [skin]);
