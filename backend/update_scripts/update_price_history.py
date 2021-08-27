@@ -13,7 +13,7 @@ from app import models
 
 pre_connector = Connector()
 @pre_connector.ready
-async def get_ready():
+async def get_ready(connection):
     print('League Client detected.')
     print('Sleeping for 180 secs for stable connection...')
     for i in tqdm(range(180)):
