@@ -31,6 +31,7 @@ function Nav({ anchorList }) {
                             key={item.id}
                             href={item.link}
                             target="_blank"
+                            rel="noreferrer"
                         >
                             <Button
                                 bg="info700"

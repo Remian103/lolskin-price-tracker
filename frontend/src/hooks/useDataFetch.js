@@ -46,8 +46,10 @@ function useDataFetch(initialUrl, initialData) {
                 if (!didCancel)
                     dispatch({ type: "FETCH_SUCCESS", payload: result.data });
             } catch (error) {
-                if (!didCancel)
+                if (!didCancel) {
+                    console.log(`error in data fetch about ${url}\n`, error);
                     dispatch({ type: "FETCH_FAILURE" });
+                }
             }
         };
 

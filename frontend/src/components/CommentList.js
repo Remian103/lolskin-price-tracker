@@ -82,7 +82,7 @@ function CommentList({ skinId }) {
         </form>
 
         {dummyComments.map(element =>
-            <Comment key={element.id} id={element.id} comment={element.comment} like={element.likes} />
+            <Comment key={element.id} skinId={skinId} commentId={element.id} comment={element.comment} like={element.likes} />
         )}
     </>);
 }

@@ -1,8 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { Div, Icon } from "atomize";
+import axios from "axios";
 import "../css/Comment.css";
 
-function Comment({ id, comment, like }) {
+function Comment({ skinId, commentId, comment, like }) {
+    const [isLike, setIsLike] = useState(false);
+    const [likeNum, setLikeNum] = useState(like);
+    const [isLoading, setLoading] = useState(false);
+    
+    const handleClickLike = async (event) => {
+        event.preventDefault();
+        if (isLoading) return;
+        
+        setLoading(true);
+
+        await axios.post(`/dummy/url`, {
+            title: (isLike ? "Like" : "disLike"),
+            body: {
+                skin_id: skinId,
+                comment_id: commentId
+            }
+        }).then((response) => {
+            console.log(response);
+            const {comment_id, like_num, success} = response.data;
+            
+            // dummy code! start 
+            setIsLike((prev)=>!prev);
+            if(isLike) setLikeNum((prev)=> prev-1);
+            else setLikeNum((prev)=> prev+1);
+            // dummy code! end
+            
+            if(success && comment_id === commentId) {
+                setIsLike((prev)=>!prev);
+                setLikeNum(like_num);
+            }
+        }).catch((error) => {
+            console.log(`error in comment_id:${commentId}, skin_id:${skinId}\n`, error);
+        });
+        
+        setLoading(false);
+    };
+
 
     return (
         <Div
@@ -19,8 +57,8 @@ function Comment({ id, comment, like }) {
                 top="1rem"
                 right="1rem"
             >
-                {like}
-                <Icon name="Heart" size="20px" color="info700" />
+                {likeNum}
+                <Icon onClick={handleClickLike} name={isLike ? "HeartSolid" : "Heart"} size="20px" color="info700" />
             </Div>
             <Div
                 p={{r:"4rem"}}

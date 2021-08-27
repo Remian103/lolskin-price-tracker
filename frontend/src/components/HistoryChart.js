@@ -23,7 +23,6 @@ function HistoryChart({ className, chartOption, chartLabel, chartData }) {
             options: chartOption
         });
         console.log("chart generated");
-        console.log(chartOption, chartLabel, chartData);
 
         return () => {
             chart.destroy();
