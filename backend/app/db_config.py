@@ -12,7 +12,7 @@ try:
     config.read(config_file)
     db_config = config[config['active']['profile']]
     DB_URL = f'{db_config["dialect"]}+{db_config["driver"]}://{db_config["username"]}:{db_config["password"]}@{db_config["host"]}:{db_config["port"]}/{db_config["database_name"]}'
-    print(f'Using {db_config["prompt_name"]}...')
+    print(f'[Current DB]: {db_config["prompt_name"]}')
 except Exception:
     DB_URL = f'sqlite:///{os.path.join(os.path.dirname(__file__), "../sqlite3.db")}'
-    print(f'Using local SQLite...')
+    print(f'[Current DB]: local SQLite')
