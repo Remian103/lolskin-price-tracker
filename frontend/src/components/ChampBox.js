@@ -51,7 +51,7 @@ function ChampBox() {
         >
             {
                 champLoading ? <p> is loading... </p> :
-                champError ? <p> something error </p> :
+                champError || !Array.isArray(items) ? <p> something error </p> :
                 items
             }
         </Div>
@@ -59,7 +59,7 @@ function ChampBox() {
         <Modal className="skins" isOpen={display} close={() => setDisplay(false)}>
             {
                 skinLoading ? <p> is loading... </p> :
-                skinError ? <p> something error </p> :
+                skinError || !Array.isArray(skinList) ? <p> something error </p> :
                 <Carousel list={skinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
             }
         </Modal>

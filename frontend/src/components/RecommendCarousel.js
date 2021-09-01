@@ -19,7 +19,7 @@ function RecommendCarousel() {
 
     return (<>{
         isLoading ? <p> is loading... </p> :
-        isError ? <p> something error </p> :
+        isError || !Array.isArray(skinList) ? <p> something error </p> :
         <Div maxW="100%">
             <Carousel list={skinList} flktyOption={flickityOptions} cellOption={{ type: "recommend-skins" }} />
         </Div>

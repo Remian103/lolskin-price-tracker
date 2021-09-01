@@ -1,5 +1,5 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const server = require('./server.json');
+const server = require('./proxy_server.json');
 
 // restart app when modified
 module.exports = function(app) {
