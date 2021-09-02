@@ -1,5 +1,6 @@
 from typing import List, Optional
-from datetime import date
+from datetime import date, datetime
+from app.models import Comment
 
 from pydantic import BaseModel, Field
 
@@ -46,3 +47,37 @@ class Skin(BaseModel):
 class Skin_Full(Skin):
     description: Optional[str] = None
     price_history: List[Price_History] = []
+
+
+class CommentBase(BaseModel):
+    skin_id: int
+    author_username: str
+    content: str
+
+
+class CommentCreate(CommentBase):
+    pass
+
+
+class Comment(CommentBase):
+    id: int
+    created: datetime
+    last_modified: datetime
+    likes: int
+    dislikes: int
+
+    class Config:
+        orm_mode = True
+
+
+class UserBase(BaseModel):
+    email_address: str
+    username: str
+
+
+class UserCreate(UserBase):
+    pass
+
+
+class User(UserBase):
+    comments: List[Comment] = []

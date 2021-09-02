@@ -1,4 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Boolean, Integer, String, Date
+from datetime import datetime
+from sqlalchemy import Column, ForeignKey, Boolean, Integer, String, Date, DateTime
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -36,6 +37,7 @@ class Skin(Base):
 
     champion = relationship('Champion', back_populates='skins')
     price_history = relationship('Price_History', back_populates='skin')
+    comments = relationship('Comment', back_populates='skin')
 
 
 class Price_History(Base):
@@ -50,3 +52,27 @@ class Price_History(Base):
 
     skin = relationship('Skin', back_populates='price_history')
 
+
+class User(Base):
+    __tablename__ = 'users'
+
+    email_address = Column(String, primary_key=True)
+    username = Column(String, unique=True, nullable=False)
+
+    comments = relationship('Comment', back_populates='author')
+
+
+class Comment(Base):
+    __tablename__ = 'comments'
+
+    id = Column(Integer, primary_key=True)
+    skin_id = Column(Integer, ForeignKey('skins.id'), nullable=False)
+    author_username = Column(String, ForeignKey('users.username'), nullable=False)
+    content = Column(String, nullable=False)
+    created = Column(DateTime, default=datetime.today, nullable=False)
+    last_modified = Column(DateTime, default=datetime.today, nullable=False)
+    likes = Column(Integer, default=0, nullable=False)
+    dislikes = Column(Integer, default=0, nullable=False)
+
+    skin = relationship('Skin', back_populates='comments')
+    author = relationship('User', back_populates='comments')
