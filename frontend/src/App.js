@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Div, Button, Icon } from "atomize";
+import { Div, Button, Icon, Image } from "atomize";
 import "./css/App.css";
 
 // route
@@ -26,8 +26,8 @@ function App() {
     }, [pathname]);
 
     const [anchorList, setList] = useState([]);
-    
-    const handleTop= () => {
+
+    const handleTop = () => {
         window.scrollTo({
             top: 0,
             behavior: "smooth"
@@ -42,29 +42,19 @@ function App() {
         console.log(googleUser.profileObj);
         setUserInfo({
             ...userInfo,
-            userId : googleUser.profileObj.googleId,
-            tokenId : googleUser.tokenId,
-            name : googleUser.profileObj.name,
-            isLogin : true,
+            userId: googleUser.profileObj.googleId,
+            tokenId: googleUser.tokenId,
+            name: googleUser.profileObj.name,
+            imageUrl: googleUser.profileObj.imageUrl,
+            isLogin: true,
         });
     };
     const googleLoginFailure = (response) => {
         console.log(response);
         alert("로그인 중간에 에러가 발생했습니다..");
     };
-    const googleLogoutSuccess = (response) => {
-        console.log(response);
-        setUserInfo({
-            ...userInfo,
-            userId : null,
-            tokenId : null,
-            name : null,
-            isLogin : false,
-        });
-        alert("로그아웃 되었습니다.");
-    };
     useEffect(() => {
-        if(userInfo.isLogin) {
+        if (userInfo.isLogin) {
             setLoginButton(`${userInfo.name} 님`);
         }
         else {
@@ -72,22 +62,76 @@ function App() {
         }
     }, [userInfo]);
 
+    //google Logout
+    const [logOutBtnDisabled, setLogOutBtnDisabled] = useState(false);
+    const LogOutBtnClick = async () => {
+        setLogOutBtnDisabled(true);
+        await window.gapi.auth2.getAuthInstance().signOut()
+            .then(() => {
+                setUserInfo({
+                    ...userInfo,
+                    userId: null,
+                    tokenId: null,
+                    name: null,
+                    isLogin: false,
+                });
+                alert("로그아웃 되었습니다.");
+            })
+            .catch((error) => {
+                console.log(error);
+                alert("비정상적 로그아웃 발생");
+            });
+        setLogOutBtnDisabled(false);
+    }
+
+
     return (<>
         <header className="main-header">
             <Nav anchorList={anchorList} />
             <Div
                 pos="absolute"
-                right="8px"
-                top="8px"
+                d="flex"
+                align="center"
+                right="0"
+                top="0"
+                h="56px"
             >
-                <GoogleLogin
-                    clientId="183733547550-9ib07k4clf315q8m2vi9ipcujscf7qja.apps.googleusercontent.com"
-                    buttonText={loginButton}
-                    onSuccess={googleLoginSuccess}
-                    isSignedIn={true}
-                    onFailure={googleLoginFailure}
-                    cookiePolicy={'single_host_origin'}
-                />
+                {userInfo.isLogin ?
+                    <>
+                        <Div
+                            m={{ r: "8px" }}
+                        >
+                            <Button
+                                bg="info700"
+                                hoverBg="info600"
+                                cursor="pointer"
+                                rounded="md"
+                                disabled={logOutBtnDisabled}
+                                onClick={LogOutBtnClick}
+                            >
+                                LogOut
+                            </Button>
+                        </Div>
+                        <Image
+                            src={userInfo.imageUrl}
+                            m={{r: "8px"}}
+                            h="40px"
+                            rounded="circle"
+                        />
+                    </> :
+                    <Div
+                        m={{ r: "8px" }}
+                    >
+                        <GoogleLogin
+                            clientId="183733547550-9ib07k4clf315q8m2vi9ipcujscf7qja.apps.googleusercontent.com"
+                            buttonText={loginButton}
+                            onSuccess={googleLoginSuccess}
+                            isSignedIn={true}
+                            onFailure={googleLoginFailure}
+                            cookiePolicy={'single_host_origin'}
+                        />
+                    </Div>
+                }
             </Div>
         </header>
 

@@ -4,6 +4,7 @@ const UserContext = createContext({
   userId: null,
   tokenId: null,
   name: null,
+  imageUrl: null,
   isLogin: false,
 });
 

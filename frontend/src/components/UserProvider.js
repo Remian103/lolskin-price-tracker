@@ -8,6 +8,7 @@ function UserProvider({ children }) {
         userId: null,
         tokenId: null,
         name: null,
+        imageUrl: null,
         isLogin: false,
     };
 
