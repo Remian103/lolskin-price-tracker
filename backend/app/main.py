@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
-from .database import SessionLocal, engine
+from .database import SessionLocal
 
 
 app = FastAPI()
@@ -55,3 +55,30 @@ def get_skin(skin_id: int, db: Session = Depends(get_db)):
     db_skin.price_history
     
     return get_skin_with_last_price_history(db, db_skin)
+
+
+def validate_user(db: Session = Depends(get_db)):
+    # If token is invalid
+    # 401 Unauthorized
+
+    # If new user
+    # Create user
+    
+    # ----- Test Code ----- # 
+    db.query(models.User).delete()
+    test_user = schemas.UserCreate(email_address='user@test.com', username='test_user')
+    return crud.create_user(db, test_user)
+    # ----- Test Code ----- #
+
+    # return user
+    ...
+
+@app.post('/api/skins/{skin_id}/comments', response_model=schemas.Comment)
+def post_comment(skin_id: int, user: schemas.User = Depends(validate_user), db: Session = Depends(get_db)):
+    test_comment = schemas.CommentCreate(skin_id=skin_id, author_username=user.username, content='test message')
+    return crud.create_comment(db, test_comment)
+
+
+@app.get('/api/comments/{comment_id}', response_model=schemas.Comment)
+def get_comment(comment_id: int, db: Session = Depends(get_db)):
+    return db.query(models.Comment).filter(models.Comment.id == comment_id).one()
