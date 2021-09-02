@@ -17,28 +17,38 @@ function MyPage({ setNav }) {
     }, [setNav]);
 
     const loginPage = <>
-        <GoogleLoginBtn />
+        <Div
+            pos="fixed"
+            top="0"
+            right="0"
+            bottom="0"
+            left="0"
+            d="flex"
+            align="center"
+            justify="center"
+        >
+            <GoogleLoginBtn />
+        </Div>
     </>;
     const myPage = <>
-        <div className="content-title">
-            <Text
-                textSize={{ xs: "1rem", md: "1.5rem" }}
-            >
-                {`My Page ${userInfo.name}`}
-            </Text>
+        <Div p="200px"></Div>
+
+        <div className="content-container skins" /* main content */ >
+            <div className="content-background" />
+            <div className="content-title">
+                <Text
+                    textSize={{ xs: "1rem", md: "1.5rem" }}
+                >
+                    {`My Page ${userInfo.name}`}
+                </Text>
+            </div>
         </div>
     </>;
 
     return (<>
         <Div className="background-skin" bgImg="https://store.leagueoflegends.co.kr/assets/bg.jpg" />
 
-        <Div p="200px"></Div>
-
-        <div className="content-container skins" /* main content */ >
-            <div className="content-background" />
-
-            {userInfo.isLogin ? myPage : loginPage}
-        </div>
+        {userInfo.isLogin ? myPage : loginPage}
     </>);
 }
 
