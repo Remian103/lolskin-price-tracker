@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import GoogleLogin from "react-google-login";
 import UserContext from "../context/UserContext";
+import config from"../config.json";
 
 
 function GoogleLoginBtn() {
@@ -26,7 +27,7 @@ function GoogleLoginBtn() {
 
     return (
         <GoogleLogin
-            clientId="183733547550-9ib07k4clf315q8m2vi9ipcujscf7qja.apps.googleusercontent.com"
+            clientId={config.googleAPI.clientId}
             buttonText="login"
             onSuccess={googleLoginSuccess}
             isSignedIn={true}

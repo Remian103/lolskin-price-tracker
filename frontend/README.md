@@ -2,6 +2,10 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## preparations
+1. generate ./config.json with reference to ./config.json.sample
+2. generate ./public/_redirects with reference to ./public/_redirects.sample
+
 ## in Local Enviroment
 
 ### Installation

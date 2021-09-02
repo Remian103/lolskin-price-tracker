@@ -1,11 +1,11 @@
 const { createProxyMiddleware } = require("http-proxy-middleware");
-const server = require('./proxy_server.json');
+const config = require('./config.json');
 
 // restart app when modified
 module.exports = function(app) {
     app.use(
         createProxyMiddleware("/api", {
-            target: server.fastapi,
+            target: config.proxy.backendAPI,
             changeOrigin: true,
             /*
             pathRewrite: {
