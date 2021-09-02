@@ -1,4 +1,0 @@
-{
-    "fastapi": "http://3.38.87.112",
-    "fastapi2": "http://host.docker.internal:8000"
-}

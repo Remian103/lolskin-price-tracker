@@ -8,7 +8,12 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
 import { Client as Styletron } from "styletron-engine-atomic";
 import { ThemeProvider, StyleReset } from "atomize";
+
+// router
 import { BrowserRouter as Router } from "react-router-dom";
+
+//context
+import UserProvider from "./components/UserProvider";
 
 const theme = {
     colors: {
@@ -31,7 +36,9 @@ ReactDOM.render(
             <ThemeProvider theme={theme}>
                 <StyleReset />
                 <Router>
-                    <App />
+                    <UserProvider>
+                        <App />
+                    </UserProvider>
                 </Router>
             </ThemeProvider>
         </StyletronProvider>
