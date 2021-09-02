@@ -18,14 +18,16 @@ $ poetry install
 
 
 # Run
-## Run the app on uvicorn
+## With `run.sh`
 ```bash
 $ cd /path/to/backend/
-$ ./run.sh
-or
-$ ./run.sh [port_num]
+$ ./run.sh [--port port-num] [--prod]
 ```
-The app will run on $(hostname --all-ip-address):port(default=8000), which is often the desired behavior.
+The app will run on localhost.
+
+`--prod` assumes virtural environment off. It will start the app with nohup in the background logging to 'uvicorn_[START_TIME].log'
+
+Without `--prod`, manual virtual environment activation is required.
 
 Visit
 ```
@@ -48,7 +50,9 @@ $ poetry shell
 ## Activate the environment in current shell
 - Linux
     ```bash
-    $ source /path/to/venv//bin/activate
+    $ source /path/to/venv/bin/activate
+    or simply
+    $ source `poetry env info --path`/bin/activate
     ```
  - Windows
     ```bash
@@ -68,6 +72,10 @@ $ poetry run python update_static.py
 
 
 # Migrate database
+## Configure database
+Fill the values in `db_config.ini.sample` and rename it to `db_config.ini`
+
+## Run migartions
 In `backend` directory
 ```bash
 $ cd /path/to/backend
@@ -82,9 +90,3 @@ $ poetry run alembic upgrade head
 ```
 <br/>
 <br/>
-
-
-# Logs
-Log files are available in `/path/to/backend/logs`
-
-Note that logs are cleared at next run.
