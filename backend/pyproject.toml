@@ -6,7 +6,7 @@ authors = ["jiyolla <jiyolla0919@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
-fastapi = {extras = ["all"], version = "^0.67.0"}
+fastapi = {extras = ["all"], version = "^0.68.1"}
 requests = "^2.26.0"
 SQLAlchemy = "^1.4.22"
 aiohttp = "^3.7.4"
