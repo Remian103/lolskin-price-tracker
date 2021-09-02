@@ -7,11 +7,11 @@ profile = profile_name
 
 # All fields are required
 [profile_name]
-prompt_name = 
-dialect = 
-driver = 
+prompt_name = Name to identify this database on connection
+dialect = postgresql
+driver = psycopg2
 username = 
 password = 
 host = 
-port = 
-database_name = 
+port = 5432
+database_name = Actual database name
