@@ -13,8 +13,9 @@ import {
 import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import Skins from "./pages/Skins";
+import MyPage from "./pages/MyPage";
 import UserContext from "./context/UserContext";
-import GoogleLogin from "react-google-login";
+import GoogleLoginBtn from "./components/GoogleLoginBtn";
 
 
 function App() {
@@ -36,31 +37,6 @@ function App() {
 
     // user information
     const [userInfo, setUserInfo] = useContext(UserContext);
-    const [loginButton, setLoginButton] = useState("login");
-    // google login
-    const googleLoginSuccess = (googleUser) => {
-        console.log(googleUser.profileObj);
-        setUserInfo({
-            ...userInfo,
-            userId: googleUser.profileObj.googleId,
-            tokenId: googleUser.tokenId,
-            name: googleUser.profileObj.name,
-            imageUrl: googleUser.profileObj.imageUrl,
-            isLogin: true,
-        });
-    };
-    const googleLoginFailure = (response) => {
-        console.log(response);
-        alert("로그인 중간에 에러가 발생했습니다..");
-    };
-    useEffect(() => {
-        if (userInfo.isLogin) {
-            setLoginButton(`${userInfo.name} 님`);
-        }
-        else {
-            setLoginButton("login");
-        }
-    }, [userInfo]);
 
     //google Logout
     const [logOutBtnDisabled, setLogOutBtnDisabled] = useState(false);
@@ -122,14 +98,7 @@ function App() {
                     <Div
                         m={{ r: "8px" }}
                     >
-                        <GoogleLogin
-                            clientId="183733547550-9ib07k4clf315q8m2vi9ipcujscf7qja.apps.googleusercontent.com"
-                            buttonText={loginButton}
-                            onSuccess={googleLoginSuccess}
-                            isSignedIn={true}
-                            onFailure={googleLoginFailure}
-                            cookiePolicy={'single_host_origin'}
-                        />
+                        <GoogleLoginBtn />
                     </Div>
                 }
             </Div>
@@ -159,6 +128,9 @@ function App() {
             </Route>
             <Route exect path="/skins">
                 <p>skin page</p>
+            </Route>
+            <Route exect path="/myPage">
+                <MyPage setNav={setList} />
             </Route>
             <Route path="/">
                 <p>404 error</p>
