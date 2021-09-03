@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Input, Button } from "atomize";
+import axios from "axios";
 
 import Comment from "../components/Comment";
 //import useDataFetch from "../hooks/useDataFetch";
@@ -7,7 +8,51 @@ import Comment from "../components/Comment";
 function CommentList({ skinId }) {
     //const [{ isLoading, isError, data: comments }, doFetch] = useDataFetch("initialUrl", []);
     /** /api/skins/:skinId/comments 에서 comment list가 넘어온다고 가정 */
-    
+    const [commentList, setCommentList] = useState([]);
+    const modifyCommentList = (comment) => {
+        const index = commentList.indexOf(comment.id);
+        if (index != -1) { // modify
+            const nextList = [...commentList];
+            nextList[index] = comment;
+            setCommentList(nextList);
+        }
+        else { // new comment
+            nextList = [comment, ...commentList];
+            setCommentList(nextList);
+        }
+    };
+    const newCommentPost = async (url, body) => {
+        try {
+            const res = await axios.post(url, body);
+            if (res.data.isSucessful) {
+                modifyCommentList(res.data);
+            }
+            else {
+                throw "newComment error : backend response fail";
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+    const modifyCommentPut = async (url, body) => {
+        try {
+            const res = await axios.put(url, body);
+            if (res.data.isSucessful) {
+                modifyCommentList(res.data);
+            }
+            else {
+                throw "newComment error : backend response fail";
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+    };
+
+    const apiList = [newCommentPost, modifyCommentPut];
+
+
     const dummyComments = [
         { id: 0, comment: "test comment!", likes: 38 },
         { id: 1, comment: "awesome skin!", likes: 37 },
@@ -82,7 +127,7 @@ function CommentList({ skinId }) {
         </form>
 
         {dummyComments.map(element =>
-            <Comment key={element.id} skinId={skinId} commentId={element.id} comment={element.comment} like={element.likes} />
+            <Comment key={element.id} skinId={skinId} commentId={element.id} comment={element.comment} like={element.likes} apiList={apiList} />
         )}
     </>);
 }

@@ -3,7 +3,7 @@ import { Div, Icon } from "atomize";
 import axios from "axios";
 import "../css/Comment.css";
 
-function Comment({ skinId, commentId, comment, like }) {
+function Comment({ skinId, commentId, comment, like, apiList }) {
     const [isLike, setIsLike] = useState(false);
     const [likeNum, setLikeNum] = useState(like);
     const [isLoading, setLoading] = useState(false);
