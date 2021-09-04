@@ -11,13 +11,13 @@ function CommentList({ skinId }) {
     const [commentList, setCommentList] = useState([]);
     const modifyCommentList = (comment) => {
         const index = commentList.indexOf(comment.id);
-        if (index != -1) { // modify
+        if (index !== -1) { // modify
             const nextList = [...commentList];
             nextList[index] = comment;
             setCommentList(nextList);
         }
         else { // new comment
-            nextList = [comment, ...commentList];
+            const nextList = [comment, ...commentList];
             setCommentList(nextList);
         }
     };
@@ -42,7 +42,7 @@ function CommentList({ skinId }) {
                 modifyCommentList(res.data);
             }
             else {
-                throw "newComment error : backend response fail";
+                throw "modifyComment error : backend response fail";
             }
         }
         catch (error) {
