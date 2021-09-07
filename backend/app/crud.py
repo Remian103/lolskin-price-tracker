@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -41,3 +43,14 @@ def create_comment(db: Session, comment: schemas.CommentCreate):
 
 def get_comment_by_id(db: Session, comment_id: int):
     return db.query(models.Comment).filter(models.Comment.id == comment_id).one()
+
+
+def modify_comment_by_id(db: Session, comment_id: int, content: str):
+    db.query(models.Comment).filter(models.Comment.id == comment_id).update({models.Comment.content: content, models.Comment.last_modified: datetime.today()}, synchronize_session=False)
+    db.commit()
+    return get_comment_by_id(db, comment_id)
+
+
+def delete_comment_by_id(db: Session, comment_id: int):
+    db.query(models.Comment).filter(models.Comment.id == comment_id).delete()
+    db.commit()
