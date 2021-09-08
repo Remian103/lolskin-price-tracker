@@ -15,7 +15,7 @@ function UserProvider({ children }) {
     const [userInfo, setUserInfo] = useState(initialState);
 
     return (
-        <UserContext.Provider value={[userInfo, setUserInfo]}>
+        <UserContext.Provider value={{userInfo: userInfo, setUserInfo: setUserInfo}}>
             {children}
         </UserContext.Provider>
     );

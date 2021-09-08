@@ -36,7 +36,7 @@ function App() {
     }
 
     // user information
-    const [userInfo, setUserInfo] = useContext(UserContext);
+    const { userInfo, setUserInfo } = useContext(UserContext);
 
     //google Logout
     const [logOutBtnDisabled, setLogOutBtnDisabled] = useState(false);
@@ -90,7 +90,7 @@ function App() {
                         </Div>
                         <Image
                             src={userInfo.imageUrl}
-                            m={{r: "8px"}}
+                            m={{ r: "8px" }}
                             h="40px"
                             rounded="circle"
                         />
