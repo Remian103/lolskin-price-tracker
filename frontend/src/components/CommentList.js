@@ -20,14 +20,14 @@ function CommentList({ skinId }) {
 
     const [commentList, setCommentList] = useState([]);
     // get comment list
-    const [startIndex, setStartIndex] = useState(0);
-    const [{ isError, data }, doFetch, setConfig] = useDataFetch(
+    const [nextIndex, setNextIndex] = useState(0);
+    const [{ isError, data : fetchedData }, doFetch, setConfig] = useDataFetch(
         urlWithParams(`/api/skins/${skinId}/comments`, {
-            skip: startIndex,
-            limit: startIndex + 20,
+            skip: nextIndex,
+            limit: nextIndex + 3,
             order_by: "asc"
         }),
-        { comments: [], start_index: 0, last_index: 0 }
+        { comments: [], start_index: 0, last_index: 0, num_comments: 0 }
     );
     // add id token to header
     useEffect(() => {
@@ -35,19 +35,32 @@ function CommentList({ skinId }) {
             setConfig({ headers: { Authorization: `Bearer ${userInfo.tokenId}` } });
         }
     }, [userInfo, setConfig]);
+    // 더보기
+    const [isLoadingMore, SetLoadingMore] = useState(false);
+    const handleMoreBtn = (e) => {
+        e.preventDefault();
+        SetLoadingMore(true);
+        doFetch(urlWithParams(`/api/skins/${skinId}/comments`, {
+            skip: nextIndex,
+            limit: nextIndex + 20,
+            order_by: "asc"
+        }));
+    };
     // update comment list
     useEffect(() => {
-        if (data.start_index !== 0) {
+        setNextIndex(fetchedData.last_index);
+
+        if (fetchedData.start_index !== 0) {
             setCommentList(prevList => [
                 ...prevList,
-                ...data.comments
+                ...fetchedData.comments
             ]);
         }
         else {
-            setCommentList(data.comments);
+            setCommentList(fetchedData.comments);
         }
-        setStartIndex(data.last_index);
-    }, [data]);
+        SetLoadingMore(false);
+    }, [fetchedData]);
 
 
     const modifyCommentList = (comment) => {
@@ -150,6 +163,25 @@ function CommentList({ skinId }) {
             commentList.map(comment =>
                 <Comment key={comment.comment_id} comment={comment} modifyRequest={modifyCommentPut} />
             )
+        }
+        {fetchedData.num_comments <= nextIndex ? <></> :
+            <Button
+                onClick={handleMoreBtn}
+                disabled={isLoadingMore}
+                w="100%"
+                bg="info700"
+                hoverBg="info800"
+                prefix={
+                    <Icon
+                        name={isLoadingMore ? "Loading" : "DownArrow"}
+                        size="18px"
+                        color="white"
+                        m={{ r: "0.5rem" }}
+                    />
+                }
+            >
+                더보기
+            </Button>
         }
     </>);
 }
