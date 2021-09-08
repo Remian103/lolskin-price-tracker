@@ -6,6 +6,7 @@ import useDataFetch from "../hooks/useDataFetch";
 import Carousel from "../components/Carousel";
 import HistoryChart from "../components/HistoryChart";
 import CommentList from "../components/CommentList";
+import DummyCommentList from "../dummy/DummyCommentList";
 
 
 /**
@@ -144,7 +145,7 @@ function Skins({ setNav }) {
                 </Text>
             </div>
             <Div p={{ x: "1rem" }}>
-                <CommentList skinId={params.skinId} />
+                <DummyCommentList skinId={params.skinId} />
             </Div>
         </div>
     </>);

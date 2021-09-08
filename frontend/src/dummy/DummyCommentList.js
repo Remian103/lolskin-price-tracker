@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Input, Icon, Button } from "atomize";
 import axios from "axios";
 
-import Comment from "../components/Comment";
+import DummyComment from "../dummy/DummyComment";
 import useDataFetch from "../hooks/useDataFetch";
 import UserContext from "../context/UserContext";
 
@@ -48,8 +48,14 @@ function CommentList({ skinId }) {
         }
         setStartIndex(data.last_index);
     }, [data]);
-
-
+    // 더보기 누를 경우
+    const handleClickMoreComment = () => {
+        doFetch(urlWithParams(`/api/skins/${skinId}/comments`, {
+            skip: startIndex,
+            limit: startIndex + 20,
+            order_by: "asc"
+        }));
+    };
     const modifyCommentList = (comment) => {
         const index = commentList.findIndex(e => e.comment_id === comment.comment_id);
         if (index !== -1) { // modify
@@ -90,6 +96,65 @@ function CommentList({ skinId }) {
         }
     };
 
+    // test dummy
+    const [dummyComments, setDummyComments] = useState([
+        { comment_id: 0, content: "test comment!", like_state: false, likes: 38 },
+        { comment_id: 1, content: "awesome skin!", like_state: false, likes: 37 },
+        { comment_id: 2, content: "bads...", like_state: false, likes: 102 },
+        { comment_id: 3, content: "like please!", like_state: false, likes: 33 },
+        { comment_id: 4, content: "test comment!", like_state: false, likes: 2 },
+        { comment_id: 5, content: "test comment!", like_state: false, likes: 10 },
+        { comment_id: 6, content: "test comment!", like_state: false, likes: 0 },
+    ]);
+    const id = useRef(7);
+    const newCommentPostDummy = (url, body) => {
+        const comment = {
+            comment_id: id.current,
+            content: body.content,
+            like_state: false,
+            likes: 0
+        }
+        id.current += 1;
+        const index = dummyComments.findIndex(e => e.comment_id === comment.comment_id);
+        if (index !== -1) { // modify
+            let nextList = [...dummyComments];
+            nextList[index] = comment;
+            setDummyComments(nextList);
+        }
+        else { // new comment
+            setDummyComments((prevList) => [
+                comment,
+                ...prevList
+            ]);
+        }
+        setSubmitLoading(false);
+    }
+    const modifyCommentDummy = (url, body) => {
+        const index = dummyComments.findIndex(e => e.comment_id === body.comment_id);
+        const comment = {
+            comment_id: dummyComments[index].comment_id,
+            content: body.content,
+            like_state: dummyComments[index].like_state,
+            likes: dummyComments[index].likes,
+        }
+        if (index !== -1) { // modify
+            let nextList = [...dummyComments];
+            nextList[index] = comment;
+            setDummyComments(nextList);
+        }
+        else { // new comment
+            setDummyComments((prevList) => [
+                comment,
+                ...prevList
+            ]);
+        }
+    }
+    useEffect(() => {
+        return () => {
+            console.log("comment list unmount");
+        }
+    }, []);
+    // test dummy
 
     // form state
     const [comment, setComment] = useState("");
@@ -103,7 +168,8 @@ function CommentList({ skinId }) {
         if (userInfo.isLogin) {
             if (comment !== "") {
                 setSubmitLoading(true);
-                newCommentPost(`/api/skins/${skinId}/comments`, { content: comment });
+                //newCommentPost(`/api/skins/${skinId}/comments`, { content: comment });
+                newCommentPostDummy(`/api/skins/${skinId}/comments`, { content: comment }); // test dummy
                 setComment("");
             }
             else {
@@ -146,11 +212,9 @@ function CommentList({ skinId }) {
             />
         </form>
 
-        {isError ? <></> :
-            commentList.map(comment =>
-                <Comment key={comment.comment_id} comment={comment} modifyRequest={modifyCommentPut} />
-            )
-        }
+        {dummyComments.map(comment => // test dummy
+            <DummyComment key={comment.comment_id} comment={comment} modifyRequest={modifyCommentDummy}/>
+        )}
     </>);
 }
 
