@@ -28,6 +28,7 @@ function dataFetchReducer(state, action) {
 
 function useDataFetch(initialUrl, initialData) {
     const [url, setUrl] = useState(initialUrl);
+    const [config, setConfig] = useState(undefined);
     const [state, dispatch] = useReducer(dataFetchReducer, {
         isLoading: false,
         isError: false,
@@ -41,11 +42,11 @@ function useDataFetch(initialUrl, initialData) {
             dispatch({ type: "FETCH_INIT" });
 
             try {
-                const result = await axios(url);
-
+                const result = config !== undefined ? await axios.get(url, config) : await axios.get(url);
+                if (process.env.NODE_ENV !== "production") console.log("dataFetch", url, result.data);
                 if (!didCancel)
                     dispatch({ type: "FETCH_SUCCESS", payload: result.data });
-            } catch (error) {
+            } catch (error) { /** include 40x */
                 if (!didCancel) {
                     console.log(`error in data fetch about ${url}\n`, error);
                     dispatch({ type: "FETCH_FAILURE" });
@@ -53,15 +54,17 @@ function useDataFetch(initialUrl, initialData) {
             }
         };
 
-        if(url !== "initialUrl")
+        if (process.env.NODE_ENV !== "production") console.log("datafetch config", url, config);
+        if (url !== "initialUrl")
             fetchData();
 
         return () => {
             didCancel = true;
+            if (process.env.NODE_ENV !== "production") console.log('unmount hooks', url);
         };
-    }, [url]);
+    }, [url, config]);
 
-    return [state, setUrl];
+    return [state, setUrl, setConfig];
 }
 
 export default useDataFetch;
