@@ -105,19 +105,19 @@ function CommentList({ skinId }) {
 
 
     // form state
-    const [comment, setComment] = useState("");
+    const [content, setContent] = useState("");
     const [submitLoading, setSubmitLoading] = useState(false);
     const handleCommentChange = (event) => {
-        setComment(event.target.value);
+        setContent(event.target.value);
     };
     const handleSubmit = (event) => {
         event.preventDefault();
 
         if (userInfo.isLogin) {
-            if (comment !== "") {
+            if (content !== "") {
                 setSubmitLoading(true);
-                newCommentPost(`/api/skins/${skinId}/comments`, { content: comment });
-                setComment("");
+                newCommentPost(`/api/skins/${skinId}/comments`, { content: content });
+                setContent("");
             }
             else {
                 alert("내용이 없습니다.");
@@ -138,7 +138,7 @@ function CommentList({ skinId }) {
         >
             <Input className="shadowDiv"
                 type="text"
-                value={comment}
+                value={content}
                 onChange={handleCommentChange}
                 placeholder="comment here!"
                 p={{ l: "1rem", r: "6rem" }}
