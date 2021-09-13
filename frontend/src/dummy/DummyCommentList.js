@@ -120,7 +120,8 @@ function CommentList({ skinId }) {
         }
         setSubmitLoading(false);
     }
-    const modifyCommentDummy = (url, body) => {
+    const modifyCommentDummy = async (url, body) => {
+        await new Promise(resolve=>setTimeout(resolve,3000));
         const index = dummyComments.findIndex(e => e.comment_id === body.comment_id);
         const comment = {
             comment_id: dummyComments[index].comment_id,
@@ -141,8 +142,18 @@ function CommentList({ skinId }) {
             ]);
         }
     }
-    const handleMoreBtnDummy = (e) => {
+    const deleteCommentDummy = async (url, id) => {
+        await new Promise(resolve=>setTimeout(resolve,1000));
+        const index = dummyComments.findIndex(e => e.comment_id === id);
+        if (index !== -1) {
+            let nextList = [...dummyComments];
+            nextList.splice(index, 1);
+            setDummyComments(nextList);
+        }
+    }
+    const handleMoreBtnDummy = async (e) => {
         SetLoadingMore(true);
+        await new Promise(resolve=>setTimeout(resolve,1000));
         e.preventDefault();
         setData({
             comments: totalDummyComments.slice(nextIndex, nextIndex+3),
@@ -215,7 +226,12 @@ function CommentList({ skinId }) {
         </form>
 
         {dummyComments.map(comment => // test dummy
-            <DummyComment key={comment.comment_id} comment={comment} modifyRequest={modifyCommentDummy}/>
+            <DummyComment
+                key={comment.comment_id}
+                comment={comment}
+                modifyRequest={modifyCommentDummy}
+                deleteRequest={deleteCommentDummy}
+            />
         )}
         {fakeData.num_comments <= nextIndex ? <></> :
             <Button

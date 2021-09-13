@@ -5,7 +5,7 @@ import "../css/Comment.css";
 
 import UserContext from "../context/UserContext";
 
-function Comment({ comment, modifyRequest }) {
+function Comment({ comment, modifyRequest, deleteRequest }) {
     const { userInfo } = useContext(UserContext);
 
 
@@ -52,6 +52,7 @@ function Comment({ comment, modifyRequest }) {
     // 댓글 수정 기능
     const [modifyMode, setMode] = useState(false);
     const [content, setContent] = useState(comment.content);
+    const [modifyLoading, setModifyLoading] = useState(false);
     const inputRef = useRef(null);
     useEffect(() => {
         if (modifyMode) {
@@ -70,13 +71,31 @@ function Comment({ comment, modifyRequest }) {
     const handleConentChange = (event) => {
         setContent(event.target.value);
     };
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        if (modifyLoading) return;
+
+        setModifyLoading(true);
         if (content.length !== 0) {
-            modifyRequest(`api/comments/${comment.comment_id}`, { comment_id: comment.comment_id, content: content });
+            await modifyRequest(`api/comments/${comment.comment_id}`, { comment_id: comment.comment_id, content: content });
         }
+        setModifyLoading(false);
         setMode(false);
     };
+
+
+    // 댓글 삭제
+    const [deleteLoading, setDeleteLoading] = useState(false)
+    const handleDeleteBtn = async (event) => {
+        event.preventDefault();
+        if (deleteLoading) return;
+
+        setDeleteLoading(true);
+        if (window.confirm("삭제하시겠습니까?")) {
+            await deleteRequest(`api/comments/${comment.comment_id}`, comment.comment_id);
+        }
+        setDeleteLoading(false);
+    }
 
     return (
         <Div className="comment-animation shadowDiv"
@@ -111,6 +130,7 @@ function Comment({ comment, modifyRequest }) {
                             h="1.8rem"
                             bg="info700"
                             hoverBg="info800"
+                            disabled={modifyLoading}
                         >
                             수정
                         </Button>
@@ -121,6 +141,7 @@ function Comment({ comment, modifyRequest }) {
                             bg="info700"
                             hoverBg="info800"
                             onClick={handleModifyCancelBtn}
+                            disabled={modifyLoading}
                         >
                             취소
                         </Button>
@@ -149,8 +170,20 @@ function Comment({ comment, modifyRequest }) {
                                 bg="info700"
                                 hoverBg="info800"
                                 onClick={handleModifyBtn}
+                                disabled={deleteLoading}
                             >
                                 수정
+                            </Button>
+                            <Button
+                                m={{ l: "0.3rem" }}
+                                p={{ x: "0.8rem" }}
+                                h="1.8rem"
+                                bg="info700"
+                                hoverBg="info800"
+                                onClick={handleDeleteBtn}
+                                disabled={deleteLoading}
+                            >
+                                삭제
                             </Button>
                         </> : <></>
                     }
@@ -161,6 +194,7 @@ function Comment({ comment, modifyRequest }) {
                         bg={isLike ? "danger700" : "info700"}
                         hoverBg={isLike ? "danger700" : "info800"}
                         onClick={handleClickLike}
+                        disabled={deleteLoading}
                         suffix={
                             <Div
                                 d="flex"

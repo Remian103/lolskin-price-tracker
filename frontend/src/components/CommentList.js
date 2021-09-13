@@ -102,6 +102,22 @@ function CommentList({ skinId }) {
             alert("수정 중 오류가 발생했습니다.");
         }
     };
+    const commentDelete = async (url, comment_id) => {
+        let newList = [...commentList];
+        newList.splice(commentList.findIndex(e => e.comment_id === comment_id), 1);
+        setCommentList(newList);
+
+        try {
+            await axios.delete(url, null, {
+                headers: { Authorization: `Bearer ${userInfo.tokenId}` }
+            });
+        }
+        catch (error) {
+            console.log(error);
+            alert("삭제 중 오류가 발생했습니다.");
+            window.location.reload();
+        }
+    }
 
 
     // form state
@@ -161,7 +177,12 @@ function CommentList({ skinId }) {
 
         {isError ? <></> :
             commentList.map(comment =>
-                <Comment key={comment.comment_id} comment={comment} modifyRequest={modifyCommentPut} />
+                <Comment
+                    key={comment.comment_id}
+                    comment={comment}
+                    modifyRequest={modifyCommentPut}
+                    deleteRequest={commentDelete}
+                />
             )
         }
         {fetchedData.num_comments <= nextIndex ? <></> :
