@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Button, Div, Icon, Input } from "atomize";
 import axios from "axios";
 import "../css/Comment.css";
@@ -8,19 +8,20 @@ import UserContext from "../context/UserContext";
 function Comment({ comment, modifyRequest }) {
     const { userInfo } = useContext(UserContext);
 
+
+    // 좋아요 기능
     const [isLike, setIsLike] = useState(comment.like_state);
     const [likes, setLikes] = useState(comment.likes);
-    const [isLoading, setLoading] = useState(false);
-
+    const [isLikeLoading, setLikeLoading] = useState(false);
     const handleClickLike = async (event) => {
         event.preventDefault();
-        if (isLoading) return;
+        if (isLikeLoading) return;
         if (!userInfo.isLogin) {
             alert("로그인 후에 이용하실 수 있습니다.");
             return;
         }
 
-        setLoading(true);
+        setLikeLoading(true);
 
         const request = isLike ? axios.delete : axios.post;
         await request(`api/comments/${comment.comment_id}/like`, null,
@@ -35,23 +36,45 @@ function Comment({ comment, modifyRequest }) {
             console.log(`error in comment_id:${comment.comment_id}\n`, error);
         });
 
-        setLoading(false);
+        setLikeLoading(false);
     };
+    const likeString = (num) => {
+        if(num >= 1000000) {
+            return (num/1000000.0).toFixed(1).toString() + "M"
+        }
+        else if (num >= 1000) {
+            return (num/1000.0).toFixed(1).toString() + "K"
+        }
+        return num.toString()
+    }
 
+
+    // 댓글 수정 기능
     const [modifyMode, setMode] = useState(false);
     const [content, setContent] = useState(comment.content);
+    const inputRef = useRef(null);
+    useEffect(() => {
+        if (modifyMode) {
+            inputRef.current.focus();
+        }
+    }, [modifyMode]);
     const handleModifyBtn = (event) => {
         event.preventDefault();
         setContent(comment.content);
         setMode(true);
     };
+    const handleModifyCancelBtn = (event) => {
+        event.preventDefault();
+        setMode(false);
+    }
     const handleConentChange = (event) => {
         setContent(event.target.value);
     };
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        modifyRequest(`api/comments/${comment.comment_id}`, { content: content });
+        if (content.length !== 0) {
+            modifyRequest(`api/comments/${comment.comment_id}`, { comment_id: comment.comment_id, content: content });
+        }
         setMode(false);
     };
 
@@ -68,49 +91,93 @@ function Comment({ comment, modifyRequest }) {
                 <form
                     onSubmit={handleSubmit}
                 >
-                    <Input className="shadowDiv"
+                    <Input
                         type="text"
+                        ref={inputRef}
                         value={content}
                         onChange={handleConentChange}
-                        placeholder="comment here!"
-                        p={{ l: "1rem", r: "6rem" }}
-                        suffix={
-                            <Button
-                                pos="absolute"
-                                type="submit"
-                                bg="info700"
-                                hoverBg="info800"
-                                top="0"
-                                right="0"
-                                rounded={{ r: "md" }}
-                            >
-                                수정
-                            </Button>
-                        }
+                        placeholder={comment.content}
+                        p={{ x: "1rem" }}
                     />
+                    <Div
+                        d="flex"
+                        p={{ t: "0.3rem" }}
+                        justify="flex-end"
+                    >
+                        <Button
+                            m={{ l: "0.3rem" }}
+                            p={{ x: "0.8rem" }}
+                            type="submit"
+                            h="1.8rem"
+                            bg="info700"
+                            hoverBg="info800"
+                        >
+                            수정
+                        </Button>
+                        <Button
+                            m={{ l: "0.3rem" }}
+                            p={{ x: "0.8rem" }}
+                            h="1.8rem"
+                            bg="info700"
+                            hoverBg="info800"
+                            onClick={handleModifyCancelBtn}
+                        >
+                            취소
+                        </Button>
+                    </Div>
                 </form>
             </> : <>
                 <Div
-                    pos="absolute"
-                    top="1rem"
-                    right="1rem"
-                >
-                    {likes}
-                    <Icon onClick={handleClickLike} name={isLike ? "HeartSolid" : "Heart"} size="20px" color="info700" />
-                </Div>
-                <Div
-                    p={{ r: "4rem" }}
+                    textWeight="500"
                     style={{
                         wordBreak: "break-all"
                     }}
                 >
                     {comment.content}
                 </Div>
-                {comment.is_modifiable ?
-                    <Button onClick={handleModifyBtn}>
-                        수정
-                    </Button> : <></>
-                }
+                <Div
+                    d="flex"
+                    p={{ t: "0.3rem" }}
+                    justify="flex-end"
+                >
+                    {comment.is_modifiable ?
+                        <>
+                            <Button
+                                m={{ l: "0.3rem" }}
+                                p={{ x: "0.8rem" }}
+                                h="1.8rem"
+                                bg="info700"
+                                hoverBg="info800"
+                                onClick={handleModifyBtn}
+                            >
+                                수정
+                            </Button>
+                        </> : <></>
+                    }
+                    <Button
+                        m={{ l: "0.3rem" }}
+                        p={{ l: "0.6rem", r:"0.8rem" }}
+                        h="1.8rem"
+                        bg={isLike ? "danger700" : "info700"}
+                        hoverBg={isLike ? "danger700" : "info800"}
+                        onClick={handleClickLike}
+                        suffix={
+                            <Div
+                                d="flex"
+                                align="center"
+                            >
+                                <Icon
+                                    m={{ r: "0.1rem" }}
+                                    name={isLike ? "HeartSolid" : "Heart"}
+                                    size="20px"
+                                    color="white"
+                                />
+                                {likeString(likes)}
+                            </Div>
+                        }
+                    >
+                    </Button>
+                </Div>
             </>}
         </Div>
     );

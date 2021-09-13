@@ -64,13 +64,13 @@ function CommentList({ skinId }) {
 
     // test dummy
     const totalDummyComments =[
-        { comment_id: 0, content: "test comment!", like_state: false, likes: 38 },
-        { comment_id: 1, content: "awesome skin!", like_state: false, likes: 37 },
-        { comment_id: 2, content: "bads...", like_state: false, likes: 102 },
-        { comment_id: 3, content: "like please!", like_state: false, likes: 33 },
-        { comment_id: 4, content: "test comment!", like_state: false, likes: 2 },
-        { comment_id: 5, content: "test comment!", like_state: false, likes: 10 },
-        { comment_id: 6, content: "test comment!", like_state: false, likes: 0 }
+        { comment_id: 0, content: "test comment!", like_state: false, likes: 38, is_modifiable: true },
+        { comment_id: 1, content: "awesome skin!", like_state: false, likes: 37, is_modifiable: true },
+        { comment_id: 2, content: "bads...", like_state: false, likes: 20000000, is_modifiable: false },
+        { comment_id: 3, content: "like please!", like_state: false, likes: 351512341, is_modifiable: false },
+        { comment_id: 4, content: "test comment!", like_state: false, likes: 16873, is_modifiable: true },
+        { comment_id: 5, content: "test comment!", like_state: false, likes: 111, is_modifiable: false },
+        { comment_id: 6, content: "test comment!", like_state: false, likes: 999, is_modifiable: false }
     ];
     const [dummyComments, setDummyComments] = useState([]);
     const [fakeData, setData] = useState({comments:[], start_index: 0, last_index: 0, num_comments: totalDummyComments});
@@ -102,7 +102,8 @@ function CommentList({ skinId }) {
             comment_id: id.current,
             content: body.content,
             like_state: false,
-            likes: 0
+            likes: 0,
+            is_modifiable: true,
         }
         id.current += 1;
         const index = dummyComments.findIndex(e => e.comment_id === comment.comment_id);
@@ -126,6 +127,7 @@ function CommentList({ skinId }) {
             content: body.content,
             like_state: dummyComments[index].like_state,
             likes: dummyComments[index].likes,
+            is_modifiable: dummyComments[index].is_modifiable,
         }
         if (index !== -1) { // modify
             let nextList = [...dummyComments];
