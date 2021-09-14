@@ -60,7 +60,8 @@ def run_migrations_online():
     with connectable.connect() as connection:
         context.configure(
             connection=connection, target_metadata=target_metadata,
-            transactional_ddl=True
+            transactional_ddl=True,
+            render_as_batch=True
         )
         with context.begin_transaction() as transaction:
             context.run_migrations()

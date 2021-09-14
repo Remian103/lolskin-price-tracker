@@ -12,7 +12,7 @@ class Champion(Base):
     __tablename__ = 'champions'
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=False)
-    name = Column(String)
+    name = Column(String, nullable=False)
     icon_url = Column(String)
 
     skins = relationship('Skin', back_populates='champion')
@@ -22,18 +22,11 @@ class Skin(Base):
     __tablename__ = 'skins'
 
     id = Column(Integer, primary_key=True, index=True, autoincrement=False)
-    name = Column(String)
+    name = Column(String, nullable=False)
     trimmed_image_url = Column(String)
     full_image_url = Column(String)
-
-    # ----- To be deprecated -----
-    price = Column(Integer, default=0)
-    sale_price = Column(Integer, default=0)
-    # ----- To be deprecated -----
-
-    champion_id = Column(Integer, ForeignKey('champions.id'))
-
-    description = Column(String, default='')
+    champion_id = Column(Integer, ForeignKey('champions.id'), nullable=False)
+    description = Column(String)
 
     champion = relationship('Champion', back_populates='skins')
     price_history = relationship('Price_History', back_populates='skin')
@@ -45,10 +38,9 @@ class Price_History(Base):
 
     skin_id = Column(Integer, ForeignKey('skins.id'), primary_key=True)
     date = Column(Date, primary_key=True)
-    price = Column(Integer, default=0)
-    sale_price = Column(Integer, default=0)
-    is_available = Column(Boolean, nullable=False, server_default='false')
-    is_on_sale = Column(Boolean, nullable=False, server_default='false')
+    price = Column(Integer)
+    sale_price = Column(Integer)
+    is_available = Column(Boolean, nullable=False, server_default='false', default=False)
 
     skin = relationship('Skin', back_populates='price_history')
 
@@ -56,8 +48,8 @@ class Price_History(Base):
 class User(Base):
     __tablename__ = 'users'
 
-    email_address = Column(String, primary_key=True)
-    username = Column(String, unique=True, nullable=False)
+    id = Column(Integer, primary_key=True)
+    email_address = Column(String, unique=True, nullable=False)
 
     comments = relationship('Comment', back_populates='author')
 
@@ -67,7 +59,7 @@ class Comment(Base):
 
     id = Column(Integer, primary_key=True)
     skin_id = Column(Integer, ForeignKey('skins.id'), nullable=False)
-    author_username = Column(String, ForeignKey('users.username'), nullable=False)
+    author_id = Column(Integer, ForeignKey('users.id'), nullable=False)
     content = Column(String, nullable=False)
     created = Column(DateTime, default=datetime.today, nullable=False)
     last_modified = Column(DateTime, default=datetime.today, nullable=False)

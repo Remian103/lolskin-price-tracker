@@ -7,7 +7,7 @@ Create Date: 2021-08-26 13:51:23.615763
 """
 from alembic import op
 import sqlalchemy as sa
-from app import models
+from sqlalchemy import MetaData, Table
 
 
 # revision identifiers, used by Alembic.
@@ -24,7 +24,8 @@ def upgrade():
 
     # Data Migration
     connection = op.get_bind()
-    table = models.Price_History.__table__
+    meta = MetaData(bind=connection)
+    table = Table('price_history', meta, autoload_with=connection)
     connection.execute(sa.update(table).where(table.c.price != 0).values(is_available=True))
     connection.execute(sa.update(table).where(
         sa.and_(

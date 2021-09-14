@@ -29,7 +29,7 @@ def main():
                         db_price_history = models.Price_History(skin=skin, price=price, is_available=True, date=date.today() - timedelta(days=i))
                     else:
                         sale_price = price * random.random()
-                        db_price_history = models.Price_History(skin=skin, price=price, sale_price=sale_price, is_available=True, is_on_sale=True, date=date.today() - timedelta(days=i))
+                        db_price_history = models.Price_History(skin=skin, price=price, sale_price=sale_price, is_available=True, date=date.today() - timedelta(days=i))
                 db.add(db_price_history)
 
         db.commit()
