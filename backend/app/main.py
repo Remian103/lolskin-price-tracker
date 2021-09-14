@@ -1,7 +1,10 @@
-from typing import List
+from typing import List, Optional
 
-from fastapi import Depends, FastAPI
+from fastapi import Depends, FastAPI, Body, Security, HTTPException
+from fastapi.security import HTTPBearer
 from sqlalchemy.orm import Session
+from google.oauth2 import id_token
+from google.auth.transport import requests
 
 from . import crud, models, schemas
 from .database import SessionLocal
@@ -51,34 +54,62 @@ def get_recommendations(db: Session = Depends(get_db)):
 @app.get('/api/skins/{skin_id}', response_model=schemas.Skin_Full)
 def get_skin(skin_id: int, db: Session = Depends(get_db)):
     db_skin = crud.get_skin_by_id(db, skin_id)
+
     # Trigger relation query(otherwise not executed because of lazy loading)
     db_skin.price_history
     
     return get_skin_with_last_price_history(db, db_skin)
 
 
-def validate_user(db: Session = Depends(get_db)):
-    # If token is invalid
-    # 401 Unauthorized
+CLIENT_ID = '183733547550-9ib07k4clf315q8m2vi9ipcujscf7qja.apps.googleusercontent.com'
+oauth2_scheme = HTTPBearer(auto_error=False)
 
-    # If new user
-    # Create user
-    
+def get_current_user_required(*args, **kwargs):
+    if get_current_user(*args, **kwargs) is None:
+        raise HTTPException(status_code=401, detail='JWT is invalid or does not exist')
+
+
+def get_current_user(db: Session = Depends(get_db), token: Optional[HTTPBearer] = Security(oauth2_scheme)):
     # ----- Test Code ----- # 
     db.query(models.User).delete()
-    test_user = schemas.UserCreate(email_address='user@test.com', username='test_user')
+    test_user = schemas.UserCreate(email_address='user@test.com')
     return crud.create_user(db, test_user)
     # ----- Test Code ----- #
+    try:
+        idinfo = id_token.verify_oauth2_token(token.credentials, requests.Request(), CLIENT_ID)
+        print(idinfo)
+    except Exception:
+        # If token is invalid or does not exist
+        return None
+
+    # Is this user registered?
+    # Database calls
+    # crud.is_user_registered()
+
+    # If new user
+    # user = crud.create_user()
+    # Else if registered
+    # user = crud.get_user()
 
     # return user
-    ...
+
 
 @app.post('/api/skins/{skin_id}/comments', response_model=schemas.Comment)
-def post_comment(skin_id: int, user: schemas.User = Depends(validate_user), db: Session = Depends(get_db)):
-    test_comment = schemas.CommentCreate(skin_id=skin_id, author_username=user.username, content='test message')
+def post_comment(skin_id: int, user: schemas.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    test_comment = schemas.CommentCreate(skin_id=skin_id, author_id=user.id, content='test message')
     return crud.create_comment(db, test_comment)
 
 
 @app.get('/api/comments/{comment_id}', response_model=schemas.Comment)
 def get_comment(comment_id: int, db: Session = Depends(get_db)):
-    return db.query(models.Comment).filter(models.Comment.id == comment_id).one()
+    return crud.get_comment_by_id(db, comment_id)
+
+
+@app.put('/api/comments/{comment_id}', response_model=schemas.Comment)
+def modify_comment(comment_id: int, content: str = Body(...), db: Session = Depends(get_db)):
+    return crud.modify_comment_by_id(db, comment_id, content)
+
+
+@app.delete('/api/comment/{comment_id}')
+def delete_comment(comment_id: int, db: Session = Depends(get_db)):
+    crud.delete_comment_by_id(db, comment_id)
