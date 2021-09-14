@@ -45,6 +45,15 @@ def get_comment_by_id(db: Session, comment_id: int):
     return db.query(models.Comment).filter(models.Comment.id == comment_id).one()
 
 
+def get_comments_by_skin_id(db: Session, skin_id: int, order_by: str):
+    # Probably need caching
+    if order_by == 'desc_likes':
+        return db.query(models.Comment).filter(models.Comment.skin_id == skin_id).order_by(models.Comment.likes.desc()).all()
+
+    # For undefined 'order_by'
+    return db.query(models.Comment).filter(models.Comment.skin_id == skin_id).order_by(models.Comment.likes.desc()).all()
+
+
 def modify_comment_by_id(db: Session, comment_id: int, content: str):
     db.query(models.Comment).filter(models.Comment.id == comment_id).update({models.Comment.content: content, models.Comment.last_modified: datetime.today()}, synchronize_session=False)
     db.commit()

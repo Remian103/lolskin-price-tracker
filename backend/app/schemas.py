@@ -36,7 +36,7 @@ class Skin(BaseModel):
         orm_mode = True
 
 
-class Skin_Full(Skin):
+class SkinFull(Skin):
     description: Optional[str]
     price_history: List[Price_History] = []
 
@@ -57,6 +57,18 @@ class Comment(CommentBase):
     last_modified: datetime
     likes: int
     dislikes: int
+
+    class Config:
+        orm_mode = True
+
+
+class CommentsList(BaseModel):
+    skin_id: int
+    num_comments: int
+    skip: int
+    limit: int
+    order_by: str
+    comments: List[Comment]
 
     class Config:
         orm_mode = True
