@@ -85,19 +85,32 @@ def get_current_user_optional(db: Session = Depends(get_db), token: Optional[HTT
     return get_current_user(db, token)
 
 
+def get_comment_with_user_specific_data(db_comment: models.Comment, db_user: models.User):
+    return schemas.Comment(
+        **db_comment.__dict__,
+        is_modifiable_by_current_user = db_comment.author == db_user,
+        is_liked_bycurrent_user = db_user in db_comment.users_liked,
+        is_disliked_by_current_user = db_user in db_comment.users_disliked
+    )
+
+
 @app.post('/api/skins/{skin_id}/comments', response_model=schemas.Comment)
-def post_comment(skin_id: int, content: str = Body(...), user: schemas.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    db_comment = schemas.CommentCreate(skin_id=skin_id, author_id=user.id, content=content)
-    return crud.create_comment(db, db_comment)
+def post_comment(skin_id: int, content: str = Body(...), db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_comment = crud.create_comment(db, schemas.CommentCreate(skin_id=skin_id, author_id=db_user.id, content=content))
+    return get_comment_with_user_specific_data(db_comment, db_user)
 
 
 @app.get('/api/comments/{comment_id}', response_model=schemas.Comment)
-def get_comment(comment_id: int, user: schemas.User = Depends(get_current_user_optional), db: Session = Depends(get_db)):
-    return db.query(models.Comment).filter(models.Comment.id == comment_id).one()
+def get_comment(comment_id: int, db_user: models.User = Depends(get_current_user_optional), db: Session = Depends(get_db)):
+    db_comment = crud.get_comment_by_id(db, comment_id)
+    if db_user is None:
+        return db_comment
+    else:
+        return get_comment_with_user_specific_data(db_comment, db_user)
 
 
 @app.get('/api/skins/{skin_id}/comments', response_model=schemas.CommentsList)
-def get_comments_list(skin_id: int, skip: int = 0, limit: int = 10, order_by: str = 'desc_likes', user: schemas.User = Depends(get_current_user_optional), db: Session = Depends(get_db)):
+def get_comments_list(skin_id: int, skip: int = 0, limit: int = 10, order_by: str = 'desc_likes', db_user: models.User = Depends(get_current_user_optional), db: Session = Depends(get_db)):
     # Probably need caching
     db_comments = crud.get_comments_by_skin_id(db, skin_id, order_by)
     ret = schemas.CommentsList(
@@ -109,21 +122,68 @@ def get_comments_list(skin_id: int, skip: int = 0, limit: int = 10, order_by: st
         comments=[]
     )
     if skip < len(db_comments):
-        ret.comments = db_comments[skip:limit]
+        if db_user is None:
+            ret.comments = db_comments[skip:limit]
+        else:
+            for db_comment in db_comments[skip:limit]:
+                ret.comments.append(get_comment_with_user_specific_data(db_comment, db_user))
     return ret
 
 
 @app.put('/api/comments/{comment_id}', response_model=schemas.Comment)
-def modify_comment(comment_id: int, content: str = Body(...), user: schemas.User = Depends(get_current_user), db: Session = Depends(get_db)):
+def modify_comment(comment_id: int, content: str = Body(...), db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_comment = crud.get_comment_by_id(db, comment_id)
-    if user.id != db_comment.id:
+    if db_comment.author != db_user:
         raise(HTTPException(401, detail='Unauthorized user'))
-    return crud.modify_comment_by_id(db, comment_id, content)
+    return get_comment_with_user_specific_data(crud.modify_comment_by_id(db, comment_id, content), db_user)
 
 
 @app.delete('/api/comment/{comment_id}')
-def delete_comment(comment_id: int, user: schemas.User = Depends(get_current_user), db: Session = Depends(get_db)):
+def delete_comment(comment_id: int, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_comment = crud.get_comment_by_id(db, comment_id)
-    if user.id != db_comment.id:
+    if db_comment.author != db_user:
         raise(HTTPException(401, detail='Unauthorized user'))
     crud.delete_comment_by_id(db, comment_id)
+
+
+
+# -------------------- Like/Dislike --------------------
+
+@app.post('/api/comments/{comment_id}/likes', response_model=int)
+def like_comment(comment_id: int, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_comment = crud.get_comment_by_id(db, comment_id)
+    db_comment.users_liked.append(db_user)
+    db.commit()
+    db_comment.likes = len(db_comment.users_liked)
+    db.commit()
+    return db_comment.likes
+
+
+@app.delete('/api/comments/{comment_id}/likes', response_model=int)
+def like_comment(comment_id: int, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_comment = crud.get_comment_by_id(db, comment_id)
+    if db_user in db_comment.users_liked:
+        db_comment.users_liked.remove(db_user)
+        db_comment.likes = len(db_comment.users_liked)
+        db.commit()
+    return db_comment.likes
+
+
+@app.post('/api/comments/{comment_id}/dislikes', response_model=int)
+def dislike_comment(comment_id: int, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_comment = crud.get_comment_by_id(db, comment_id)
+    db_comment.users_disliked.append(db_user)
+    db.commit()
+    db_comment.dislikes = len(db_comment.users_disliked)
+    db.commit()
+    return db_comment.dislikes
+
+
+@app.delete('/api/comments/{comment_id}/dislikes', response_model=int)
+def dislike_comment(comment_id: int, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_comment = crud.get_comment_by_id(db, comment_id)
+    if db_user in db_comment.users_disliked:
+        db_comment.users_disliked.remove(db_user)
+        db_comment.dislikes = len(db_comment.users_disliked)
+        db.commit()
+    return db_comment.dislikes

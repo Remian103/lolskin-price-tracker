@@ -1,5 +1,5 @@
 from datetime import datetime
-from sqlalchemy import Column, ForeignKey, Boolean, Integer, String, Date, DateTime
+from sqlalchemy import Table, Column, ForeignKey, Boolean, Integer, String, Date, DateTime
 from sqlalchemy.orm import relationship
 
 from .database import Base
@@ -45,6 +45,18 @@ class Price_History(Base):
     skin = relationship('Skin', back_populates='price_history')
 
 
+like_table = Table('likes', Base.metadata,
+    Column('user_id', ForeignKey('users.id'), primary_key=True),
+    Column('comment_id', ForeignKey('comments.id'), primary_key=True)
+)
+
+
+dislike_table = Table('dislikes', Base.metadata,
+    Column('user_id', ForeignKey('users.id'), primary_key=True),
+    Column('comment_id', ForeignKey('comments.id'), primary_key=True)
+)
+
+
 class User(Base):
     __tablename__ = 'users'
 
@@ -52,6 +64,18 @@ class User(Base):
     email_address = Column(String, unique=True, nullable=False)
 
     comments = relationship('Comment', back_populates='author')
+
+    liked_comments = relationship(
+        'Comment',
+        secondary=like_table,
+        back_populates='users_liked'
+    )
+
+    disliked_comments = relationship(
+        'Comment',
+        secondary=dislike_table,
+        back_populates='users_disliked'
+    )
 
 
 class Comment(Base):
@@ -68,3 +92,15 @@ class Comment(Base):
 
     skin = relationship('Skin', back_populates='comments')
     author = relationship('User', back_populates='comments')
+
+    users_liked = relationship(
+        'User',
+        secondary=like_table,
+        back_populates='liked_comments'
+    )
+
+    users_disliked = relationship(
+        'User',
+        secondary=dislike_table,
+        back_populates='disliked_comments'
+    )

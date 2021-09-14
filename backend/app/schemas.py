@@ -57,6 +57,9 @@ class Comment(CommentBase):
     last_modified: datetime
     likes: int
     dislikes: int
+    is_modifiable_by_current_user: Optional[bool]
+    is_liked_bycurrent_user: Optional[bool]
+    is_disliked_by_current_user: Optional[bool]
 
     class Config:
         orm_mode = True
