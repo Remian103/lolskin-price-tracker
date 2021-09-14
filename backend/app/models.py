@@ -40,31 +40,31 @@ class Price_History(Base):
     date = Column(Date, primary_key=True)
     price = Column(Integer)
     sale_price = Column(Integer)
-    is_available = Column(Boolean, nullable=False, server_default='false')
+    is_available = Column(Boolean, nullable=False, server_default='false', default=False)
 
     skin = relationship('Skin', back_populates='price_history')
 
 
-# class User(Base):
-#     __tablename__ = 'users'
+class User(Base):
+    __tablename__ = 'users'
 
-#     id = Column(Integer, primary_key=True)
-#     email_address = Column(String, unique=True, nullable=False)
+    id = Column(Integer, primary_key=True)
+    email_address = Column(String, unique=True, nullable=False)
 
-#     comments = relationship('Comment', back_populates='author')
+    comments = relationship('Comment', back_populates='author')
 
 
-# class Comment(Base):
-#     __tablename__ = 'comments'
+class Comment(Base):
+    __tablename__ = 'comments'
 
-#     id = Column(Integer, primary_key=True)
-#     skin_id = Column(Integer, ForeignKey('skins.id'), nullable=False)
-#     author_id = Column(Integer, ForeignKey('users.id'), nullable=False)
-#     content = Column(String, nullable=False)
-#     created = Column(DateTime, default=datetime.today, nullable=False)
-#     last_modified = Column(DateTime, default=datetime.today, nullable=False)
-#     likes = Column(Integer, default=0, nullable=False)
-#     dislikes = Column(Integer, default=0, nullable=False)
+    id = Column(Integer, primary_key=True)
+    skin_id = Column(Integer, ForeignKey('skins.id'), nullable=False)
+    author_id = Column(Integer, ForeignKey('users.id'), nullable=False)
+    content = Column(String, nullable=False)
+    created = Column(DateTime, default=datetime.today, nullable=False)
+    last_modified = Column(DateTime, default=datetime.today, nullable=False)
+    likes = Column(Integer, default=0, nullable=False)
+    dislikes = Column(Integer, default=0, nullable=False)
 
-#     skin = relationship('Skin', back_populates='comments')
-#     author = relationship('User', back_populates='comments')
+    skin = relationship('Skin', back_populates='comments')
+    author = relationship('User', back_populates='comments')

@@ -41,35 +41,35 @@ class Skin_Full(Skin):
     price_history: List[Price_History] = []
 
 
-# class CommentBase(BaseModel):
-#     skin_id: int
-#     content: str
+class CommentBase(BaseModel):
+    skin_id: int
+    content: str
 
 
-# class CommentCreate(CommentBase):
-#     author_id: int
-#     pass
+class CommentCreate(CommentBase):
+    author_id: int
+    pass
 
 
-# class Comment(CommentBase):
-#     id: int
-#     created: datetime
-#     last_modified: datetime
-#     likes: int
-#     dislikes: int
+class Comment(CommentBase):
+    id: int
+    created: datetime
+    last_modified: datetime
+    likes: int
+    dislikes: int
 
-#     class Config:
-#         orm_mode = True
-
-
-# class UserBase(BaseModel):
-#     email_address: str
+    class Config:
+        orm_mode = True
 
 
-# class UserCreate(UserBase):
-#     pass
+class UserBase(BaseModel):
+    email_address: str
 
 
-# class User(UserBase):
-#     id: int
-#     comments: List[Comment] = []
+class UserCreate(UserBase):
+    pass
+
+
+class User(UserBase):
+    id: int
+    comments: List[Comment] = []
