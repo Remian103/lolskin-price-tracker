@@ -34,36 +34,21 @@ function ChampBox() {
     const [word, setWord] = useState("");
     const [result, setResult] = useState([]);
     useEffect(() => {
-        if (word.length === 0)
+        if (word.length === 0) {
+            setResult(champList);
             return;
+        }
 
         setResult(
             champList.filter((champion) =>
                 champion.name.includes(word)
             )
         )
-    }, [word]);
+    }, [champList, word]);
     const handleInputChange = (event) => {
         setWord(event.target.value);
     };
-    const items = word.length === 0 ?
-        champList.map((champion) =>
-            <Div
-                key={champion.id}
-                p="0.5rem"
-            >
-                <img className="champion-icon"
-                    src={champion.icon_url}
-                    alt={champion.name}
-                    title={champion.name}
-                    onClick={() => {
-                        setId(champion.id);
-                        setDisplay(true);
-                    }}
-                />
-            </Div>
-        ) :
-        result.map((champion) =>
+    const items = result.map((champion) =>
         <Div
             key={champion.id}
             p="0.5rem"
@@ -106,7 +91,32 @@ function ChampBox() {
             {
                 champLoading ? <p> is loading... </p> :
                     champError || !Array.isArray(items) ? <p> something error </p> :
-                        items
+                        word.length !== 0 && result.length === 0 ?
+                            <Div
+                                d="flex"
+                                justify="center"
+                                align="center"
+                                h="20rem"
+                                textSize="2rem"
+                            >
+                                no result
+                            </Div> :
+                            result.map((champion) =>
+                                <Div
+                                    key={champion.id}
+                                    p="0.5rem"
+                                >
+                                    <img className="champion-icon"
+                                        src={champion.icon_url}
+                                        alt={champion.name}
+                                        title={champion.name}
+                                        onClick={() => {
+                                            setId(champion.id);
+                                            setDisplay(true);
+                                        }}
+                                    />
+                                </Div>
+                            )
             }
         </Div>
 
