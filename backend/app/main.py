@@ -88,9 +88,11 @@ def get_current_user_optional(db: Session = Depends(get_db), token: Optional[HTT
 def get_comment_with_user_specific_data(db_comment: models.Comment, db_user: models.User):
     return schemas.Comment(
         **db_comment.__dict__,
-        is_modifiable_by_current_user = db_comment.author == db_user,
-        is_liked_bycurrent_user = db_user in db_comment.users_liked,
-        is_disliked_by_current_user = db_user in db_comment.users_disliked
+        current_user_auth=schemas.UserDataOnComment(
+            is_modifiable=db_comment.author == db_user,
+            is_liked=db_user in db_comment.users_liked,
+            is_disliked=db_user in db_comment.users_disliked
+        )
     )
 
 

@@ -41,6 +41,13 @@ class SkinFull(Skin):
     price_history: List[Price_History] = []
 
 
+
+class UserDataOnComment(BaseModel):
+    is_modifiable: bool
+    is_liked: bool
+    is_disliked: bool
+
+
 class CommentBase(BaseModel):
     skin_id: int
     content: str
@@ -57,9 +64,7 @@ class Comment(CommentBase):
     last_modified: datetime
     likes: int
     dislikes: int
-    is_modifiable_by_current_user: Optional[bool]
-    is_liked_bycurrent_user: Optional[bool]
-    is_disliked_by_current_user: Optional[bool]
+    current_user_auth: Optional[UserDataOnComment]
 
     class Config:
         orm_mode = True
