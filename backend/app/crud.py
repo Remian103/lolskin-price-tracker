@@ -34,7 +34,8 @@ def get_user_by_email_address(db: Session, email_address: str):
 
 
 def create_comment(db: Session, comment: schemas.CommentCreate):
-    db_comment = models.Comment(**comment.dict())
+    db_skin = get_skin_by_id(db, comment.skin_id)
+    db_comment = models.Comment(**comment.dict(), skin=db_skin)
     db.add(db_comment)
     db.commit()
     db.refresh(db_comment)
