@@ -10,7 +10,7 @@ def get_champions(db: Session):
 
 
 def get_last_price_history(db: Session, skin_id: int):
-    return db.query(models.Price_History).filter(models.Price_History.skin_id == skin_id).order_by(models.Price_History.date.desc()).first()
+    return db.query(models.PriceHistory).filter(models.PriceHistory.skin_id == skin_id).order_by(models.PriceHistory.date.desc()).first()
 
 
 def get_skins_by_champion_id(db: Session, champion_id: int):

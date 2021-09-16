@@ -27,7 +27,7 @@ def get_skin_with_last_price_history(db: Session, db_skin: models.Skin):
     if db_last_price_history is None:
         price_history = None
     else:
-        price_history = schemas.Price_History(**db_last_price_history.__dict__)
+        price_history = schemas.PriceHistory(**db_last_price_history.__dict__)
     return schemas.SkinFull(**db_skin.__dict__, last_price_history=price_history)
 
 

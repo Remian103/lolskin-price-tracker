@@ -54,7 +54,7 @@ async def update(connection, db, skin):
         is_on_sale = False
         sale_price = price
 
-    db_price_history = models.Price_History(skin=skin, date=date.today(), is_available=is_available, is_on_sale=is_on_sale, price=price, sale_price=sale_price)
+    db_price_history = models.PriceHistory(skin=skin, date=date.today(), is_available=is_available, is_on_sale=is_on_sale, price=price, sale_price=sale_price)
     db.add(db_price_history)
 
 

@@ -29,11 +29,11 @@ class Skin(Base):
     description = Column(String)
 
     champion = relationship('Champion', back_populates='skins')
-    price_history = relationship('Price_History', back_populates='skin')
+    price_history = relationship('PriceHistory', back_populates='skin')
     comments = relationship('Comment', back_populates='skin')
 
 
-class Price_History(Base):
+class PriceHistory(Base):
     __tablename__ = 'price_history'
 
     skin_id = Column(Integer, ForeignKey('skins.id'), primary_key=True)
