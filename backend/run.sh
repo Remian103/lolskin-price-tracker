@@ -26,7 +26,7 @@ if [ "$PROD_MODE" = "true" ]; then
         echo "Creating '$NEW_LOG'..."
     else
         echo "Renaming '$OLD_LOG' to '$NEW_LOG'..."
-        mv uvicorn_*.log $NEW_LOG
+        mv $OLD_LOG $NEW_LOG
     fi
     echo "Start Logging..."
     echo "====================================================================================================" >> $NEW_LOG
