@@ -97,8 +97,8 @@ def get_comment_with_user_specific_data(db_comment: models.Comment, db_user: mod
 
 
 @app.post('/api/skins/{skin_id}/comments', response_model=schemas.Comment)
-def post_comment(skin_id: int, content: str = Body(...), db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
-    db_comment = crud.create_comment(db, schemas.CommentCreate(skin_id=skin_id, author_id=db_user.id, content=content))
+def post_comment(skin_id: int, comment_data: schemas.CommentPost, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+    db_comment = crud.create_comment(db, schemas.CommentCreate(skin_id=skin_id, author_id=db_user.id, content=comment_data.content))
     return get_comment_with_user_specific_data(db_comment, db_user)
 
 

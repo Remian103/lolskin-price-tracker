@@ -41,11 +41,14 @@ class SkinFull(Skin):
     price_history: List[Price_History] = []
 
 
-
 class UserDataOnComment(BaseModel):
     is_modifiable: bool
     is_liked: bool
     is_disliked: bool
+
+
+class CommentPost(BaseModel):
+    content: str
 
 
 class CommentBase(BaseModel):
