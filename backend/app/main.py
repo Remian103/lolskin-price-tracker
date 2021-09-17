@@ -137,7 +137,7 @@ def modify_comment(comment_id: int, comment_data: schemas.CommentPost, db_user: 
     db_comment = crud.get_comment_by_id(db, comment_id)
     if db_comment.author != db_user:
         raise(HTTPException(401, detail='Unauthorized user'))
-    return get_comment_with_user_specific_data(crud.modify_comment_by_id(db, comment_id, content), db_user)
+    return get_comment_with_user_specific_data(crud.modify_comment_by_id(db, comment_id, comment_data.content), db_user)
 
 
 @app.delete('/api/comment/{comment_id}')
