@@ -133,7 +133,7 @@ def get_comments_list(skin_id: int, skip: int = 0, limit: int = 10, order_by: st
 
 
 @app.put('/api/comments/{comment_id}', response_model=schemas.Comment)
-def modify_comment(comment_id: int, content: str = Body(...), db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
+def modify_comment(comment_id: int, comment_data: schemas.CommentPost, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_comment = crud.get_comment_by_id(db, comment_id)
     if db_comment.author != db_user:
         raise(HTTPException(401, detail='Unauthorized user'))
