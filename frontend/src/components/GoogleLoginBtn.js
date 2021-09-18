@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
 import GoogleLogin from "react-google-login";
 import UserContext from "../context/UserContext";
-import config from"../config.json";
+import config from "../config.json";
 
 
 function GoogleLoginBtn() {
     // user information
-    const [userInfo, setUserInfo] = useContext(UserContext);
+    const { setUserInfo } = useContext(UserContext);
 
     // google login
     const googleLoginSuccess = (googleUser) => {
-        console.log(googleUser.profileObj);
+
+        if (process.env.NODE_ENV !== "production") console.log(googleUser.profileObj);
         setUserInfo({
-            ...userInfo,
             userId: googleUser.profileObj.googleId,
             tokenId: googleUser.tokenId,
             name: googleUser.profileObj.name,
@@ -28,7 +28,7 @@ function GoogleLoginBtn() {
     return (
         <GoogleLogin
             clientId={config.googleAPI.clientId}
-            buttonText="login"
+            buttonText="login with google"
             onSuccess={googleLoginSuccess}
             isSignedIn={true}
             onFailure={googleLoginFailure}

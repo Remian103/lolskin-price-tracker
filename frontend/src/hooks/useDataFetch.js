@@ -1,5 +1,7 @@
-import { useState, useEffect, useReducer } from "react";
+import { useState, useEffect, useReducer, useContext } from "react";
 import axios from "axios";
+
+import UserContext from "../context/UserContext";
 
 function dataFetchReducer(state, action) {
     switch (action.type) {
@@ -27,6 +29,7 @@ function dataFetchReducer(state, action) {
 }
 
 function useDataFetch(initialUrl, initialData) {
+    const { userInfo } = useContext(UserContext);
     const [url, setUrl] = useState(initialUrl);
     const [state, dispatch] = useReducer(dataFetchReducer, {
         isLoading: false,
@@ -41,11 +44,12 @@ function useDataFetch(initialUrl, initialData) {
             dispatch({ type: "FETCH_INIT" });
 
             try {
-                const result = await axios(url);
-
+                const config = userInfo.isLogin ? { headers: { Authorization: `Bearer ${userInfo.tokenId}` } } : undefined;
+                const result = config !== undefined ? await axios.get(url, config) : await axios.get(url);
+                if (process.env.NODE_ENV !== "production") console.log("dataFetch", url, result.data);
                 if (!didCancel)
                     dispatch({ type: "FETCH_SUCCESS", payload: result.data });
-            } catch (error) {
+            } catch (error) { /** include 40x */
                 if (!didCancel) {
                     console.log(`error in data fetch about ${url}\n`, error);
                     dispatch({ type: "FETCH_FAILURE" });
@@ -53,13 +57,14 @@ function useDataFetch(initialUrl, initialData) {
             }
         };
 
-        if(url !== "initialUrl")
+        if (url !== "initialUrl")
             fetchData();
 
         return () => {
             didCancel = true;
+            if (process.env.NODE_ENV !== "production") console.log('unmount hooks', url);
         };
-    }, [url]);
+    }, [url, userInfo]);
 
     return [state, setUrl];
 }

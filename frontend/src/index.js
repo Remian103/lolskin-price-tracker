@@ -13,7 +13,7 @@ import { ThemeProvider, StyleReset } from "atomize";
 import { BrowserRouter as Router } from "react-router-dom";
 
 //context
-import UserProvider from "./components/UserProvider";
+import UserProvider from "./context/UserProvider";
 
 const theme = {
     colors: {

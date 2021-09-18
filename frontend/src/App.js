@@ -36,27 +36,30 @@ function App() {
     }
 
     // user information
-    const [userInfo, setUserInfo] = useContext(UserContext);
+    const { userInfo, setUserInfo } = useContext(UserContext);
 
     //google Logout
     const [logOutBtnDisabled, setLogOutBtnDisabled] = useState(false);
     const LogOutBtnClick = async () => {
         setLogOutBtnDisabled(true);
-        await window.gapi.auth2.getAuthInstance().signOut()
-            .then(() => {
-                setUserInfo({
-                    ...userInfo,
-                    userId: null,
-                    tokenId: null,
-                    name: null,
-                    isLogin: false,
+        if (window.confirm("로그아웃 하시겠습니까?")) {
+            await window.gapi.auth2.getAuthInstance().signOut()
+                .then(() => {
+                    setUserInfo({
+                        ...userInfo,
+                        userId: null,
+                        tokenId: null,
+                        name: null,
+                        isLogin: false,
+                    });
+                    alert("로그아웃 되었습니다.");
+                    window.location.reload(); // 새로고침 (user 정보로 인해 불러진 데이터들 초기화)
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert("비정상적 로그아웃 발생");
                 });
-                alert("로그아웃 되었습니다.");
-            })
-            .catch((error) => {
-                console.log(error);
-                alert("비정상적 로그아웃 발생");
-            });
+        }
         setLogOutBtnDisabled(false);
     }
 
@@ -90,7 +93,7 @@ function App() {
                         </Div>
                         <Image
                             src={userInfo.imageUrl}
-                            m={{r: "8px"}}
+                            m={{ r: "8px" }}
                             h="40px"
                             rounded="circle"
                         />

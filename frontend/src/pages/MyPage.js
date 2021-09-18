@@ -7,7 +7,7 @@ import GoogleLoginBtn from "../components/GoogleLoginBtn";
 
 
 function MyPage({ setNav }) {
-    const [userInfo] = useContext(UserContext);
+    const { userInfo } = useContext(UserContext);
 
     // header navigation tab
     useEffect(() => {

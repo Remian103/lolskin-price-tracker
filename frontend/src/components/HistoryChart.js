@@ -22,11 +22,11 @@ function HistoryChart({ className, chartOption, chartLabel, chartData }) {
             },
             options: chartOption
         });
-        console.log("chart generated");
+        if(process.env.NODE_ENV !== "production") console.log("chart generated");
 
         return () => {
             chart.destroy();
-            console.log("chart destroy...");
+            if(process.env.NODE_ENV !== "production") console.log("chart destroy");
         };
     }, [chartOption, chartLabel, chartData]);
 
