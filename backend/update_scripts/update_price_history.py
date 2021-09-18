@@ -15,8 +15,8 @@ pre_connector = Connector()
 @pre_connector.ready
 async def get_ready(connection):
     print('League Client detected.')
-    print('Sleeping for 180 secs for stable connection...')
-    for i in tqdm(range(180)):
+    print('Sleeping for 300 secs for stable connection...')
+    for i in tqdm(range(300)):
         time.sleep(1)
 
 pre_connector.start()
@@ -40,21 +40,16 @@ async def update(connection, db, skin):
 
     # If the item is available in store
     try:
-        is_available = True
         price = skin_data['prices'][0]['cost']
+        # If the item is on sale
+        try:
+            sale_price = skin_data['sale']['prices'][0]['cost']
+        except Exception:
+            sale_price = price
+        db_price_history = models.PriceHistory(skin=skin, date=date.today(), is_available=True, price=price, sale_price=sale_price)
     except Exception:
-        is_available = False
-        price = 0
+        db_price_history = models.PriceHistory(skin=skin, date=date.today())
 
-    # If the item is on sale
-    try:
-        is_on_sale = True
-        sale_price = skin_data['sale']['prices'][0]['cost']
-    except Exception:
-        is_on_sale = False
-        sale_price = price
-
-    db_price_history = models.Price_History(skin=skin, date=date.today(), is_available=is_available, is_on_sale=is_on_sale, price=price, sale_price=sale_price)
     db.add(db_price_history)
 
 

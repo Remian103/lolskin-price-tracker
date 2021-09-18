@@ -13,7 +13,7 @@ class Champion(BaseModel):
         orm_mode = True
 
 
-class Price_History(BaseModel):
+class PriceHistory(BaseModel):
     skin_id: int
     date: date
     price: Optional[int]
@@ -30,7 +30,7 @@ class Skin(BaseModel):
     trimmed_image_url: Optional[str]
     full_image_url: Optional[str]
     champion_id: int
-    last_price_history: Optional[Price_History]
+    last_price_history: Optional[PriceHistory]
 
     class Config:
         orm_mode = True
@@ -38,7 +38,7 @@ class Skin(BaseModel):
 
 class SkinFull(Skin):
     description: Optional[str]
-    price_history: List[Price_History] = []
+    price_history: List[PriceHistory] = []
 
 
 class UserDataOnComment(BaseModel):
