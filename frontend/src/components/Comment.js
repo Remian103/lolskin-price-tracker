@@ -109,6 +109,9 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
                 setLoading(false);
             }
         }
+        else {
+            setLoading(false);
+        }
     }
 
     return (
