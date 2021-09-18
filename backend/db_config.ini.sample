@@ -1,4 +1,4 @@
-# Configuration file for 'backend/app/db_config.py'
+# Configuration file read by 'backend/app/database.py'
 # Rename this file to 'backend/db_config.ini' to enable it.
 
 [active]
@@ -7,7 +7,7 @@ profile = profile_name
 
 # All fields are required
 [profile_name]
-prompt_name = Name to identify this database on connection
+prompt_name = Name printed on console upon connection
 dialect = postgresql
 driver = psycopg2
 username = 

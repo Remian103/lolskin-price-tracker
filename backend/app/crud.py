@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlalchemy.orm import Session
 
 from . import models, schemas
@@ -32,7 +34,8 @@ def get_user_by_email_address(db: Session, email_address: str):
 
 
 def create_comment(db: Session, comment: schemas.CommentCreate):
-    db_comment = models.Comment(**comment.dict())
+    db_skin = get_skin_by_id(db, comment.skin_id)
+    db_comment = models.Comment(**comment.dict(), skin=db_skin)
     db.add(db_comment)
     db.commit()
     db.refresh(db_comment)
@@ -41,3 +44,23 @@ def create_comment(db: Session, comment: schemas.CommentCreate):
 
 def get_comment_by_id(db: Session, comment_id: int):
     return db.query(models.Comment).filter(models.Comment.id == comment_id).one()
+
+
+def get_comments_by_skin_id(db: Session, skin_id: int, order_by: str):
+    # Probably need caching
+    if order_by == 'desc_likes':
+        return db.query(models.Comment).filter(models.Comment.skin_id == skin_id).order_by(models.Comment.likes.desc()).all()
+
+    # For undefined 'order_by'
+    return db.query(models.Comment).filter(models.Comment.skin_id == skin_id).order_by(models.Comment.likes.desc()).all()
+
+
+def modify_comment_by_id(db: Session, comment_id: int, content: str):
+    db.query(models.Comment).filter(models.Comment.id == comment_id).update({models.Comment.content: content, models.Comment.last_modified: datetime.today()}, synchronize_session=False)
+    db.commit()
+    return get_comment_by_id(db, comment_id)
+
+
+def delete_comment_by_id(db: Session, comment_id: int):
+    db.query(models.Comment).filter(models.Comment.id == comment_id).delete()
+    db.commit()
