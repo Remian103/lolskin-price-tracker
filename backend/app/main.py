@@ -140,7 +140,7 @@ def modify_comment(comment_id: int, comment_data: schemas.CommentPost, db_user: 
     return get_comment_with_user_specific_data(crud.modify_comment_by_id(db, comment_id, comment_data.content), db_user)
 
 
-@app.delete('/api/comment/{comment_id}')
+@app.delete('/api/comments/{comment_id}')
 def delete_comment(comment_id: int, db_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)):
     db_comment = crud.get_comment_by_id(db, comment_id)
     if db_comment.author != db_user:
