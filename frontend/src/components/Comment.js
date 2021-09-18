@@ -7,10 +7,16 @@ import UserContext from "../context/UserContext";
 
 function Comment({ comment, modifyRequest, deleteRequest }) {
     const { userInfo } = useContext(UserContext);
-
+    const auth = comment.current_user_auth;
 
     // 좋아요 기능
-    const [isLike, setIsLike] = useState(comment.like_state);
+    const [isLike, setIsLike] = useState(false);
+    useEffect(() => {
+        console.log(auth);
+        if (auth) {
+            setIsLike(auth.is_liked);
+        }
+    }, [auth]);
     const [likes, setLikes] = useState(comment.likes);
     const [isLikeLoading, setLikeLoading] = useState(false);
     const handleClickLike = async (event) => {
@@ -23,36 +29,41 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
 
         setLikeLoading(true);
 
-        const request = isLike ? axios.delete : axios.post;
-        await request(`api/comments/${comment.comment_id}/like`, null,
-            { headers: { Authorization: `Bearer ${userInfo.tokenId}` } }
-        ).then((response) => {
-            if (process.env.NODE_ENV !== "production") console.log(response);
-            const { likes } = response.data;
+        try {
+            const url = `/api/comments/${comment.id}/likes`;
+            const config = { headers: { "Authorization": `Bearer ${userInfo.tokenId}` } };
+            const response = isLike ? await axios.delete(url, config) : await axios.post(url, null, config);
+            // expected response : (int)
 
+            if (process.env.NODE_ENV !== "production") console.log(response);
             setIsLike((prev) => !prev);
-            setLikes(likes);
-        }).catch((error) => {
-            console.log(`error in comment_id:${comment.comment_id}\n`, error);
-        });
+            setLikes(response.data);
+        }
+        catch (error) {
+            console.log(`error in comment_id:${comment.id}\n`, error);
+            alert("요청이 실패하였습니다.");
+        }
 
         setLikeLoading(false);
     };
     const likeString = (num) => {
-        if(num >= 1000000) {
-            return (num/1000000.0).toFixed(1).toString() + "M"
+        if (num >= 1000000) {
+            return (num / 1000000.0).toFixed(1).toString() + "M"
         }
         else if (num >= 1000) {
-            return (num/1000.0).toFixed(1).toString() + "K"
+            return (num / 1000.0).toFixed(1).toString() + "K"
         }
         return num.toString()
     }
 
 
+    // 각종 웹 요청 시 로딩 확인
+    const [loading, setLoading] = useState(false);
+
+
     // 댓글 수정 기능
     const [modifyMode, setMode] = useState(false);
     const [content, setContent] = useState(comment.content);
-    const [modifyLoading, setModifyLoading] = useState(false);
     const inputRef = useRef(null);
     useEffect(() => {
         if (modifyMode) {
@@ -73,28 +84,31 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (modifyLoading) return;
+        if (loading) return;
 
-        setModifyLoading(true);
-        if (content.length !== 0) {
-            await modifyRequest(`api/comments/${comment.comment_id}`, { comment_id: comment.comment_id, content: content });
+        setLoading(true);
+        if (content.length !== 0 && content !== comment.content) {
+            await modifyRequest(`/api/comments/${comment.id}`, { content: content });
         }
-        setModifyLoading(false);
+        setLoading(false);
         setMode(false);
     };
 
 
     // 댓글 삭제
-    const [deleteLoading, setDeleteLoading] = useState(false)
     const handleDeleteBtn = async (event) => {
         event.preventDefault();
-        if (deleteLoading) return;
+        if (loading) return;
 
-        setDeleteLoading(true);
+        setLoading(true);
         if (window.confirm("삭제하시겠습니까?")) {
-            await deleteRequest(`api/comments/${comment.comment_id}`, comment.comment_id);
+            try {
+                await deleteRequest(`/api/comments/${comment.id}`, comment.id);
+            }
+            catch (error) {
+                setLoading(false);
+            }
         }
-        setDeleteLoading(false);
     }
 
     return (
@@ -129,8 +143,8 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
                             type="submit"
                             h="1.8rem"
                             bg="info700"
-                            hoverBg="info800"
-                            disabled={modifyLoading}
+                            hoverBg={loading ? "disabled" : "info800"}
+                            disabled={loading}
                         >
                             수정
                         </Button>
@@ -139,9 +153,9 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
                             p={{ x: "0.8rem" }}
                             h="1.8rem"
                             bg="info700"
-                            hoverBg="info800"
+                            hoverBg={loading ? "disabled" : "info800"}
                             onClick={handleModifyCancelBtn}
-                            disabled={modifyLoading}
+                            disabled={loading}
                         >
                             취소
                         </Button>
@@ -161,16 +175,16 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
                     p={{ t: "0.3rem" }}
                     justify="flex-end"
                 >
-                    {comment.is_modifiable ?
+                    {auth && auth.is_modifiable ?
                         <>
                             <Button
                                 m={{ l: "0.3rem" }}
                                 p={{ x: "0.8rem" }}
                                 h="1.8rem"
                                 bg="info700"
-                                hoverBg="info800"
+                                hoverBg={loading ? "disabled" : "info800"}
                                 onClick={handleModifyBtn}
-                                disabled={deleteLoading}
+                                disabled={loading}
                             >
                                 수정
                             </Button>
@@ -181,7 +195,7 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
                                 bg="info700"
                                 hoverBg="info800"
                                 onClick={handleDeleteBtn}
-                                disabled={deleteLoading}
+                                disabled={loading}
                             >
                                 삭제
                             </Button>
@@ -189,12 +203,11 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
                     }
                     <Button
                         m={{ l: "0.3rem" }}
-                        p={{ l: "0.6rem", r:"0.8rem" }}
+                        p={{ l: "0.6rem", r: "0.8rem" }}
                         h="1.8rem"
-                        bg={isLike ? "danger700" : "info700"}
-                        hoverBg={isLike ? "danger700" : "info800"}
+                        bg={isLike ? "#ED1F24" : "info700"}
                         onClick={handleClickLike}
-                        disabled={deleteLoading}
+                        disabled={loading}
                         suffix={
                             <Div
                                 d="flex"

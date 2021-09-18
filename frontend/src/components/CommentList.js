@@ -21,21 +21,14 @@ function CommentList({ skinId }) {
     const [commentList, setCommentList] = useState([]);
     // get comment list
     const [nextIndex, setNextIndex] = useState(0);
-    const [{ isError, data : fetchedData }, doFetch, setConfig] = useDataFetch(
+    const [{ isError, data : fetchedData }, doFetch] = useDataFetch(
         urlWithParams(`/api/skins/${skinId}/comments`, {
             skip: nextIndex,
             limit: nextIndex + 3,
             order_by: "asc"
         }),
-        { comments: [], start_index: 0, last_index: 0, num_comments: 0 }
+        { comments: [], skip: 0, limit: 0, num_comments: 0 }
     );
-    // add id token to header
-    useEffect(() => {
-        if (userInfo.isLogin) {
-            setConfig({ headers: { Authorization: `Bearer ${userInfo.tokenId}` } });
-        }
-    }, [userInfo, setConfig]);
-    // 더보기
     const [isLoadingMore, SetLoadingMore] = useState(false);
     const handleMoreBtn = (e) => {
         e.preventDefault();
@@ -48,23 +41,32 @@ function CommentList({ skinId }) {
     };
     // update comment list
     useEffect(() => {
-        setNextIndex(fetchedData.last_index);
-
-        if (fetchedData.start_index !== 0) {
-            setCommentList(prevList => [
-                ...prevList,
-                ...fetchedData.comments
-            ]);
+        if (isError) {
+            alert("불러오기를 실패하였습니다.");
         }
         else {
-            setCommentList(fetchedData.comments);
+            setNextIndex(fetchedData.limit);
+
+            if (fetchedData.skip !== 0) {
+                setCommentList(prevList => {
+                    // prevent same keys in comment list
+                    const idList = prevList.map((comment) => comment.id);
+                    return ([
+                        ...prevList,
+                        ...fetchedData.comments.filter((comment) => !idList.includes(comment.id))
+                    ])
+                });
+            }
+            else {
+                setCommentList(fetchedData.comments);
+            }
         }
         SetLoadingMore(false);
-    }, [fetchedData]);
+    }, [isError, fetchedData]);
 
 
     const modifyCommentList = (comment) => {
-        const index = commentList.findIndex(e => e.comment_id === comment.comment_id);
+        const index = commentList.findIndex(e => e.id === comment.id);
         if (index !== -1) { // modify
             let nextList = [...commentList];
             nextList[index] = comment;
@@ -86,6 +88,7 @@ function CommentList({ skinId }) {
         }
         catch (error) {
             console.log(error);
+            alert("댓글 작성에 실패하였습니다.");
         }
         setSubmitLoading(false);
     };
@@ -102,20 +105,22 @@ function CommentList({ skinId }) {
             alert("수정 중 오류가 발생했습니다.");
         }
     };
-    const commentDelete = async (url, comment_id) => {
-        let newList = [...commentList];
-        newList.splice(commentList.findIndex(e => e.comment_id === comment_id), 1);
-        setCommentList(newList);
-
+    const commentDelete = async (url, commentId) => {
         try {
-            await axios.delete(url, null, {
+            await axios.delete(url, {
                 headers: { Authorization: `Bearer ${userInfo.tokenId}` }
             });
+
+            let newList = [...commentList];
+            newList.splice(commentList.findIndex(e => e.id === commentId), 1);
+            setCommentList(newList);
+
+            alert("삭제되었습니다.");
         }
         catch (error) {
             console.log(error);
             alert("삭제 중 오류가 발생했습니다.");
-            window.location.reload();
+            throw error;
         }
     }
 
@@ -178,7 +183,7 @@ function CommentList({ skinId }) {
         {isError ? <></> :
             commentList.map(comment =>
                 <Comment
-                    key={comment.comment_id}
+                    key={comment.id}
                     comment={comment}
                     modifyRequest={modifyCommentPut}
                     deleteRequest={commentDelete}
@@ -191,7 +196,7 @@ function CommentList({ skinId }) {
                 disabled={isLoadingMore}
                 w="100%"
                 bg="info700"
-                hoverBg="info800"
+                hoverBg={isLoadingMore ? "disabled" :"info800"}
                 prefix={
                     <Icon
                         name={isLoadingMore ? "Loading" : "DownArrow"}

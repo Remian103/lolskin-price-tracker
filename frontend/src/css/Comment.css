@@ -1,11 +1,11 @@
 .comment-animation {
-    animation: comment-mount 1.5s;
+    animation: comment-mount 1.0s;
 }
 
 @keyframes comment-mount {
     from {
         opacity: 0;
-        left: -1rem;
+        left: -10rem;
     }
     to {
         opacity: 1;
