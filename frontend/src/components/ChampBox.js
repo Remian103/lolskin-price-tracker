@@ -4,6 +4,7 @@ import { Div, Input, Icon } from "atomize";
 import Carousel from "../components/Carousel";
 import Modal from "../components/Modal";
 import useDataFetch from "../hooks/useDataFetch";
+import { hangulFuzzyMatch } from "../utils/utils";
 import "../css/ChampBox.css";
 
 function ChampBox() {
@@ -30,7 +31,6 @@ function ChampBox() {
 
 
     // search by champion name
-    const [search, setSearch] = useState(false); // 나중에 버튼 누르면 검색창 튀어나오도록...
     const [word, setWord] = useState("");
     const [result, setResult] = useState([]);
     useEffect(() => {
@@ -38,12 +38,10 @@ function ChampBox() {
             setResult(champList);
             return;
         }
-
-        setResult(
-            champList.filter((champion) =>
-                champion.name.includes(word)
-            )
-        )
+        // regular expression
+        const regex = hangulFuzzyMatch(word);
+        if(process.env.NODE_ENV !== 'production') console.log(word,regex);
+        setResult(champList.filter((champion) => regex.test(champion.name)));
     }, [champList, word]);
     const handleInputChange = (event) => {
         setWord(event.target.value);
