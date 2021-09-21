@@ -6,6 +6,10 @@
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
+    "@types/jest": "^27.0.2",
+    "@types/node": "^16.9.4",
+    "@types/react": "^17.0.22",
+    "@types/react-dom": "^17.0.9",
     "atomize": "^1.0.28",
     "axios": "^0.21.1",
     "chart.js": "^3.5.1",
@@ -21,6 +25,7 @@
     "react-transition-group": "^4.4.2",
     "styletron-engine-atomic": "^1.4.0",
     "styletron-react": "^5.2.0",
+    "typescript": "^4.4.3",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
