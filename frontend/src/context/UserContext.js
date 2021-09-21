@@ -1,11 +1,14 @@
 import { createContext } from "react";
 
 const UserContext = createContext({
-  userId: null,
-  tokenId: null,
-  name: null,
-  imageUrl: null,
-  isLogin: false,
+    userInfo: {
+        userId: null,
+        tokenId: null,
+        name: null,
+        imageUrl: null,
+        isLogin: false,
+    },
+    setUserInfo: (userInfo)=>{ }
 });
 
 export default UserContext;

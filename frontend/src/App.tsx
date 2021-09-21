@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
+import * as React from "react";
+import { useState, useEffect, useContext } from "react";
 import { Div, Button, Icon, Image } from "atomize";
 import "./css/App.css";
 
@@ -26,7 +27,7 @@ function App() {
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    const [anchorList, setList] = useState([]);
+    const [anchorList, setList] = useState<string[]>([]);
 
     const handleTop = () => {
         window.scrollTo({
@@ -39,7 +40,7 @@ function App() {
     const { userInfo, setUserInfo } = useContext(UserContext);
 
     //google Logout
-    const [logOutBtnDisabled, setLogOutBtnDisabled] = useState(false);
+    const [logOutBtnDisabled, setLogOutBtnDisabled] = useState<boolean>(false);
     const LogOutBtnClick = async () => {
         setLogOutBtnDisabled(true);
         if (window.confirm("로그아웃 하시겠습니까?")) {
@@ -55,7 +56,7 @@ function App() {
                     alert("로그아웃 되었습니다.");
                     window.location.reload(); // 새로고침 (user 정보로 인해 불러진 데이터들 초기화)
                 })
-                .catch((error) => {
+                .catch((error: Error) => {
                     console.log(error);
                     alert("비정상적 로그아웃 발생");
                 });
@@ -129,10 +130,10 @@ function App() {
             <Route exact path="/skins/:skinId">
                 <Skins setNav={setList} />
             </Route>
-            <Route exect path="/skins">
+            <Route exact path="/skins">
                 <p>skin page</p>
             </Route>
-            <Route exect path="/myPage">
+            <Route exact path="/myPage">
                 <MyPage setNav={setList} />
             </Route>
             <Route path="/">
