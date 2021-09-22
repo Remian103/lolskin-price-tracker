@@ -1,12 +1,12 @@
 
-function escapeRegExp(string) {
-    return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $&는 일치한 전체 문자열을 의미합니다.
+function escapeRegExp(s: string): string {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $&는 일치한 전체 문자열을 의미합니다.
 }
 
-export function hangulFuzzyMatch(inputString) { // reference : https://taegon.kim/archives/9919
+export function hangulFuzzyMatch(inputString: string): RegExp { // reference : https://taegon.kim/archives/9919
     const offset1 = '가'.charCodeAt(0);
     const offset2 = 'ㅅ'.charCodeAt(0);
-    const con2syl = { // consonant to syllable
+    const con2syl: { [key: string]: number } = { // consonant to syllable
         'ㄱ': '가'.charCodeAt(0),
         'ㄲ': '까'.charCodeAt(0),
         'ㄴ': '나'.charCodeAt(0),
@@ -18,7 +18,7 @@ export function hangulFuzzyMatch(inputString) { // reference : https://taegon.ki
         'ㅃ': '빠'.charCodeAt(0),
         'ㅅ': '사'.charCodeAt(0),
     };
-    const final2initial = {
+    const final2initial: { [key: number]: string } = {
         1: 'ㄱ',
         2: 'ㄲ',
         4: 'ㄴ',
@@ -37,7 +37,7 @@ export function hangulFuzzyMatch(inputString) { // reference : https://taegon.ki
         27: 'ㅎ',
     }
 
-    const pattern = inputString.split('').map((ch, index) => {
+    const pattern = inputString.split('').map((ch: string, index: number) => {
         // 한글 음절 확인
         if (/[가-힣]/.test(ch)) {
             const chCode = ch.charCodeAt(0) - offset1;
