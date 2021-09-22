@@ -3,8 +3,10 @@ import { Div, Text } from "atomize";
 
 import RecommendCarousel from "../components/RecommendCarousel";
 import ChampBox from "../components/ChampBox";
+import { AnchorObj } from "../interfaces/Nav.interface";
 
-function Home({ setNav }) {
+
+function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorObj[]>> }) {
     // header navigation tab
     useEffect(() => {
         setNav([

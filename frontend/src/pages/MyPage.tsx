@@ -3,10 +3,10 @@ import { Div, Text } from "atomize";
 
 import UserContext from "../context/UserContext";
 import GoogleLoginBtn from "../components/GoogleLoginBtn";
+import { AnchorObj } from "../interfaces/Nav.interface";
 
 
-
-function MyPage({ setNav }) {
+function MyPage({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorObj[]>> }) {
     const { userInfo } = useContext(UserContext);
 
     // header navigation tab

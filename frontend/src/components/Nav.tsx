@@ -1,14 +1,16 @@
-import React from 'react';
+import * as React from 'react';
 import "../css/Nav.css";
 import { Link } from "react-router-dom";
 import { HashLink } from "react-router-hash-link";
 import { Button } from "atomize";
 
-function Nav({ anchorList }) {
+import { AnchorObj } from "../interfaces/Nav.interface";
+
+function Nav({ anchorList }: { anchorList: AnchorObj[] }) {
 
     return (
         <nav>
-            { anchorList.map((item) => {
+            {anchorList.map((item: AnchorObj) => {
                 if (item.type === "hash")
                     return (
                         <HashLink key={item.id}
@@ -43,7 +45,7 @@ function Nav({ anchorList }) {
                             </Button>
                         </a>
                     );
-                else 
+                else
                     return (
                         <Link
                             key={item.id}

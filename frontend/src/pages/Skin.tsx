@@ -6,17 +6,33 @@ import useDataFetch from "../hooks/useDataFetch";
 import Carousel from "../components/Carousel";
 import HistoryChart from "../components/HistoryChart";
 import CommentList from "../components/CommentList";
+import { AnchorObj } from "../interfaces/Nav.interface";
 
 
-/**
- * 
- * page for skin information
- * url : /skins/:skinId
- * 
- */
+interface MatchParams {
+    skinId: string;
+}
 
-function Skins({ setNav }) {
-    const { params } = useRouteMatch("/skins/:skinId");
+interface PriceData {
+    skin_id: number;
+    date: string;
+    price: number;
+    sale_price: number;
+    is_available: boolean;
+}
+
+interface skinData {
+    id: number;
+    name: string;
+    trimmed_image_url: string;
+    champion_id: number;
+    last_price_history: PriceData;
+    description: string;
+    price_history: PriceData[];
+}
+
+function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorObj[]>> }) {
+    const match = useRouteMatch<MatchParams>("/skins/:skinId");
 
     // header navigation tab
     useEffect(() => {
@@ -32,20 +48,21 @@ function Skins({ setNav }) {
 
     // skin data fetch
     const [{ data: skin }, doSkinFetch] = useDataFetch(
-        `/api/skins/${params.skinId}`,
+        match !== null ? `/api/skins/${match.params.skinId}` : "initialUrl",
         {}
     );
 
 
     // update when skin id changed
     useEffect(() => {
-        doSkinFetch(`/api/skins/${params.skinId}`);
-    }, [params, doSkinFetch]);
+        if (match !== null)
+            doSkinFetch(`/api/skins/${match.params.skinId}`);
+    }, [match, doSkinFetch]);
 
 
     //generate chart data
-    const [chartLabel, setLabel] = useState([]);
-    const [chartData, setData] = useState([]);
+    const [chartLabel, setLabel] = useState<string[]>([]);
+    const [chartData, setData] = useState<number[]>([]);
     const chartOption = useMemo(() => {
         return {
             responsive: true,
@@ -70,23 +87,23 @@ function Skins({ setNav }) {
         };
     }, []);
     useEffect(() => {
-        const history = skin.price_history || [];
+        const history: PriceData[] = skin.price_history || [];
 
-        history.sort((a,b) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
-        setLabel(history.map(item => item.date));
-        setData(history.map(item => item.sale_price));
+        history.sort((a: PriceData, b: PriceData) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+        setLabel(history.map((item: PriceData) => item.date));
+        setData(history.map((item: PriceData) => item.sale_price));
     }, [skin]);
 
 
     // skin list of champion
     const [{ data: championSkinList }, doChampionFetch] = useDataFetch("initialUrl", []);
     const flickityOptions = {
-            initialIndex: 0,
-            cellAlign: "left",
-            contain: true,
-            pageDots: false,
-            //wrapAround: true,
-            //autoPlay: 3000,
+        initialIndex: 0,
+        cellAlign: "left",
+        contain: true,
+        pageDots: false,
+        //wrapAround: true,
+        //autoPlay: 3000,
     };
     useEffect(() => {
         if (skin.champion_id !== undefined) {
@@ -144,7 +161,10 @@ function Skins({ setNav }) {
                 </Text>
             </div>
             <Div p={{ x: "1rem" }}>
-                <CommentList skinId={params.skinId} />
+                {match !== null ?
+                    <CommentList skinId={match.params.skinId} /> :
+                    <></>
+                }
             </Div>
         </div>
     </>);

@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import UserContext, { UserInfo } from "../context/UserContext";
+import * as React from "react";
+import { useState } from "react";
+import { UserInfo } from "../interfaces/User.interface";
+import UserContext from "../context/UserContext";
 
 
 function UserProvider({ children }: { children: React.ReactNode }) {

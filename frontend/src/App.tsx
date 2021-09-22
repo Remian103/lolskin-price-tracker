@@ -12,22 +12,26 @@ import {
 } from "react-router-dom";
 
 import Nav from "./components/Nav";
+import { AnchorObj } from "./interfaces/Nav.interface";
 import Home from "./pages/Home";
-import Skins from "./pages/Skins";
+import Skin from "./pages/Skin";
 import MyPage from "./pages/MyPage";
 import UserContext from "./context/UserContext";
 import GoogleLoginBtn from "./components/GoogleLoginBtn";
 
+interface LocationParams {
+    pathname: string;
+}
 
 function App() {
     // scroll top when page changed
-    const { pathname } = useLocation();
+    const { pathname } = useLocation<LocationParams>();
     useEffect(() => {
         console.log(`move to "${pathname}"`);
         window.scrollTo(0, 0);
     }, [pathname]);
 
-    const [anchorList, setList] = useState<string[]>([]);
+    const [anchorList, setList] = useState<AnchorObj[]>([]);
 
     const handleTop = () => {
         window.scrollTo({
@@ -128,7 +132,7 @@ function App() {
                 <Home setNav={setList} />
             </Route>
             <Route exact path="/skins/:skinId">
-                <Skins setNav={setList} />
+                <Skin setNav={setList} />
             </Route>
             <Route exact path="/skins">
                 <p>skin page</p>

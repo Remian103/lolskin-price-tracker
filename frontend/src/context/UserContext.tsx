@@ -1,12 +1,6 @@
 import { createContext } from "react";
+import { UserInfo } from "../interfaces/User.interface";
 
-export interface UserInfo {
-    userId: string | null;
-    tokenId: string | null;
-    name: string | null;
-    imageUrl: string | null;
-    isLogin: boolean;
-}
 
 const UserContext = createContext<{ userInfo: UserInfo, setUserInfo: (userInfo: UserInfo) => void }>({
     userInfo: {
