@@ -118,7 +118,7 @@ function ChampBox() {
             }
         </Div>
 
-        <Modal className="skins" isOpen={display} close={() => setDisplay(false)}>
+        <Modal className="skins" isOpen={display} closeFn={() => setDisplay(false)}>
             {
                 skinLoading ? <p> is loading... </p> :
                     skinError || !Array.isArray(skinList) ? <p> something error </p> :
