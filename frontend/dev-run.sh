@@ -42,6 +42,7 @@ docker run --rm -it -p 3000:3000 \
     -v $(pwd)/build:/frontend/build \
     -v $(pwd)/testPackage/package.json:/frontend/package.json \
     -v $(pwd)/testPackage/yarn.lock:/frontend/yarn.lock \
+    -v $(pwd)/tsconfig.json:/frontend/tsconfig.json \
     --name=react \
     --user "$(id -u):$(id -g)" \
     remian103/frontend-dev \
