@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
+import { useState, useEffect } from "react";
 import { Div, Input, Icon } from "atomize";
 
 import Carousel from "../components/Carousel";
@@ -6,6 +7,12 @@ import Modal from "../components/Modal";
 import useDataFetch from "../hooks/useDataFetch";
 import { hangulFuzzyMatch } from "../utils/utils";
 import "../css/ChampBox.css";
+
+interface Champion {
+    id: number;
+    name: string;
+    icon_url: string;
+}
 
 function ChampBox() {
     // 챔피언 리스트 fetch
@@ -32,7 +39,7 @@ function ChampBox() {
 
     // search by champion name
     const [word, setWord] = useState("");
-    const [result, setResult] = useState([]);
+    const [result, setResult] = useState<Champion[]>([]);
     useEffect(() => {
         if (word.length === 0) {
             setResult(champList);
@@ -41,12 +48,12 @@ function ChampBox() {
         // regular expression
         const regex = hangulFuzzyMatch(word);
         if(process.env.NODE_ENV !== 'production') console.log(word,regex);
-        setResult(champList.filter((champion) => regex.test(champion.name)));
+        setResult(champList.filter((champion: Champion) => regex.test(champion.name)));
     }, [champList, word]);
-    const handleInputChange = (event) => {
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setWord(event.target.value);
     };
-    const items = result.map((champion) =>
+    const items = result.map((champion: Champion) =>
         <Div
             key={champion.id}
             p="0.5rem"

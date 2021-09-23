@@ -1,16 +1,25 @@
-import React, { useState, useEffect } from "react";
-import Flickity from "react-flickity-component";
+import * as React from "react";
+import { useState, useEffect } from "react";
+import Flickity, { FlickityOptions } from "react-flickity-component";
 import { useHistory } from "react-router-dom";
 import { Div } from "atomize";
 import "../css/flickity.css";
 import "../css/Carousel.css";
 
-function Carousel({ list, flktyOption, cellOption }) {
+interface Props {
+    list: any[];
+    flktyOption: FlickityOptions;
+    cellOption: {
+        type: "recommend-skins" | "champion-skins";
+    }
+}
+
+function Carousel({ list, flktyOption, cellOption }: Props) {
     const history = useHistory();
 
     // use flickity API
-    const [flkty, setFlkty] = useState(undefined);
-    const getFlickityRef = (ref) => {
+    const [flkty, setFlkty] = useState<undefined | Flickity>(undefined);
+    const getFlickityRef = (ref: Flickity) => {
         setFlkty(ref);
     }
     useEffect(() => {
@@ -21,7 +30,7 @@ function Carousel({ list, flktyOption, cellOption }) {
             });
             */
 
-            flkty.on('staticClick', function (event, pointer, cellElement, cellIndex) {
+            flkty.on('staticClick', function (event: Event, pointer: Element | Touch, cellElement: Element, cellIndex: number) {
                 if (!cellElement) {
                     return;
                 }

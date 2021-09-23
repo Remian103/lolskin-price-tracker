@@ -1,12 +1,15 @@
-import React, { useState, useEffect, useContext } from "react";
+import * as React from "react";
+import { useState, useEffect, useContext } from "react";
 import { Input, Icon, Button } from "atomize";
 import axios from "axios";
 
 import Comment from "../components/Comment";
 import useDataFetch from "../hooks/useDataFetch";
 import UserContext from "../context/UserContext";
+import { CommentObj, CommentListObj } from "../interfaces/Comment.interface";
 
-function urlWithParams(url, params) {
+
+function urlWithParams(url: string, params: { [key: string]: string | number }) {
     let paramStr = "?";
     for (const param in params) {
         paramStr += param + "=" + params[param] + "&";
@@ -14,14 +17,14 @@ function urlWithParams(url, params) {
     return url + paramStr.slice(0, paramStr.length - 1);
 }
 
-function CommentList({ skinId }) {
+function CommentList({ skinId }: { skinId: string }) {
     const { userInfo } = useContext(UserContext);
 
 
-    const [commentList, setCommentList] = useState([]);
+    const [commentList, setCommentList] = useState<CommentObj[]>([]);
     // get comment list
     const [nextIndex, setNextIndex] = useState(0);
-    const [{ isError, data : fetchedData }, doFetch] = useDataFetch(
+    const [{ isError, data: fetchedData }, doFetch] = useDataFetch(
         urlWithParams(`/api/skins/${skinId}/comments`, {
             skip: nextIndex,
             limit: nextIndex + 3,
@@ -30,8 +33,8 @@ function CommentList({ skinId }) {
         { comments: [], skip: 0, limit: 0, num_comments: 0 }
     );
     const [isLoadingMore, SetLoadingMore] = useState(false);
-    const handleMoreBtn = (e) => {
-        e.preventDefault();
+    const handleMoreBtn: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+        event.preventDefault();
         SetLoadingMore(true);
         doFetch(urlWithParams(`/api/skins/${skinId}/comments`, {
             skip: nextIndex,
@@ -53,7 +56,7 @@ function CommentList({ skinId }) {
                     const idList = prevList.map((comment) => comment.id);
                     return ([
                         ...prevList,
-                        ...fetchedData.comments.filter((comment) => !idList.includes(comment.id))
+                        ...fetchedData.comments.filter((comment: CommentObj) => !idList.includes(comment.id))
                     ])
                 });
             }
@@ -65,7 +68,7 @@ function CommentList({ skinId }) {
     }, [isError, fetchedData]);
 
 
-    const modifyCommentList = (comment) => {
+    const modifyCommentList = (comment: CommentObj) => {
         const index = commentList.findIndex(e => e.id === comment.id);
         if (index !== -1) { // modify
             let nextList = [...commentList];
@@ -79,7 +82,7 @@ function CommentList({ skinId }) {
             ]);
         }
     };
-    const newCommentPost = async (url, body) => {
+    const newCommentPost = async (url: string, body: { [key: string]: string | number }) => {
         try {
             const res = await axios.post(url, body, {
                 headers: { Authorization: `Bearer ${userInfo.tokenId}` }
@@ -92,7 +95,7 @@ function CommentList({ skinId }) {
         }
         setSubmitLoading(false);
     };
-    const modifyCommentPut = async (url, body) => {
+    const modifyCommentPut = async (url: string, body: { [key: string]: string | number }) => {
         try {
             const res = await axios.put(url, body, {
                 headers: { Authorization: `Bearer ${userInfo.tokenId}` }
@@ -105,7 +108,7 @@ function CommentList({ skinId }) {
             alert("수정 중 오류가 발생했습니다.");
         }
     };
-    const commentDelete = async (url, commentId) => {
+    const commentDelete = async (url: string, commentId: number) => {
         try {
             await axios.delete(url, {
                 headers: { Authorization: `Bearer ${userInfo.tokenId}` }
@@ -128,10 +131,10 @@ function CommentList({ skinId }) {
     // form state
     const [content, setContent] = useState("");
     const [submitLoading, setSubmitLoading] = useState(false);
-    const handleCommentChange = (event) => {
+    const handleCommentChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setContent(event.target.value);
     };
-    const handleSubmit = (event) => {
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
 
         if (userInfo.isLogin) {
@@ -196,7 +199,7 @@ function CommentList({ skinId }) {
                 disabled={isLoadingMore}
                 w="100%"
                 bg="info700"
-                hoverBg={isLoadingMore ? "disabled" :"info800"}
+                hoverBg={isLoadingMore ? "disabled" : "info800"}
                 prefix={
                     <Icon
                         name={isLoadingMore ? "Loading" : "DownArrow"}

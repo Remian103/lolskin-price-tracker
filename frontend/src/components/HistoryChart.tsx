@@ -1,10 +1,18 @@
-import React, { useEffect, useRef } from "react";
+import * as React from "react";
+import { useEffect, useRef } from "react";
 import { Chart, registerables } from 'chart.js';
 
-function HistoryChart({ className, chartOption, chartLabel, chartData }) {
-    const chartRef = useRef(null);
+interface Props {
+    className: string;
+    chartOption: any;
+    chartLabel: string[];
+    chartData: number[];
+}
+
+function HistoryChart({ className, chartOption, chartLabel, chartData }: Props) {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
-        const ctx = chartRef.current.getContext("2d");
+        const ctx = canvasRef.current?.getContext("2d");
         Chart.register(...registerables);
         let data = chartData.slice();
 
@@ -32,7 +40,7 @@ function HistoryChart({ className, chartOption, chartLabel, chartData }) {
 
     return (
         <div className={(className || "") + " chart-container"}>
-            <canvas ref={chartRef}></canvas>
+            <canvas ref={canvasRef}></canvas>
         </div>
     );
 }

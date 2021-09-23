@@ -1,5 +1,7 @@
-import React from "react";
+import * as React from "react";
 import { Div } from "atomize";
+import { FlickityOptions } from "react-flickity-component";
+
 import Carousel from "./Carousel";
 import useDataFetch from "../hooks/useDataFetch";
 
@@ -10,7 +12,7 @@ function RecommendCarousel() {
         []
     );
     
-    const flickityOptions = {
+    const flickityOptions: FlickityOptions = {
         initialIndex: 1,
         wrapAround: true,
         autoPlay: 3000,
