@@ -1,42 +1,68 @@
 import * as React from "react";
 import { useEffect, useRef } from "react";
-import { Chart, registerables } from 'chart.js';
+import { Chart, registerables } from "chart.js";
+
+import { PriceHistory } from "../interfaces/Fetch.interface";
 
 interface Props {
     className: string;
-    chartOption: any;
-    chartLabel: string[];
-    chartData: number[];
+    priceHistory: PriceHistory[];
 }
 
-function HistoryChart({ className, chartOption, chartLabel, chartData }: Props) {
+function HistoryChart({ className, priceHistory }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     useEffect(() => {
         const ctx = canvasRef.current?.getContext("2d");
         Chart.register(...registerables);
-        let data = chartData.slice();
+
+        const history = priceHistory;
+        history.sort((a: PriceHistory, b: PriceHistory) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+        const chartLabel = history.map((item: PriceHistory) => item.date);
+        const chartData = history.map((item: PriceHistory) => item.sale_price);
 
         const chart = new Chart(ctx, {
             type: "line",
             data: {
                 labels: chartLabel,
                 datasets: [{
-                    data: data,
+                    data: chartData,
                     fill: false,
                     borderColor: "green",
                     backgroundColor: "rgb(0,0,0,1)",
                     tension: 0
                 }]
             },
-            options: chartOption
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        stackWeight: 1,
+                        ticks: {
+                            color: "black"
+                        }
+                    },
+                    x: {
+                        ticks: {
+                            color: "black"
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
         });
-        if(process.env.NODE_ENV !== "production") console.log("chart generated");
+        if (process.env.NODE_ENV !== "production") console.log("chart generated");
 
         return () => {
             chart.destroy();
-            if(process.env.NODE_ENV !== "production") console.log("chart destroy");
+            if (process.env.NODE_ENV !== "production") console.log("chart destroy");
         };
-    }, [chartOption, chartLabel, chartData]);
+    }, [priceHistory]);
 
     return (
         <div className={(className || "") + " chart-container"}>

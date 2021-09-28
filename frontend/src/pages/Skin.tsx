@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect } from "react";
 import { Div, Text } from "atomize";
 import { useParams } from "react-router-dom";
 
@@ -7,7 +7,7 @@ import Carousel from "../components/Carousel";
 import HistoryChart from "../components/HistoryChart";
 import CommentList from "../components/CommentList";
 import { AnchorObj } from "../interfaces/Nav.interface";
-import { SkinObj, SkinFullObj, PriceHistory } from "../interfaces/Fetch.interface";
+import { SkinObj, SkinFullObj } from "../interfaces/Fetch.interface";
 
 
 interface Params {
@@ -50,8 +50,6 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
             price_history: []
         }
     );
-
-
     // update when skin id changed
     useEffect(() => {
         if(Number(skinId) !== skin.id) {
@@ -60,43 +58,9 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     }, [skinId]);
 
 
-    //generate chart data
-    const [chartLabel, setLabel] = useState<string[]>([]);
-    const [chartData, setData] = useState<number[]>([]);
-    const chartOption = useMemo(() => {
-        return {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    stackWeight: 1,
-                    ticks: {
-                        color: "black"
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: "black"
-                    }
-                }
-            },
-            plugins: {
-                legend: false
-            }
-        };
-    }, []);
-    useEffect(() => {
-        const history: PriceHistory[] = skin.price_history || [];
-
-        history.sort((a: PriceHistory, b: PriceHistory) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
-        setLabel(history.map((item: PriceHistory) => item.date));
-        setData(history.map((item: PriceHistory) => item.sale_price));
-    }, [skin]);
-
-
     // skin list of champion
     const [{ data: skinList }, doSkinListFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
+    // update when champion id changed
     useEffect(() => {
         doSkinListFetch(`/api/champions/${championId}/skins`);
     }, [championId]);
@@ -118,14 +82,14 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                 </Text>
             </div>
 
-            {skin.name === "default" ? null :
+            {skin.name === "default" || skin.price_history.length === 0 ? null :
                 <>
                     <div className="hash-link" id="chart" />
                     <Div p={{
                         x: "1rem",
                         b: "2rem"
                     }}>
-                        <HistoryChart className="shadowDiv" chartOption={chartOption} chartLabel={chartLabel} chartData={chartData} />
+                        <HistoryChart className="shadowDiv" priceHistory={skin.price_history} />
                     </Div>
                 </>
             }
