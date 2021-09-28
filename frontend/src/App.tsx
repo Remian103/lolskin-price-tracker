@@ -131,7 +131,7 @@ function App() {
             <Route exact path="/home">
                 <Home setNav={setList} />
             </Route>
-            <Route exact path="/skins/:skinId">
+            <Route exact path="/champions/:championId/skins/:skinId">
                 <Skin setNav={setList} />
             </Route>
             <Route exact path="/skins">

@@ -10,12 +10,13 @@ import { AnchorObj } from "../interfaces/Nav.interface";
 import { SkinObj, SkinFullObj, PriceHistory } from "../interfaces/Fetch.interface";
 
 
-interface MatchParams {
+interface Params {
     skinId: string;
+    championId: string;
 }
 
 function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorObj[]>> }) {
-    const { skinId } = useParams<MatchParams>();
+    const { skinId, championId } = useParams<Params>();
 
     // header navigation tab
     useEffect(() => {
@@ -37,7 +38,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
             name: "",
             trimmed_image_url: "",
             full_image_url: "",
-            champion_id: -1,
+            champion_id: Number(championId),
             last_price_history: {
                 skin_id: -1,
                 date: "",
@@ -54,7 +55,6 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     // update when skin id changed
     useEffect(() => {
         if(Number(skinId) !== skin.id) {
-            console.log(skinId, skin.id);
             doSkinFetch(`/api/skins/${skinId}`);
         }
     }, [skinId]);
@@ -98,10 +98,8 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     // skin list of champion
     const [{ data: skinList }, doSkinListFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
     useEffect(() => {
-        if (skin.champion_id !== -1) {
-            doSkinListFetch(`/api/champions/${skin.champion_id}/skins`);
-        }
-    }, [skin.champion_id]);
+        doSkinListFetch(`/api/champions/${championId}/skins`);
+    }, [championId]);
 
 
     return (<>

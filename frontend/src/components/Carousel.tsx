@@ -37,7 +37,7 @@ function Carousel(props: Props) {
                         return;
                     }
                     const item = props.list[cellIndex];
-                    history.push(`/skins/${item.id}`);
+                    history.push(`/champions/${item.champion_id}/skins/${item.id}`);
                 });
             }
         }
