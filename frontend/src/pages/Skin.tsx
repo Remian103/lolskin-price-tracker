@@ -7,28 +7,11 @@ import Carousel from "../components/Carousel";
 import HistoryChart from "../components/HistoryChart";
 import CommentList from "../components/CommentList";
 import { AnchorObj } from "../interfaces/Nav.interface";
+import { SkinObj, SkinFullObj, PriceHistory } from "../interfaces/Fetch.interface";
 
 
 interface MatchParams {
     skinId: string;
-}
-
-interface PriceData {
-    skin_id: number;
-    date: string;
-    price: number;
-    sale_price: number;
-    is_available: boolean;
-}
-
-interface skinData {
-    id: number;
-    name: string;
-    trimmed_image_url: string;
-    champion_id: number;
-    last_price_history: PriceData;
-    description: string;
-    price_history: PriceData[];
 }
 
 function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorObj[]>> }) {
@@ -47,9 +30,24 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
 
     // skin data fetch
-    const [{ data: skin }, doSkinFetch] = useDataFetch(
+    const [{ data: skin }, doSkinFetch] = useDataFetch<SkinFullObj>(
         match !== null ? `/api/skins/${match.params.skinId}` : "initialUrl",
-        {}
+        {
+            id: -1,
+            name: "",
+            trimmed_image_url: "",
+            full_image_url: "",
+            champion_id: -1,
+            last_price_history: {
+                skin_id: -1,
+                date: "",
+                price: -1,
+                sale_price: -1,
+                is_available: false
+            },
+            description: "",
+            price_history: []
+        }
     );
 
 
@@ -87,16 +85,16 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
         };
     }, []);
     useEffect(() => {
-        const history: PriceData[] = skin.price_history || [];
+        const history: PriceHistory[] = skin.price_history || [];
 
-        history.sort((a: PriceData, b: PriceData) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
-        setLabel(history.map((item: PriceData) => item.date));
-        setData(history.map((item: PriceData) => item.sale_price));
+        history.sort((a: PriceHistory, b: PriceHistory) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+        setLabel(history.map((item: PriceHistory) => item.date));
+        setData(history.map((item: PriceHistory) => item.sale_price));
     }, [skin]);
 
 
     // skin list of champion
-    const [{ data: championSkinList }, doChampionFetch] = useDataFetch("initialUrl", []);
+    const [{ data: championSkinList }, doChampionFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
     const flickityOptions = {
         initialIndex: 0,
         cellAlign: "left",

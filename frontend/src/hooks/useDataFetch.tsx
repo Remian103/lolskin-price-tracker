@@ -2,8 +2,18 @@ import { useState, useEffect, useReducer, useContext } from "react";
 import axios from "axios";
 
 import UserContext from "../context/UserContext";
+import { FetchState } from "../interfaces/Fetch.interface";
 
-function dataFetchReducer(state, action) {
+type Action<S> = {
+    type: "FETCH_INIT"
+} | {
+    type: "FETCH_SUCCESS";
+    payload: S;
+} | {
+    type: "FETCH_FAILURE";
+}
+
+function dataFetchReducer<S>(state: FetchState<S>, action: Action<S>): FetchState<S> {
     switch (action.type) {
         case "FETCH_INIT":
             return {
@@ -28,10 +38,10 @@ function dataFetchReducer(state, action) {
     }
 }
 
-function useDataFetch(initialUrl, initialData) {
+function useDataFetch<S>(initialUrl: string, initialData: S): [FetchState<S>, React.Dispatch<React.SetStateAction<string>>] {
     const { userInfo } = useContext(UserContext);
     const [url, setUrl] = useState(initialUrl);
-    const [state, dispatch] = useReducer(dataFetchReducer, {
+    const [state, dispatch] = useReducer<(s: FetchState<S>, a: Action<S>) => FetchState<S>>(dataFetchReducer, {
         isLoading: false,
         isError: false,
         data: initialData

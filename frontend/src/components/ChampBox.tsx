@@ -7,22 +7,18 @@ import Modal from "../components/Modal";
 import useDataFetch from "../hooks/useDataFetch";
 import { hangulFuzzyMatch } from "../utils/utils";
 import "../css/ChampBox.css";
+import { ChampionObj, SkinObj } from "../interfaces/Fetch.interface";
 
-interface Champion {
-    id: number;
-    name: string;
-    icon_url: string;
-}
 
 function ChampBox() {
     // 챔피언 리스트 fetch
     const [champId, setId] = useState(0);
-    const [{ isLoading: champLoading, isError: champError, data: champList }] = useDataFetch("/api/champions", []);
+    const [{ isLoading: champLoading, isError: champError, data: champList }] = useDataFetch<ChampionObj[]>("/api/champions", []);
 
 
     // modal window
     const [display, setDisplay] = useState(false);
-    const [{ isLoading: skinLoading, isError: skinError, data: skinList }, doFetch] = useDataFetch("initialUrl", []);
+    const [{ isLoading: skinLoading, isError: skinError, data: skinList }, doFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
     useEffect(() => {
         if (display)
             doFetch(`/api/champions/${champId}/skins`);
@@ -39,7 +35,7 @@ function ChampBox() {
 
     // search by champion name
     const [word, setWord] = useState("");
-    const [result, setResult] = useState<Champion[]>([]);
+    const [result, setResult] = useState<ChampionObj[]>([]);
     useEffect(() => {
         if (word.length === 0) {
             setResult(champList);
@@ -47,13 +43,13 @@ function ChampBox() {
         }
         // regular expression
         const regex = hangulFuzzyMatch(word);
-        if(process.env.NODE_ENV !== 'production') console.log(word,regex);
-        setResult(champList.filter((champion: Champion) => regex.test(champion.name)));
+        if (process.env.NODE_ENV !== 'production') console.log(word, regex);
+        setResult(champList.filter((champion: ChampionObj) => regex.test(champion.name)));
     }, [champList, word]);
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setWord(event.target.value);
     };
-    const items = result.map((champion: Champion) =>
+    const items = result.map((champion: ChampionObj) =>
         <Div
             key={champion.id}
             p="0.5rem"
