@@ -1,5 +1,5 @@
-import React from "react";
-import ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom";
 import "./css/index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
@@ -22,11 +22,11 @@ const theme = {
     },
 };
 
-const debug =
+const debug: DebugEngine | undefined =
     process.env.NODE_ENV === "production" ? void 0 : new DebugEngine();
 
 // 1. Create a client engine instance
-const engine = new Styletron();
+const engine: Styletron = new Styletron();
 
 // 2. Provide the engine to the app
 // debug engine needs inlined source maps

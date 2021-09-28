@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import * as React from "react";
+import { useEffect } from "react";
 import { Button, Icon } from "atomize";
 import "../css/Modal.css";
 
-function SkinModal(props) {
-    const { isOpen, close } = props;
+function Modal(props: { className?: string; children: React.ReactNode; isOpen: boolean; closeFn: ()=>void; }) {
+    const { isOpen, closeFn } = props;
 
     // lock scrolling behind
     useEffect(() => {
@@ -19,7 +20,7 @@ function SkinModal(props) {
     /* silde in out css */
     return (<>
         <div className={className}
-            onClick={close}
+            onClick={closeFn}
         >
             <section
                 onClick={(e)=>{e.stopPropagation();}}
@@ -30,7 +31,7 @@ function SkinModal(props) {
                     bg="info700"
                     hoverBg="info800"
                     rounded="lg"
-                    onClick={close}
+                    onClick={closeFn}
                 >
                     <Icon name="Cross" size="20px" color="white" />
                 </Button>
@@ -40,4 +41,4 @@ function SkinModal(props) {
     </>);
 }
 
-export default SkinModal;
+export default Modal;

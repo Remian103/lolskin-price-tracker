@@ -1,11 +1,19 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import * as React from "react";
+import { useState, useEffect, useContext, useRef } from "react";
 import { Button, Div, Icon, Input } from "atomize";
 import axios from "axios";
 import "../css/Comment.css";
 
 import UserContext from "../context/UserContext";
+import { CommentObj } from "../interfaces/Comment.interface";
 
-function Comment({ comment, modifyRequest, deleteRequest }) {
+interface Props {
+    comment: CommentObj;
+    modifyRequest: (url: string, body: { [key: string]: string | number }) => Promise<void>;
+    deleteRequest: (url: string, commentId: number) => Promise<void>;
+}
+
+function Comment({ comment, modifyRequest, deleteRequest }: Props) {
     const { userInfo } = useContext(UserContext);
     const auth = comment.current_user_auth;
 
@@ -19,7 +27,7 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
     }, [auth]);
     const [likes, setLikes] = useState(comment.likes);
     const [isLikeLoading, setLikeLoading] = useState(false);
-    const handleClickLike = async (event) => {
+    const handleClickLike: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
         event.preventDefault();
         if (isLikeLoading) return;
         if (!userInfo.isLogin) {
@@ -46,7 +54,7 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
 
         setLikeLoading(false);
     };
-    const likeString = (num) => {
+    const likeString = (num: number) => {
         if (num >= 1000000) {
             return (num / 1000000.0).toFixed(1).toString() + "M"
         }
@@ -64,25 +72,25 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
     // 댓글 수정 기능
     const [modifyMode, setMode] = useState(false);
     const [content, setContent] = useState(comment.content);
-    const inputRef = useRef(null);
+    const inputRef = useRef<null | HTMLInputElement>(null);
     useEffect(() => {
-        if (modifyMode) {
+        if (modifyMode && inputRef.current !== null) {
             inputRef.current.focus();
         }
     }, [modifyMode]);
-    const handleModifyBtn = (event) => {
+    const handleModifyBtn: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
         setContent(comment.content);
         setMode(true);
     };
-    const handleModifyCancelBtn = (event) => {
+    const handleModifyCancelBtn: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
         setMode(false);
     }
-    const handleConentChange = (event) => {
+    const handleConentChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
         setContent(event.target.value);
     };
-    const handleSubmit = async (event) => {
+    const handleSubmit: React.FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault();
         if (loading) return;
 
@@ -96,7 +104,7 @@ function Comment({ comment, modifyRequest, deleteRequest }) {
 
 
     // 댓글 삭제
-    const handleDeleteBtn = async (event) => {
+    const handleDeleteBtn: React.MouseEventHandler<HTMLButtonElement> = async (event) => {
         event.preventDefault();
         if (loading) return;
 
