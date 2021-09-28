@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { Div, Text } from "atomize";
-import { useRouteMatch } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useDataFetch from "../hooks/useDataFetch";
 import Carousel from "../components/Carousel";
@@ -15,7 +15,7 @@ interface MatchParams {
 }
 
 function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorObj[]>> }) {
-    const match = useRouteMatch<MatchParams>("/skins/:skinId");
+    const { skinId } = useParams<MatchParams>();
 
     // header navigation tab
     useEffect(() => {
@@ -31,9 +31,9 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
     // skin data fetch
     const [{ data: skin }, doSkinFetch] = useDataFetch<SkinFullObj>(
-        match !== null ? `/api/skins/${match.params.skinId}` : "initialUrl",
+        `/api/skins/${skinId}`,
         {
-            id: -1,
+            id: Number(skinId),
             name: "",
             trimmed_image_url: "",
             full_image_url: "",
@@ -53,9 +53,11 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
     // update when skin id changed
     useEffect(() => {
-        if (match !== null)
-            doSkinFetch(`/api/skins/${match.params.skinId}`);
-    }, [match, doSkinFetch]);
+        if(Number(skinId) !== skin.id) {
+            console.log(skinId, skin.id);
+            doSkinFetch(`/api/skins/${skinId}`);
+        }
+    }, [skinId]);
 
 
     //generate chart data
@@ -94,20 +96,12 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
 
     // skin list of champion
-    const [{ data: championSkinList }, doChampionFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
-    const flickityOptions = {
-        initialIndex: 0,
-        cellAlign: "left",
-        contain: true,
-        pageDots: false,
-        //wrapAround: true,
-        //autoPlay: 3000,
-    };
+    const [{ data: skinList }, doSkinListFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
     useEffect(() => {
-        if (skin.champion_id !== undefined) {
-            doChampionFetch(`/api/champions/${skin.champion_id}/skins`);
+        if (skin.champion_id !== -1) {
+            doSkinListFetch(`/api/champions/${skin.champion_id}/skins`);
         }
-    }, [skin, doChampionFetch]);
+    }, [skin.champion_id]);
 
 
     return (<>
@@ -125,7 +119,6 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                     {skin.name === "default" ? "기본 스킨" : skin.name}
                 </Text>
             </div>
-
 
             {skin.name === "default" ? null :
                 <>
@@ -148,7 +141,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                     챔피언의 다른 스킨들
                 </Text>
             </div>
-            <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
+            <Carousel list={skinList} type="champion-skins" />
 
             <div className="hash-link" id="comments" />
             <div className="content-title">
@@ -159,10 +152,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                 </Text>
             </div>
             <Div p={{ x: "1rem" }}>
-                {match !== null ?
-                    <CommentList skinId={match.params.skinId} /> :
-                    <></>
-                }
+                <CommentList skinId={skinId} />
             </Div>
         </div>
     </>);
