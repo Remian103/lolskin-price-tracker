@@ -22,9 +22,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# package test folder
-/testPackage
-
 #config file
 config.json
 public/_redirects

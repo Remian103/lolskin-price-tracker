@@ -3,20 +3,8 @@
 #############################################################
 # Script for auto building docker image (development env)
 #
-# arguments
-# - (none) : build image
-# - update : build image from './testPackage'
 #############################################################
 
-# argument
-if [ ${1:-no-update} == "update" ];
-then
-    echo "Replace package.json and yarn.lock"
-    cp ./testPackage/package.json ./package.json
-    cp ./testPackage/yarn.lock ./yarn.lock
-    rm ./testPackage/package.json
-    rm ./testPackage/yarn.lock
-fi
 
 # save previous image's id
 id=`docker images | grep frontend-dev | awk '{print $3}'`
