@@ -3,7 +3,7 @@
 
 [active]
 # Specify which profile to be loaded
-profile = profile_name
+profile = test
 
 # All fields are required
 [profile_name]
