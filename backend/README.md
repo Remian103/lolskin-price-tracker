@@ -7,11 +7,22 @@ https://python-poetry.org/docs/#installation
 $ git clone https://github.com/Remian103/lolskin-price-tracker.git
 ```
 
-## Setup environment
+## Install dependencies
 ```bash
 $ cd /path/to/backend/
 $ poetry install
 ```
+
+## Generate test database for development
+```bash
+$ cd /path/to/backend/
+$ ./generate_test_database.sh [-c|--clone]
+```
+Generate the test database defined in [test] in db_config.ini.
+
+Additionaly, clone the [production] database if -c|--clone is passed.
+
+If not the [production] database is not available, you can just create an empty database and populate with some pre-made scripts in `update_scripts`.
 
 <br/>
 <br/>
