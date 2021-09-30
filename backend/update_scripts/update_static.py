@@ -27,6 +27,7 @@ def main():
     champions = requests.get(champions_url).json()['data']
 
     print(f'Fetched {len(champions)} champions from version {version}.')
+    print('!!!CAUTION!!!')
     print(f'Do you want to reconstruct {models.Champion.__tablename__!r} and {models.Skin.__tablename__!r} table?')
     input('Press Enter to continue...')
 

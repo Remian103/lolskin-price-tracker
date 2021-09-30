@@ -3,16 +3,13 @@ import random
 
 from tqdm import tqdm
 
-from app.database import SessionLocal, DB_URL
+from app.database import SessionLocal
 from app import models
 
 
 def main():
-    if not DB_URL.startswith('sqlite'):
-        print('Current database is not local SQLite')
-        print('History test data generation for database other than local SQLite is restricted for safety')
-        return
-    print(f'Do you want to overwrite current local SQLite\'s {models.PriceHistory.__tablename__!r} table with test data?')
+    print('!!!CAUTION!!!')
+    print(f'Do you want to overwrite current DB\'s {models.PriceHistory.__tablename__!r} table with test data?')
     input('Press Enter to continue...')
 
     with SessionLocal() as db:
