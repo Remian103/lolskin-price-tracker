@@ -3,7 +3,7 @@
 
 [active]
 # Specify which profile to be loaded
-profile = profile_name
+profile = test
 
 # All fields are required
 [profile_name]
@@ -15,3 +15,13 @@ password =
 host = 
 port = 5432
 database_name = Actual database name
+
+[test]
+prompt_name = Test Database
+dialect = postgresql
+driver = psycopg2
+username = user
+password = password
+host = localhost
+port = 5432
+database_name = test

@@ -7,11 +7,24 @@ https://python-poetry.org/docs/#installation
 $ git clone https://github.com/Remian103/lolskin-price-tracker.git
 ```
 
-## Setup environment
+## Install dependencies
 ```bash
 $ cd /path/to/backend/
 $ poetry install
 ```
+
+## Generate test database for development
+```bash
+$ cd /path/to/backend/
+$ ./generate_test_database.sh [-m mode]
+```
+Generate the test database based on `dst_profile`(by default, `[test]` in `db_config.ini`) on local postgre container.
+
+Then populate the database with `update_scripts/update_static.py` and `update_scripts/gen_test_history.py`.
+
+If `mode=clone`, then instead of populating the database with random test data, the `src_profile`(by default, `[production]` in `db_config.ini`) is cloned to the generated database.
+
+If `mode=empty`, then the generated database is kept clean.
 
 <br/>
 <br/>
