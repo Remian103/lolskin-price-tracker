@@ -1,29 +1,36 @@
 import * as React from "react";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button, Icon } from "atomize";
 import "../css/Modal.css";
 
-function Modal(props: { className?: string; children: React.ReactNode; isOpen: boolean; closeFn: ()=>void; }) {
-    const { isOpen, closeFn } = props;
+interface Props {
+    className?: string;
+    children: React.ReactNode;
+    isOpen: boolean;
+    closeFn(): void;
+}
 
+function Modal({ className, children, isOpen, closeFn }: Props) {
     // lock scrolling behind
     useEffect(() => {
-        if (isOpen) document.body.style.overflow = "hidden";
-        else document.body.style.overflow = "unset";
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+            document.body.style.paddingRight = "16.8px";
+        }
 
         return () => {
-            document.body.style.overflow = "unset";
+            document.body.style.removeProperty("overflow");
+            document.body.style.removeProperty("padding-right");
         }
     }, [isOpen]);
 
-    const className = (props.className || "") + " modal" + (isOpen ? " openModal" : "");
     /* silde in out css */
     return (<>
-        <div className={className}
+        <div className={(className || "") + " modal" + (isOpen ? " openModal" : "")}
             onClick={closeFn}
         >
             <section
-                onClick={(e)=>{e.stopPropagation();}}
+                onClick={(e) => { e.stopPropagation(); }}
             >
                 <Button
                     h="2.5rem"
@@ -35,7 +42,7 @@ function Modal(props: { className?: string; children: React.ReactNode; isOpen: b
                 >
                     <Icon name="Cross" size="20px" color="white" />
                 </Button>
-                {props.children}
+                {children}
             </section>
         </div>
     </>);
