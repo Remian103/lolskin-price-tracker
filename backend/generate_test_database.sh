@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # Generate an empty database on 12.7 PostgreSQL container, configured by $src_profile.
 # And populate the database with some random test data
 # If -c|--clone argument is passed, clone the database pointed by $dst_profile to the generated database.
@@ -84,6 +84,6 @@ elif [ "$MODE" = "GEN_TEST_DATA" ]; then
     echo "Populating the generated database with test data..."
     
     alembic upgrade head
-    echo "\n" | python update_scripts/update_static.py
-    echo "\n" | python update_scripts/gen_test_history.py
+    echo "\n" | update_scripts/update_static.py
+    echo "\n" | update_scripts/gen_test_history.py
 fi

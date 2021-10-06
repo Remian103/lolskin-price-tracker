@@ -78,7 +78,7 @@ $ poetry shell
 # Update static data
 ```bash
 $ cd /path/to/update_scripts
-$ poetry run python update_static.py
+$ poetry run update_static.py
 ```
 <br/>
 <br/>
