@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import { Div, Text } from "atomize";
 
+import ContentContainer from "../components/ContentContainer";
+import ContentWrapper from "../components/ContentWrapper";
 import RecommendCarousel from "../components/RecommendCarousel";
 import ChampBox from "../components/ChampBox";
 import { AnchorObj } from "../interfaces/Nav.interface";
@@ -35,54 +37,14 @@ function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
             </Text>
         </Div>
 
-        <div className="content-container home"/* main content */ >
-            <div className="content-background" /* background */ />
-
-            <div className="hash-link" id="recommend-skins" />
-            <div className="content-title">
-                <Text
-                    textSize={{ xs: "1rem", md: "1.5rem" }}
-                >
-                    Recommend Skins
-                </Text>
-            </div>
-            <RecommendCarousel />
-
-            <div className="hash-link" id="champions" />
-            <div className="content-title">
-                <Text
-                    textSize={{ xs: "1rem", md: "1.5rem" }}
-                >
-                    Champion List
-                </Text>
-            </div>
-            <ChampBox />
-            {/*}
-            <Div
-                h="1000px"
-                bg="brown"
-                textSize="display3"
-                textAlign="center"
-            >
-                Dummy
-            </Div>
-            {/*
-            <div className="App-header">
-                <img src="/images/logo.svg" className="App-logo" alt="logo" />
-                <p>
-                    Edit <code>src/App.js</code> and save to reload.
-                </p>
-                <a
-                    className="App-link"
-                    href="https://reactjs.org"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    Learn React
-                </a>
-            </div>
-            */}
-        </div>
+        <ContentContainer className="home"/* main content */ >
+            <ContentWrapper id="recommend-skins" title="추천 스킨">
+                <RecommendCarousel />
+            </ContentWrapper>
+            <ContentWrapper id="champions" title="챔피언 리스트">
+                <ChampBox />
+            </ContentWrapper>
+        </ContentContainer>
     </>);
 }
 
