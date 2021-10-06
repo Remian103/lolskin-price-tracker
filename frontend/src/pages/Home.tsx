@@ -10,7 +10,7 @@ function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
     // header navigation tab
     useEffect(() => {
         setNav([
-            { id: 0, name: "홈", link: "/home", type: "link" },
+            { id: 0, name: "홈", link: "/", type: "link" },
             { id: 1, name: "마이 페이지", link: "/myPage", type: "link" },
             { id: 2, name: "추천 스킨", link: "#recommend-skins", type: "hash" },
             { id: 3, name: "챔피언 목록", link: "#champions", type: "hash" },

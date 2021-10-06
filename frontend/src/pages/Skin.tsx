@@ -21,7 +21,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     // header navigation tab
     useEffect(() => {
         setNav([
-            { id: 0, name: "홈", link: "/home", type: "link" },
+            { id: 0, name: "홈", link: "/", type: "link" },
             { id: 1, name: "마이 페이지", link: "/myPage", type: "link" },
             { id: 2, name: "가격 그래프", link: "#chart", type: "hash" },
             { id: 3, name: "다른 스킨들", link: "#champions", type: "hash" },

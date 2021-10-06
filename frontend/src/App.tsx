@@ -126,9 +126,6 @@ function App() {
 
         <Switch>
             <Route exact path="/">
-                <Redirect to="/home" />
-            </Route>
-            <Route exact path="/home">
                 <Home setNav={setList} />
             </Route>
             <Route exact path="/champions/:championId/skins/:skinId">

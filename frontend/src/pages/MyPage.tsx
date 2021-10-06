@@ -12,7 +12,7 @@ function MyPage({ setNav }: { setNav: React.Dispatch<React.SetStateAction<Anchor
     // header navigation tab
     useEffect(() => {
         setNav([
-            { id: 0, name: "홈", link: "/home", type: "link" },
+            { id: 0, name: "홈", link: "/", type: "link" },
         ]);
     }, [setNav]);
 
