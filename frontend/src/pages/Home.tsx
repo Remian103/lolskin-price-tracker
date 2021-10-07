@@ -21,6 +21,8 @@ function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
     }, [setNav]);
 
     return (<>
+        <Div className="background-skin" bgImg="https://store.leagueoflegends.co.kr/assets/bg.jpg" />
+
         <Div /* title */
             d="flex"
             h={{ xs: "150px", md: "400px" }}
@@ -32,12 +34,13 @@ function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
                 p={{ l: "0.5rem", r: "0.5rem" }}
                 textSize="display3"
                 textAlign="center"
+                textColor="white"
             >
                 LOL PRICE TRACKER
             </Text>
         </Div>
 
-        <ContentContainer className="home"/* main content */ >
+        <ContentContainer>
             <ContentWrapper id="recommend-skins" title="추천 스킨">
                 <RecommendCarousel />
             </ContentWrapper>
