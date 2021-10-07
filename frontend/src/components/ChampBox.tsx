@@ -23,14 +23,6 @@ function ChampBox() {
         if (display)
             doFetch(`/api/champions/${champId}/skins`);
     }, [display, champId, doFetch]);
-    const flickityOptions = {
-        initialIndex: 0,
-        cellAlign: "left",
-        contain: true,
-        pageDots: false,
-        //wrapAround: true,
-        //autoPlay: 3000,
-    };
 
 
     // search by champion name
@@ -125,7 +117,7 @@ function ChampBox() {
             {
                 skinLoading ? <p> is loading... </p> :
                     skinError || !Array.isArray(skinList) ? <p> something error </p> :
-                        <Carousel list={skinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
+                        <Carousel list={skinList} type="champion-skins" />
             }
         </Modal>
     </>);

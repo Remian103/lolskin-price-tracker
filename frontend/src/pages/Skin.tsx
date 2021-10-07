@@ -1,21 +1,22 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect } from "react";
 import { Div, Text } from "atomize";
-import { useRouteMatch } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useDataFetch from "../hooks/useDataFetch";
 import Carousel from "../components/Carousel";
 import HistoryChart from "../components/HistoryChart";
 import CommentList from "../components/CommentList";
 import { AnchorObj } from "../interfaces/Nav.interface";
-import { SkinObj, SkinFullObj, PriceHistory } from "../interfaces/Fetch.interface";
+import { SkinObj, SkinFullObj } from "../interfaces/Fetch.interface";
 
 
-interface MatchParams {
+interface Params {
     skinId: string;
+    championId: string;
 }
 
 function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorObj[]>> }) {
-    const match = useRouteMatch<MatchParams>("/skins/:skinId");
+    const { skinId, championId } = useParams<Params>();
 
     // header navigation tab
     useEffect(() => {
@@ -31,13 +32,13 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
     // skin data fetch
     const [{ data: skin }, doSkinFetch] = useDataFetch<SkinFullObj>(
-        match !== null ? `/api/skins/${match.params.skinId}` : "initialUrl",
+        `/api/skins/${skinId}`,
         {
-            id: -1,
+            id: Number(skinId),
             name: "",
             trimmed_image_url: "",
             full_image_url: "",
-            champion_id: -1,
+            champion_id: Number(championId),
             last_price_history: {
                 skin_id: -1,
                 date: "",
@@ -49,65 +50,20 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
             price_history: []
         }
     );
-
-
     // update when skin id changed
     useEffect(() => {
-        if (match !== null)
-            doSkinFetch(`/api/skins/${match.params.skinId}`);
-    }, [match, doSkinFetch]);
-
-
-    //generate chart data
-    const [chartLabel, setLabel] = useState<string[]>([]);
-    const [chartData, setData] = useState<number[]>([]);
-    const chartOption = useMemo(() => {
-        return {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    stackWeight: 1,
-                    ticks: {
-                        color: "black"
-                    }
-                },
-                x: {
-                    ticks: {
-                        color: "black"
-                    }
-                }
-            },
-            plugins: {
-                legend: false
-            }
-        };
-    }, []);
-    useEffect(() => {
-        const history: PriceHistory[] = skin.price_history || [];
-
-        history.sort((a: PriceHistory, b: PriceHistory) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
-        setLabel(history.map((item: PriceHistory) => item.date));
-        setData(history.map((item: PriceHistory) => item.sale_price));
-    }, [skin]);
+        if(Number(skinId) !== skin.id) {
+            doSkinFetch(`/api/skins/${skinId}`);
+        }
+    }, [skinId]);
 
 
     // skin list of champion
-    const [{ data: championSkinList }, doChampionFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
-    const flickityOptions = {
-        initialIndex: 0,
-        cellAlign: "left",
-        contain: true,
-        pageDots: false,
-        //wrapAround: true,
-        //autoPlay: 3000,
-    };
+    const [{ data: skinList }, doSkinListFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
+    // update when champion id changed
     useEffect(() => {
-        if (skin.champion_id !== undefined) {
-            doChampionFetch(`/api/champions/${skin.champion_id}/skins`);
-        }
-    }, [skin, doChampionFetch]);
+        doSkinListFetch(`/api/champions/${championId}/skins`);
+    }, [championId]);
 
 
     return (<>
@@ -126,15 +82,14 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                 </Text>
             </div>
 
-
-            {skin.name === "default" ? null :
+            {skin.name === "default" || skin.price_history.length === 0 ? null :
                 <>
                     <div className="hash-link" id="chart" />
                     <Div p={{
                         x: "1rem",
                         b: "2rem"
                     }}>
-                        <HistoryChart className="shadowDiv" chartOption={chartOption} chartLabel={chartLabel} chartData={chartData} />
+                        <HistoryChart className="shadowDiv" priceHistory={skin.price_history} />
                     </Div>
                 </>
             }
@@ -148,7 +103,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                     챔피언의 다른 스킨들
                 </Text>
             </div>
-            <Carousel list={championSkinList} flktyOption={flickityOptions} cellOption={{ type: "champion-skins" }} />
+            <Carousel list={skinList} type="champion-skins" />
 
             <div className="hash-link" id="comments" />
             <div className="content-title">
@@ -159,10 +114,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                 </Text>
             </div>
             <Div p={{ x: "1rem" }}>
-                {match !== null ?
-                    <CommentList skinId={match.params.skinId} /> :
-                    <></>
-                }
+                <CommentList skinId={skinId} />
             </Div>
         </div>
     </>);

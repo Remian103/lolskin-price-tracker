@@ -5,16 +5,23 @@ import { useHistory } from "react-router-dom";
 import { Div } from "atomize";
 import "../css/flickity.css";
 import "../css/Carousel.css";
+import { SkinFullObj, SkinObj } from "../interfaces/Fetch.interface";
 
-interface Props {
-    list: any[];
-    flktyOption: FlickityOptions;
-    cellOption: {
-        type: "recommend-skins" | "champion-skins";
-    }
+
+// 타입 추가될 때마다 추가
+interface SkinObjProp {
+    list: SkinObj[];
+    type: "champion-skins" | "recommend";
 }
+interface TestDummy {
+    list: any[];
+    type: "dummy";
+}
+type Props =
+    | SkinObjProp
+    | TestDummy;
 
-function Carousel({ list, flktyOption, cellOption }: Props) {
+function Carousel(props: Props) {
     const history = useHistory();
 
     // use flickity API
@@ -23,70 +30,86 @@ function Carousel({ list, flktyOption, cellOption }: Props) {
         setFlkty(ref);
     }
     useEffect(() => {
-        if (flkty !== undefined) {
-            /*
-            flkty.on('settle', () => {
-                console.log(`current index is ${flkty.selectedIndex}`)
-            });
-            */
-
-            flkty.on('staticClick', function (event: Event, pointer: Element | Touch, cellElement: Element, cellIndex: number) {
-                if (!cellElement) {
-                    return;
-                }
-                history.push(`/skins/${cellElement.id}`);
-            });
+        if (flkty !== undefined && props.list.length !== 0) {
+            if (props.type === "recommend" || props.type === "champion-skins") {
+                flkty.on('staticClick', function (event: Event, pointer: Element | Touch, cellElement: Element, cellIndex: number) {
+                    if (!cellElement) {
+                        return;
+                    }
+                    const item = props.list[cellIndex];
+                    history.push(`/champions/${item.champion_id}/skins/${item.id}`);
+                });
+            }
         }
-    }, [flkty, history]);
+    }, [flkty, props]);
 
+    const setFlickity = (): [FlickityOptions, React.ReactNode[]] => {
+        switch (props.type) {
+            case "recommend":
+                return [
+                    {
+                        initialIndex: 1,
+                        wrapAround: true,
+                        autoPlay: 3000,
+                        pageDots: false,
+                    },
+                    props.list.map((item) =>
+                        <Div
+                            key={item.id}
+                            id={item.id}
+                            className="carousel-cell recommand shadowDiv"
+                            m={{
+                                x: { xs: "0.25rem", md: "1rem" },
+                                b: "2rem"
+                            }}
+                            h={{ xs: "210px", md: "350px" }}
+                            w={{ xs: "390px", md: "650px" }}
+                        >
+                            <img
+                                src={item.full_image_url}
+                                alt={item.name}
+                                title={item.name}
+                            />
+                        </Div>
+                    )
+                ];
+            case "champion-skins":
+                return [
+                    {
+                        initialIndex: 0,
+                        cellAlign: "left",
+                        contain: true,
+                        pageDots: false,
+                        //wrapAround: true,
+                        //autoPlay: 3000,
+                    },
+                    props.list.map((item) =>
+                        <Div
+                            key={item.id}
+                            id={item.id}
+                            p={{ x: "1rem" }}
+                        >
+                            <Div
+                                className="carousel-cell champion-skin shadowDiv"
+                                h={{ xs: "336px", md: "336px" }}
+                                w={{ xs: "185px", md: "185px" }}
+                                m={{ b: "2rem" }}
+                            >
+                                <img
+                                    src={item.trimmed_image_url}
+                                    alt={item.name}
+                                    title={item.name}
+                                />
+                            </Div>
+                        </Div>
+                    )
+                ];
+            default:
+                return [{}, [<></>]];
+        }
+    }
+    const [flktyOption, inside] = setFlickity();
 
-    // carousel cell design
-    const inside = list.map((item) => {
-        if (cellOption.type === "recommend-skins") {
-            return (
-                <Div
-                    key={item.id}
-                    id={item.id}
-                    className="carousel-cell recommand shadowDiv"
-                    m={{
-                        x: { xs: "0.25rem", md: "1rem" },
-                        b: "2rem"
-                    }}
-                    h={{ xs: "210px", md: "350px" }}
-                    w={{ xs: "390px", md: "650px" }}
-                >
-                    <img
-                        src={item.full_image_url}
-                        alt={item.name}
-                        title={item.name}
-                    />
-                </Div>
-            );
-        }
-        else if (cellOption.type === "champion-skins") {
-            return (
-                <Div
-                    key={item.id}
-                    id={item.id}
-                    p={{ x: "1rem" }}
-                >
-                    <Div
-                        className="carousel-cell champion-skin shadowDiv"
-                        h={{ xs: "336px", md: "336px" }}
-                        w={{ xs: "185px", md: "185px" }}
-                        m={{ b: "2rem" }}
-                    >
-                        <img
-                            src={item.trimmed_image_url}
-                            alt={item.name}
-                            title={item.name}
-                        />
-                    </Div>
-                </Div>
-            );
-        }
-        else return (<></>);
-    });
 
     return (
         <Flickity

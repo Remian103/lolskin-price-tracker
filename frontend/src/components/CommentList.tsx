@@ -21,10 +21,11 @@ function CommentList({ skinId }: { skinId: string }) {
     const { userInfo } = useContext(UserContext);
 
 
+    const [curSkinId, setSkinId] = useState(skinId);
     const [commentList, setCommentList] = useState<CommentObj[]>([]);
     // get comment list
     const [nextIndex, setNextIndex] = useState(0);
-    const [{ isError, data: fetchedData }, doFetch] = useDataFetch(
+    const [{ isError, data: fetchedData }, doFetch] = useDataFetch<CommentListObj>(
         urlWithParams(`/api/skins/${skinId}/comments`, {
             skip: nextIndex,
             limit: nextIndex + 3,
@@ -32,6 +33,19 @@ function CommentList({ skinId }: { skinId: string }) {
         }),
         { comments: [], skip: 0, limit: 0, num_comments: 0 }
     );
+    // skinId 변경 시 업데이트
+    useEffect(() => {
+        if(skinId !== curSkinId) {
+            setSkinId(skinId);
+            setCommentList([]);
+            doFetch(urlWithParams(`/api/skins/${skinId}/comments`, {
+                skip: 0,
+                limit: 3,
+                order_by: "asc"
+            }));
+        }
+    }, [skinId]);
+    // 댓글 더보기 버튼
     const [isLoadingMore, SetLoadingMore] = useState(false);
     const handleMoreBtn: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
@@ -68,6 +82,7 @@ function CommentList({ skinId }: { skinId: string }) {
     }, [isError, fetchedData]);
 
 
+    // 댓글 리스트에 수정사항이 생겼을 경우
     const modifyCommentList = (comment: CommentObj) => {
         const index = commentList.findIndex(e => e.id === comment.id);
         if (index !== -1) { // modify
@@ -136,21 +151,21 @@ function CommentList({ skinId }: { skinId: string }) {
     };
     const handleSubmit: React.FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
-
-        if (userInfo.isLogin) {
-            if (content !== "") {
-                setSubmitLoading(true);
-                newCommentPost(`/api/skins/${skinId}/comments`, { content: content });
-                setContent("");
-            }
-            else {
-                alert("내용이 없습니다.");
-            }
-        }
-        else {
+        
+        // validation
+        if (!userInfo.isLogin) {
             alert("로그인 후에 이용하실 수 있습니다.");
+            return;
+        }
+        if (content === "") {
+            alert("내용이 없습니다.");
+            return;
         }
 
+        // post new comment
+        setSubmitLoading(true);
+        newCommentPost(`/api/skins/${skinId}/comments`, { content: content });
+        setContent("");
     };
 
     return (<>
@@ -164,7 +179,7 @@ function CommentList({ skinId }: { skinId: string }) {
                 type="text"
                 value={content}
                 onChange={handleCommentChange}
-                placeholder="comment here!"
+                placeholder="댓글을 남겨주세요!"
                 p={{ l: "1rem", r: "6rem" }}
                 suffix={
                     <Button
