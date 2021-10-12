@@ -18,15 +18,16 @@ New domain: https://leaguedb.info
 
 
 ## 사용 기술
- - FE: React
+ - FE: React (CRA), Typescript
  - BE: FastAPI, PostgreSQL(Managed with SQLAlchemy/Alembic)
- - Deployment: AWS/Azure/Netlify, Docker(Partially)
+ - Deployment: AWS/Azure/Netlify
 
 <br>
 
 
 ## 환경구성
-하위 frontend/backend 디렉토리에 있는 하위 README.md 참고
+ - FE: [README.md](frontend/README.md)
+ - BE: [README.md](backend/README.md)
 
 <br>
 
