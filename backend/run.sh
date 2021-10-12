@@ -30,7 +30,7 @@ if [ "$PROD_MODE" = "true" ]; then
     fi
     echo "Start Logging..."
     echo "====================================================================================================" >> $NEW_LOG
-    nohup poetry run uvicorn app.main:app --reload-dir app --reload --port $PORT |& gawk '{ print strftime("[%Y-%m-%d %H:%M:%S]"), $0; fflush(); }' >> $NEW_LOG
+    nohup poetry run uvicorn app.main:app --reload-dir app --reload --port $PORT |& nohup gawk '{ print strftime("[%Y-%m-%d %H:%M:%S]"), $0; fflush(); }' >> $NEW_LOG
 else 
     uvicorn app.main:app --reload-dir app --reload --port $PORT
 fi
