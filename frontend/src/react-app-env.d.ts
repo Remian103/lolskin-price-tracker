@@ -1,6 +1,6 @@
 /// <reference types="react-scripts" />
 interface Window {
-    gapi: any;
+    google: any;
 }
 
 declare module "atomize";

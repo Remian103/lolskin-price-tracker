@@ -1,14 +1,17 @@
 import * as React from "react";
 import { useState, useEffect, useContext } from "react";
-import { Div, Button, Icon, Image } from "atomize";
+import { Div, Button, Icon, Image, Text } from "atomize";
 import "./css/App.css";
+import jwt from "jwt-decode"; 
+import GoogleLogin from "react-google-login";
 
 // route
 import {
     Route,
     Redirect,
     Switch,
-    useLocation
+    useLocation,
+    Link
 } from "react-router-dom";
 
 import Nav from "./components/Nav";
@@ -17,7 +20,7 @@ import Home from "./pages/Home";
 import Skin from "./pages/Skin";
 import MyPage from "./pages/MyPage";
 import UserContext from "./context/UserContext";
-import GoogleLoginBtn from "./components/GoogleLoginBtn";
+import config from "./config.json";
 
 interface LocationParams {
     pathname: string;
@@ -27,7 +30,7 @@ function App() {
     // scroll top when page changed
     const { pathname } = useLocation<LocationParams>();
     useEffect(() => {
-        console.log(`move to "${pathname}"`);
+        if (process.env.NODE_ENV !== "production") console.log(`move to "${pathname}"`);
         window.scrollTo(0, 0);
     }, [pathname]);
 
@@ -43,73 +46,110 @@ function App() {
     // user information
     const { userInfo, setUserInfo } = useContext(UserContext);
 
-    //google Logout
-    const [logOutBtnDisabled, setLogOutBtnDisabled] = useState<boolean>(false);
-    const LogOutBtnClick = async () => {
-        setLogOutBtnDisabled(true);
-        if (window.confirm("로그아웃 하시겠습니까?")) {
-            await window.gapi.auth2.getAuthInstance().signOut()
-                .then(() => {
-                    setUserInfo({
-                        ...userInfo,
-                        userId: null,
-                        tokenId: null,
-                        name: null,
-                        isLogin: false,
-                    });
-                    alert("로그아웃 되었습니다.");
-                    window.location.reload(); // 새로고침 (user 정보로 인해 불러진 데이터들 초기화)
-                })
-                .catch((error: Error) => {
-                    console.log(error);
-                    alert("비정상적 로그아웃 발생");
-                });
+    // google login callback
+    function handleCredentialResponse(response: any) {
+        if (process.env.NODE_ENV !== "production") {
+            console.log(response);
+            console.log("Encoded JWT ID token: " + response.credential);
+            console.log(jwt(response.credential));
         }
-        setLogOutBtnDisabled(false);
+        interface googleCredential {
+            aud: string;
+            azp: string;
+            email: string;
+            email_verified: boolean;
+            exp: number;
+            family_name: string;
+            given_name: string;
+            iat: number;
+            iss: string;
+            jti: string;
+            name: string;
+            nbf: number;
+            picture: string;
+            sub: string;
+        }
+        const decodedCredential: googleCredential = jwt(response.credential);
+        setUserInfo({
+            userId: decodedCredential.sub,
+            tokenId: response.credential,
+            name: decodedCredential.name,
+            imageUrl: decodedCredential.picture,
+            isLogin: true
+        })
     }
+    // google one tap display
+    const [ready, setReady] = useState(false);
+    useEffect(()=> {
+        window.onload = function () {
+            window.google.accounts.id.initialize({
+                client_id: config.googleAPI.clientId,
+                auto_select: true,
+                callback: handleCredentialResponse
+            });
+            setReady(true);
+            window.google.accounts.id.prompt(); // also display the One Tap dialog
+        }
+    }, []);
+    useEffect(()=> {
+        if(ready && window.google && !userInfo.isLogin) {
+            window.google.accounts.id.renderButton(
+                document.getElementById("googleLoginBtn"),
+                { theme: "filled_blue", size: "large" }// customization attributes
+            );
+            window.google.accounts.id.renderButton(
+                document.getElementById("googleLoginBtnMobile"),
+                { theme: "filled_blue", size: "large" }// customization attributes
+            );
+        }
+    }, [ready, userInfo.isLogin])
 
+    const googleLogOut = 
+        <>
+            <Div
+                m={{ l:"auto", r: "8px" }}
+            >
+                <Button
+                    bg="info700"
+                    hoverBg="info600"
+                    cursor="pointer"
+                    rounded="md"
+                    onClick={()=>{
+                        setUserInfo({
+                            ...userInfo,
+                            userId: null,
+                            tokenId: null,
+                            name: null,
+                            isLogin: false,
+                        });
+                        window.google.accounts.id.disableAutoSelect();
+                        window.location.reload();
+                    }}
+                >
+                    LogOut
+                </Button>
+            </Div>
+            <Image
+                src={userInfo.imageUrl}
+                m={{ r: "8px" }}
+                h="40px"
+                w="40px"
+                rounded="circle"
+            />
+        </>
+
+    const handleOnClickMenu = () => {
+        alert("test");
+    }
 
     return (<>
         <header className="main-header">
             <Nav anchorList={anchorList} />
-            <Div
-                pos="absolute"
-                d="flex"
-                align="center"
-                right="0"
-                top="0"
-                h="56px"
-            >
-                {userInfo.isLogin ?
-                    <>
-                        <Div
-                            m={{ r: "8px" }}
-                        >
-                            <Button
-                                bg="info700"
-                                hoverBg="info600"
-                                cursor="pointer"
-                                rounded="md"
-                                disabled={logOutBtnDisabled}
-                                onClick={LogOutBtnClick}
-                            >
-                                LogOut
-                            </Button>
-                        </Div>
-                        <Image
-                            src={userInfo.imageUrl}
-                            m={{ r: "8px" }}
-                            h="40px"
-                            rounded="circle"
-                        />
-                    </> :
-                    <Div
-                        m={{ r: "8px" }}
-                    >
-                        <GoogleLoginBtn />
-                    </Div>
-                }
-            </Div>
+            {userInfo.isLogin?
+                googleLogOut:
+                <div id="googleLoginBtn"
+                    style={{ marginLeft: "auto", marginRight: "10px" }} />
+            }
         </header>
 
         <Button className="go-to-top"

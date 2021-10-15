@@ -8,62 +8,60 @@ import { AnchorObj } from "../interfaces/Nav.interface";
 
 function Nav({ anchorList }: { anchorList: AnchorObj[] }) {
 
-    return (
-        <nav>
-            {anchorList.map((item: AnchorObj) => {
-                if (item.type === "hash")
-                    return (
-                        <HashLink key={item.id}
-                            smooth
-                            to={item.link}
+    return (<>
+        {anchorList.map((item: AnchorObj) => {
+            if (item.type === "hash")
+                return (
+                    <HashLink key={item.id}
+                        smooth
+                        to={item.link}
+                    >
+                        <Button
+                            bg="info700"
+                            hoverBg="info600"
+                            cursor="pointer"
+                            rounded="md"
                         >
-                            <Button
-                                bg="info700"
-                                hoverBg="info600"
-                                cursor="pointer"
-                                rounded="md"
-                            >
-                                {item.name}
-                            </Button>
-                        </HashLink>
-                    );
-                else if (item.type === "new-tab")
-                    return (
-                        <a
-                            key={item.id}
-                            href={item.link}
-                            target="_blank"
-                            rel="noreferrer"
+                            {item.name}
+                        </Button>
+                    </HashLink>
+                );
+            else if (item.type === "new-tab")
+                return (
+                    <a
+                        key={item.id}
+                        href={item.link}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <Button
+                            bg="info700"
+                            hoverBg="info600"
+                            cursor="pointer"
+                            rounded="md"
                         >
-                            <Button
-                                bg="info700"
-                                hoverBg="info600"
-                                cursor="pointer"
-                                rounded="md"
-                            >
-                                {item.name}
-                            </Button>
-                        </a>
-                    );
-                else
-                    return (
-                        <Link
-                            key={item.id}
-                            to={item.link}
+                            {item.name}
+                        </Button>
+                    </a>
+                );
+            else
+                return (
+                    <Link
+                        key={item.id}
+                        to={item.link}
+                    >
+                        <Button
+                            bg="info700"
+                            hoverBg="info600"
+                            cursor="pointer"
+                            rounded="md"
                         >
-                            <Button
-                                bg="info700"
-                                hoverBg="info600"
-                                cursor="pointer"
-                                rounded="md"
-                            >
-                                {item.name}
-                            </Button>
-                        </Link>
-                    );
-            })}
-        </nav>
-    );
+                            {item.name}
+                        </Button>
+                    </Link>
+                );
+        })}
+    </>);
 }
 
 export default Nav
