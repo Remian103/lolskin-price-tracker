@@ -69,8 +69,12 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
 
     return (<>
-        <Div className="background-skin" bgImg={skin.full_image_url} />
-        <div style={{padding:"200px"}} />
+        <Div className="background-skin"
+            d={{xs: "none", md:"block"}}
+            bgImg={skin.full_image_url} />
+        <Div
+            d={{xs: "none", md:"block"}}
+            p="200px 0 200px 0" />
 
         <ContentContainer className="skins">
             <ContentWrapper id="chart" title={skin.name === "default" ? "기본 스킨" : skin.name}>

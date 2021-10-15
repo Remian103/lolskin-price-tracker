@@ -15,6 +15,7 @@ function Nav({ anchorList }: { anchorList: AnchorObj[] }) {
                     <HashLink key={item.id}
                         smooth
                         to={item.link}
+                        style={{margin:"8px 0 8px 8px"}}
                     >
                         <Button
                             bg="info700"
@@ -33,6 +34,7 @@ function Nav({ anchorList }: { anchorList: AnchorObj[] }) {
                         href={item.link}
                         target="_blank"
                         rel="noreferrer"
+                        style={{margin:"8px 0 8px 8px"}}
                     >
                         <Button
                             bg="info700"
@@ -49,6 +51,7 @@ function Nav({ anchorList }: { anchorList: AnchorObj[] }) {
                     <Link
                         key={item.id}
                         to={item.link}
+                        style={{margin:"8px 0 8px 8px"}}
                     >
                         <Button
                             bg="info700"

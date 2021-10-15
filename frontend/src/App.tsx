@@ -151,6 +151,20 @@ function App() {
                     style={{ marginLeft: "auto", marginRight: "10px" }} />
             }
         </header>
+        <header className="mobile-header" /** mobile header */>
+            <Link
+                to="/" 
+                style={{margin:"8px 0 8px 8px"}}
+            >
+                <Text m="" textColor="white" textSize="20px"> LeagueDB </Text>
+            </Link>
+            {userInfo.isLogin?
+                googleLogOut:
+                <div id="googleLoginBtnMobile"
+                    style={{ marginLeft: "auto", marginRight: "10px" }} />
+            }
+            <Icon m="8px 8px 8px 0" name="Menu" size="40px" color="white" onClick={handleOnClickMenu}/>
+        </header>
 
         <Button className="go-to-top"
             h="2.5rem"
