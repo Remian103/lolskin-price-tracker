@@ -11,6 +11,11 @@ interface Props {
 
 function HistoryChart({ className, priceHistory }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+
+    const graphColorTheme = {
+        info600: "rgb(2, 132, 254)"
+    }
+
     useEffect(() => {
         const ctx = canvasRef.current?.getContext("2d");
         Chart.register(...registerables);
@@ -27,8 +32,6 @@ function HistoryChart({ className, priceHistory }: Props) {
                 datasets: [{
                     data: chartData,
                     fill: false,
-                    borderColor: "green",
-                    backgroundColor: "rgb(0,0,0,1)",
                     tension: 0
                 }]
             },
@@ -45,13 +48,37 @@ function HistoryChart({ className, priceHistory }: Props) {
                     },
                     x: {
                         ticks: {
+                            font: {
+                                size: 10
+                            },
                             color: "black"
                         }
+                    }
+                },
+                elements: {
+                    line: {
+                        borderColor: graphColorTheme.info600
+                    },
+                    point: {
+                        radius: 5,
+                        backgroundColor: graphColorTheme.info600,
+                        hoverRadius: 7,
+                        hoverBackgroundColor: "red",
                     }
                 },
                 plugins: {
                     legend: {
                         display: false
+                    },
+                    tooltip: {
+                        displayColors: false,
+                        titleFont: {size: 20},
+                        bodyFont: {size: 20},
+                        callbacks: {
+                            label: function(context) {
+                                return "가격 : " + context.formattedValue + "RP"
+                            }
+                        }
                     }
                 }
             }
