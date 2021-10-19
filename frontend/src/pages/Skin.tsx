@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Div, Text } from "atomize";
+import { Div, Text, Image } from "atomize";
 import { useParams } from "react-router-dom";
 
 import ContentContainer from "../components/ContentContainer";
@@ -54,7 +54,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     );
     // update when skin id changed
     useEffect(() => {
-        if(Number(skinId) !== skin.id) {
+        if (Number(skinId) !== skin.id) {
             doSkinFetch(`/api/skins/${skinId}`);
         }
     }, [skinId]);
@@ -70,20 +70,58 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
     return (<>
         <Div className="background-skin"
-            d={{xs: "none", md:"block"}}
+            d={{ xs: "none", md: "block" }}
             bgImg={skin.full_image_url} />
         <Div
-            d={{xs: "none", md:"block"}}
+            d={{ xs: "none", md: "block" }}
             p="200px 0 200px 0" />
 
         <ContentContainer className="skins">
-            <ContentWrapper id="chart" title={skin.name === "default" ? "기본 스킨" : skin.name}>
+            <ContentWrapper id="info" title={skin.name === "default" ? "기본 스킨" : skin.name}>
+                <Div d="flex" flexDir={{ xs: "column", md: "row" }} p={{ x: "1rem" }}>
+                    <Div
+                        shadows="4"
+                        rounded="1rem"
+                        overflow="hidden"
+                        h={{ xs: "auto", md: "336px" }}
+                        w={{ xs: "auto", md: "185px" }}
+                        m={{ xs: "0 0 1rem 0", md: "0 1rem 0 0" }}
+                    >
+                        <Image
+                            d={{ xs: "none", md: "block" }}
+                            src={skin.trimmed_image_url}
+                            alt={skin.name}
+                            pos="relative"
+                            top="-5%"
+                            left="-5%"
+                            h="110%"
+                            w="110%"
+                        />
+                        <Image
+                            d={{ xs: "block", md: "none" }}
+                            src={skin.full_image_url}
+                            alt={skin.name}
+                        />
+                    </Div>
+                    <Div
+                        d="flex"
+                        flexDir="column"
+                        align="flex-start"
+                    >
+                        {skin.last_price_history.sale_price !== null
+                            ? <Text textSize={{xs: "body", md: "title"}}>
+                                가격: {skin.last_price_history.price !== skin.last_price_history.sale_price ? <del>{skin.last_price_history.price}</del> : null} {skin.last_price_history.sale_price} RP
+                            </Text>
+                            : null
+                        }
+                    </Div>
+                </Div>
+            </ContentWrapper>
+
+            <ContentWrapper id="chart" title="가격 추이">
                 {skin.name === "default" || skin.price_history.length === 0 ? null :
-                    <Div p={{
-                        x: "1rem",
-                        b: "2rem"
-                    }}>
-                        <HistoryChart className="shadowDiv" priceHistory={skin.price_history} />
+                    <Div p={{ x: "1rem", b: "2rem" }}>
+                        <HistoryChart priceHistory={skin.price_history} />
                     </Div>
                 }
             </ContentWrapper>
