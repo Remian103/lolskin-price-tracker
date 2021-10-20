@@ -24,10 +24,9 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     useEffect(() => {
         setNav([
             { id: 0, name: "홈", link: "/", type: "link" },
-            { id: 1, name: "마이 페이지", link: "/myPage", type: "link" },
-            { id: 2, name: "가격 그래프", link: "#chart", type: "hash" },
-            { id: 3, name: "다른 스킨들", link: "#other_skins", type: "hash" },
-            { id: 4, name: "댓글", link: "#comments", type: "hash" }
+            { id: 1, name: "가격 그래프", link: "#chart", type: "hash" },
+            { id: 2, name: "다른 스킨들", link: "#other_skins", type: "hash" },
+            { id: 3, name: "댓글", link: "#comments", type: "hash" },
         ]);
     }, [setNav]);
 

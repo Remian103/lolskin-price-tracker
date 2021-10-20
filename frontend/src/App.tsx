@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from "react";
 import { Div, Button, Icon, Image, Text } from "atomize";
 import "./css/App.css";
 import jwt from "jwt-decode"; 
-import GoogleLogin from "react-google-login";
 
 // route
 import {
@@ -11,6 +10,7 @@ import {
     Redirect,
     Switch,
     useLocation,
+    useHistory,
     Link
 } from "react-router-dom";
 
@@ -29,6 +29,7 @@ interface LocationParams {
 function App() {
     // scroll top when page changed
     const { pathname } = useLocation<LocationParams>();
+    const history = useHistory();
     useEffect(() => {
         if (process.env.NODE_ENV !== "production") console.log(`move to "${pathname}"`);
         window.scrollTo(0, 0);
@@ -135,6 +136,10 @@ function App() {
                 h="40px"
                 w="40px"
                 rounded="circle"
+                cursor="pointer"
+                onClick={()=> {
+                    history.push("/mypage");
+                }}
             />
         </>
 
