@@ -2,6 +2,7 @@ from typing import List, Optional
 
 from fastapi import Depends, FastAPI, Security, HTTPException, Body
 from fastapi.security import HTTPBearer
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from google.oauth2 import id_token
 from google.auth.transport import requests
@@ -11,6 +12,21 @@ from .database import SessionLocal
 
 
 app = FastAPI()
+
+origins = [
+    "https://leaguedb-test.netlify.app",
+    "https://leaguedb.info",
+    "http://localhost:3000",
+    "https://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 # Dependency
