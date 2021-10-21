@@ -1,5 +1,5 @@
 ## About
-A messy folder for files/instructions about deployment on the server where League Client and the update script runs.
+Utilities for league client data fetcher which depend on Windows environment and Azure Logic App.
 
 ### How to reformulate current image?
 Install
@@ -15,10 +15,7 @@ Configure
 ...
 
 ### Known issues
- - Username on the windows instance is wrong! 'ls**pt**2021' was intended, but not it is 'ls**tp**2021'
  - League Client, AFAIK, pops EULA when new patch is delivered. Currently, there's no consideration of this behavior.
- - 'update_*.py' obviously doesn't belong to the 'app'. Wrong hierarchy!
-
 
  - ConnectionRefusedError: [WinError 1225] The remote computer refused the network connection
 
@@ -29,4 +26,4 @@ Configure
    It seems to happen when calling too late. connector seems to have time out.
 
 ### Current Fix
-- Use two connectors, one just to detect the league client and initiate 5min wait, and the other to actually fetch data after the 5min wait.
+- Use two connectors. One detects the league client and initiate 5 mins wait, and the other actually fetch data after the 5 mins wait.
