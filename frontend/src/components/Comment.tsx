@@ -6,6 +6,7 @@ import "../css/Comment.css";
 
 import UserContext from "../context/UserContext";
 import { CommentObj } from "../interfaces/Comment.interface";
+import api from "../config.json";
 
 interface Props {
     comment: CommentObj;
@@ -38,7 +39,7 @@ function Comment({ comment, modifyRequest, deleteRequest }: Props) {
         setLikeLoading(true);
 
         try {
-            const url = `/api/comments/${comment.id}/likes`;
+            const url = `${api.backendAPI}/api/comments/${comment.id}/likes`;
             const config = { headers: { "Authorization": `Bearer ${userInfo.tokenId}` } };
             const response = isLike ? await axios.delete(url, config) : await axios.post(url, null, config);
             // expected response : (int)

@@ -8,12 +8,13 @@ import useDataFetch from "../hooks/useDataFetch";
 import { hangulFuzzyMatch } from "../utils/utils";
 import "../css/ChampBox.css";
 import { ChampionObj, SkinObj } from "../interfaces/Fetch.interface";
+import api from "../config.json";
 
 
 function ChampBox() {
     // 챔피언 리스트 fetch
     const [champId, setId] = useState(0);
-    const [{ isLoading: champLoading, isError: champError, data: champList }] = useDataFetch<ChampionObj[]>("/api/champions", []);
+    const [{ isLoading: champLoading, isError: champError, data: champList }] = useDataFetch<ChampionObj[]>(`${api.backendAPI}/api/champions`, []);
 
 
     // modal window
@@ -21,7 +22,7 @@ function ChampBox() {
     const [{ isLoading: skinLoading, isError: skinError, data: skinList }, doFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
     useEffect(() => {
         if (display)
-            doFetch(`/api/champions/${champId}/skins`);
+            doFetch(`${api.backendAPI}/api/champions/${champId}/skins`);
     }, [display, champId, doFetch]);
 
 

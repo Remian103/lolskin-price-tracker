@@ -4,11 +4,12 @@ import { Div } from "atomize";
 import Carousel from "./Carousel";
 import useDataFetch from "../hooks/useDataFetch";
 import { SkinObj } from "../interfaces/Fetch.interface";
+import api from "../config.json";
 
 function RecommendCarousel() {
 
     const [{ isLoading, isError, data: skinList }] = useDataFetch<SkinObj[]>(
-        "/api/recommendations",
+        `${api.backendAPI}/api/recommendations`,
         []
     );
 
