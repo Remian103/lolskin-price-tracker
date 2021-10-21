@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 import time
+import traceback
+import os
 import asyncio
-from datetime import date
+from datetime import date, datetime
 
 import requests
 from tqdm import tqdm
@@ -10,7 +12,8 @@ from lcu_driver import Connector
 
 from app.database import SessionLocal
 from app import models
-    
+from league_client_data_fetcher.secrets import EALRY_STOP_CALL_URL
+
 
 pre_connector = Connector()
 @pre_connector.ready
@@ -19,13 +22,10 @@ async def get_ready(connection):
     print('Sleeping for 300 secs for stable connection...')
     for i in tqdm(range(300)):
         time.sleep(1)
-
 pre_connector.start()
 
 
-connector = Connector()
-
-
+# https://stackoverflow.com/a/61478547/15909723
 async def gather_with_concurrency(n, *tasks):
     semaphore = asyncio.Semaphore(n)
 
@@ -64,15 +64,19 @@ async def update(connection, db, skin):
     db.add(db_price_history)
 
 
+connector = Connector()
 @connector.ready
 async def update_skins_price(connection):
     print('Starting skin update...')
     with SessionLocal() as db:
-
-        await gather_with_concurrency(50, *[update(connection, db, skin) for skin in db.query(models.Skin).all()])
-        db.commit()
-    EALRY_STOP_CALL_URL = 'Make_your_own_url_by_Azure_Logic_App'
+        try:
+            await gather_with_concurrency(50, *[update(connection, db, skin) for skin in db.query(models.Skin).all()])
+            db.commit()
+        except Exception as e:
+            log_file = os.path.join(os.path.dirname(__file__), 'update_price.log')
+            with open(log_file, 'a+') as f:
+                f.write(f'===== [{datetime.today()}] ======\n')
+                f.write(f'{str(e)}\n')
+                f.write(traceback.format_exc())
     requests.get(EALRY_STOP_CALL_URL)
-
-
 connector.start()
