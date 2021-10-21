@@ -1,2 +1,2 @@
-/api/* (your backend domain or ip)/api/:splat 200
+/api/* (your backend domain or ip)/api/:splat 200  <- if your back-end server support cors, delete it
 /* /index.html 200

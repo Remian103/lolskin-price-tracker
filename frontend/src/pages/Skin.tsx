@@ -10,6 +10,7 @@ import HistoryChart from "../components/HistoryChart";
 import CommentList from "../components/CommentList";
 import { AnchorObj } from "../interfaces/Nav.interface";
 import { SkinObj, SkinFullObj } from "../interfaces/Fetch.interface";
+import api from "../config.json";
 
 
 interface Params {
@@ -33,7 +34,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
     // skin data fetch
     const [{ data: skin }, doSkinFetch] = useDataFetch<SkinFullObj>(
-        `/api/skins/${skinId}`,
+        `${api.backendAPI}/api/skins/${skinId}`,
         {
             id: Number(skinId),
             name: "",
@@ -54,7 +55,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     // update when skin id changed
     useEffect(() => {
         if (Number(skinId) !== skin.id) {
-            doSkinFetch(`/api/skins/${skinId}`);
+            doSkinFetch(`${api.backendAPI}/api/skins/${skinId}`);
         }
     }, [skinId]);
 
@@ -63,7 +64,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     const [{ data: skinList }, doSkinListFetch] = useDataFetch<SkinObj[]>("initialUrl", []);
     // update when champion id changed
     useEffect(() => {
-        doSkinListFetch(`/api/champions/${championId}/skins`);
+        doSkinListFetch(`${api.backendAPI}/api/champions/${championId}/skins`);
     }, [championId]);
 
 

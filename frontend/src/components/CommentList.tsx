@@ -7,6 +7,7 @@ import Comment from "../components/Comment";
 import useDataFetch from "../hooks/useDataFetch";
 import UserContext from "../context/UserContext";
 import { CommentObj, CommentListObj } from "../interfaces/Comment.interface";
+import api from "../config.json";
 
 
 function urlWithParams(url: string, params: { [key: string]: string | number }) {
@@ -26,7 +27,7 @@ function CommentList({ skinId }: { skinId: string }) {
     // get comment list
     const [nextIndex, setNextIndex] = useState(0);
     const [{ isError, data: fetchedData }, doFetch] = useDataFetch<CommentListObj>(
-        urlWithParams(`/api/skins/${skinId}/comments`, {
+        urlWithParams(`${api.backendAPI}/api/skins/${skinId}/comments`, {
             skip: nextIndex,
             limit: nextIndex + 3,
             order_by: "asc"
@@ -38,7 +39,7 @@ function CommentList({ skinId }: { skinId: string }) {
         if(skinId !== curSkinId) {
             setSkinId(skinId);
             setCommentList([]);
-            doFetch(urlWithParams(`/api/skins/${skinId}/comments`, {
+            doFetch(urlWithParams(`${api.backendAPI}/api/skins/${skinId}/comments`, {
                 skip: 0,
                 limit: 3,
                 order_by: "asc"
@@ -50,7 +51,7 @@ function CommentList({ skinId }: { skinId: string }) {
     const handleMoreBtn: React.MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
         SetLoadingMore(true);
-        doFetch(urlWithParams(`/api/skins/${skinId}/comments`, {
+        doFetch(urlWithParams(`${api.backendAPI}/api/skins/${skinId}/comments`, {
             skip: nextIndex,
             limit: nextIndex + 20,
             order_by: "asc"
@@ -164,7 +165,7 @@ function CommentList({ skinId }: { skinId: string }) {
 
         // post new comment
         setSubmitLoading(true);
-        newCommentPost(`/api/skins/${skinId}/comments`, { content: content });
+        newCommentPost(`${api.backendAPI}/api/skins/${skinId}/comments`, { content: content });
         setContent("");
     };
 
