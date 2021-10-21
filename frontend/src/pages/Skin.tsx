@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
-import { Div, Text } from "atomize";
+import { Div, Text, Image } from "atomize";
 import { useParams } from "react-router-dom";
 
+import ContentContainer from "../components/ContentContainer";
+import ContentWrapper from "../components/ContentWrapper";
 import useDataFetch from "../hooks/useDataFetch";
 import Carousel from "../components/Carousel";
 import HistoryChart from "../components/HistoryChart";
@@ -21,11 +23,10 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     // header navigation tab
     useEffect(() => {
         setNav([
-            { id: 0, name: "홈", link: "/home", type: "link" },
-            { id: 1, name: "마이 페이지", link: "/myPage", type: "link" },
-            { id: 2, name: "가격 그래프", link: "#chart", type: "hash" },
-            { id: 3, name: "다른 스킨들", link: "#champions", type: "hash" },
-            { id: 4, name: "댓글", link: "#comments", type: "hash" }
+            { id: 0, name: "홈", link: "/", type: "link" },
+            { id: 1, name: "가격 그래프", link: "#chart", type: "hash" },
+            { id: 2, name: "다른 스킨들", link: "#other_skins", type: "hash" },
+            { id: 3, name: "댓글", link: "#comments", type: "hash" },
         ]);
     }, [setNav]);
 
@@ -52,7 +53,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
     );
     // update when skin id changed
     useEffect(() => {
-        if(Number(skinId) !== skin.id) {
+        if (Number(skinId) !== skin.id) {
             doSkinFetch(`/api/skins/${skinId}`);
         }
     }, [skinId]);
@@ -67,56 +68,73 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
 
     return (<>
-        <Div className="background-skin" bgImg={skin.full_image_url} />
+        <Div className="background-skin"
+            d={{ xs: "none", md: "block" }}
+            bgImg={skin.full_image_url} />
+        <Div
+            d={{ xs: "none", md: "block" }}
+            p="200px 0 200px 0" />
 
-        <Div p="200px"></Div>
-
-        <div className="content-container skins" /* main content */ >
-            <div className="content-background" />
-
-            <div className="content-title">
-                <Text
-                    textSize={{ xs: "1rem", md: "1.5rem" }}
-                >
-                    {skin.name === "default" ? "기본 스킨" : skin.name}
-                </Text>
-            </div>
-
-            {skin.name === "default" || skin.price_history.length === 0 ? null :
-                <>
-                    <div className="hash-link" id="chart" />
-                    <Div p={{
-                        x: "1rem",
-                        b: "2rem"
-                    }}>
-                        <HistoryChart className="shadowDiv" priceHistory={skin.price_history} />
+        <ContentContainer className="skins">
+            <ContentWrapper id="info" title={skin.name === "default" ? "기본 스킨" : skin.name}>
+                <Div d="flex" flexDir={{ xs: "column", md: "row" }} p={{ x: "1rem" }}>
+                    <Div
+                        shadows="4"
+                        rounded="1rem"
+                        overflow="hidden"
+                        h={{ xs: "auto", md: "336px" }}
+                        w={{ xs: "auto", md: "185px" }}
+                        m={{ xs: "0 0 1rem 0", md: "0 1rem 0 0" }}
+                    >
+                        <Image
+                            d={{ xs: "none", md: "block" }}
+                            src={skin.trimmed_image_url}
+                            alt={skin.name}
+                            pos="relative"
+                            top="-5%"
+                            left="-5%"
+                            h="110%"
+                            w="110%"
+                        />
+                        <Image
+                            d={{ xs: "block", md: "none" }}
+                            src={skin.full_image_url}
+                            alt={skin.name}
+                        />
                     </Div>
-                </>
-            }
+                    <Div
+                        d="flex"
+                        flexDir="column"
+                        align="flex-start"
+                    >
+                        {skin.last_price_history.sale_price !== null
+                            ? <Text textSize={{xs: "body", md: "title"}}>
+                                가격: {skin.last_price_history.price !== skin.last_price_history.sale_price ? <del>{skin.last_price_history.price}</del> : null} {skin.last_price_history.sale_price} RP
+                            </Text>
+                            : null
+                        }
+                    </Div>
+                </Div>
+            </ContentWrapper>
 
+            <ContentWrapper id="chart" title="가격 추이">
+                {skin.name === "default" || skin.price_history.length === 0 ? null :
+                    <Div p={{ x: "1rem", b: "2rem" }}>
+                        <HistoryChart priceHistory={skin.price_history} />
+                    </Div>
+                }
+            </ContentWrapper>
 
-            <div className="hash-link" id="champions" />
-            <div className="content-title">
-                <Text
-                    textSize={{ xs: "1rem", md: "1.5rem" }}
-                >
-                    챔피언의 다른 스킨들
-                </Text>
-            </div>
-            <Carousel list={skinList} type="champion-skins" />
+            <ContentWrapper id="other_skins" title="챔피언의 다른 스킨들">
+                <Carousel list={skinList} type="champion-skins" />
+            </ContentWrapper>
 
-            <div className="hash-link" id="comments" />
-            <div className="content-title">
-                <Text
-                    textSize={{ xs: "1rem", md: "1.5rem" }}
-                >
-                    Comments
-                </Text>
-            </div>
-            <Div p={{ x: "1rem" }}>
-                <CommentList skinId={skinId} />
-            </Div>
-        </div>
+            <ContentWrapper id="comments" title="한줄평">
+                <Div p={{ x: "1rem" }}>
+                    <CommentList skinId={skinId} />
+                </Div>
+            </ContentWrapper>
+        </ContentContainer>
     </>);
 }
 

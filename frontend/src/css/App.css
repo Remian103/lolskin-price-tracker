@@ -42,8 +42,39 @@
 
 .main-header {
     position: sticky;
+    display: flex;
+    align-items: center;
     top: 0;
     z-index: 3;
+}
+
+.mobile-header {
+    display: none;
+}
+
+@media (max-width: 767px) {
+    .main-header {
+        display: none;
+    }
+
+    .mobile-header {
+        position: sticky;
+        display: flex;
+        align-items: center;
+        top: 0;
+        background-color: black;
+        z-index: 3;
+    }
+
+    .mobile-header-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 button.go-to-top {
@@ -60,7 +91,6 @@ button.go-to-top {
     display: flex;
     align-items: center;
     flex-direction: column;
-    background-color: rgb(1, 10, 19);
 }
 
 .content-background {
@@ -79,9 +109,10 @@ button.go-to-top {
     z-index: 1;
 }
 
-.content-container > .content-title {
+.content-title {
     padding: 32px 0 1rem 1rem;
     box-sizing: border-box;
+    color: white;
 }
 
 .chart-container {
@@ -98,18 +129,6 @@ button.go-to-top {
 }
 
 
-/* home page custom */
-.content-container.home::before {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    content: "";
-    background-image: url(https://store.leagueoflegends.co.kr/assets/bg.jpg);
-    background-repeat: no-repeat;
-    background-size: contain;
-}
-
-
 /* skin page custom */
 .background-skin {
     position: fixed;
@@ -123,13 +142,12 @@ button.go-to-top {
     z-index: -1;
 }
 
-.content-container.skins {
-    background-color: transparent;
-}
-
 .skins .content-background {
     opacity: 0.9;
     background: white;
+}
+.skins .content-title {
+    color: black;
 }
 
 
