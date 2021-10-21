@@ -42,14 +42,24 @@ async def update(connection, db, skin):
     # If the item is available in store
     try:
         price = skin_data['prices'][0]['cost']
+        is_available = True
         # If the item is on sale
         try:
             sale_price = skin_data['sale']['prices'][0]['cost']
         except Exception:
             sale_price = price
-        db_price_history = models.PriceHistory(skin=skin, date=date.today(), is_available=True, price=price, sale_price=sale_price)
     except Exception:
-        db_price_history = models.PriceHistory(skin=skin, date=date.today())
+        price = None
+        sale_price = None
+        is_available = False 
+
+    db_price_history = db.query(models.PriceHistory).filter((models.PriceHistory.skin_id == skin.id) & (models.PriceHistory.date == date.today())).first()
+    if db_price_history is None:
+        db_price_history = models.PriceHistory(skin=skin, date=date.today(), is_available=is_available, price=price, sale_price=sale_price)
+    else:
+        db_price_history.price = price
+        db_price_history.sale_price = sale_price
+        db_price_history.is_available = is_available
 
     db.add(db_price_history)
 
