@@ -73,6 +73,7 @@ if [ "$MODE" = "CLONE" ]; then
     src_port=$(read_ini_file $src_profile port $config_file)
     src_database_name=$(read_ini_file $src_profile database_name $config_file)
 
+    # https://gist.github.com/syafiqfaiz/5273cd41df6f08fdedeb96e12af70e3b
     docker exec -i postgres bash -c \
         'cd ~
         echo "*:*:*:*:'$src_password'" > .pgpass
