@@ -1,19 +1,19 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import "./css/index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import * as React from 'react';
+import * as ReactDOM from 'react-dom';
+import './css/index.css';
 
 // Theme
-import { Provider as StyletronProvider, DebugEngine } from "styletron-react";
-import { Client as Styletron } from "styletron-engine-atomic";
-import { ThemeProvider, StyleReset } from "atomize";
+import { Provider as StyletronProvider, DebugEngine } from 'styletron-react';
+import { Client as Styletron } from 'styletron-engine-atomic';
+import { ThemeProvider, StyleReset } from 'atomize';
 
 // router
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
+import reportWebVitals from './reportWebVitals';
+import App from './App';
 
-//context
-import UserProvider from "./context/UserProvider";
+// context
+import UserProvider from './context/UserProvider';
 
 const theme = {
     colors: {
@@ -22,8 +22,7 @@ const theme = {
     },
 };
 
-const debug: DebugEngine | undefined =
-    process.env.NODE_ENV === "production" ? void 0 : new DebugEngine();
+const debug: DebugEngine | undefined = process.env.NODE_ENV === 'production' ? undefined : new DebugEngine();
 
 // 1. Create a client engine instance
 const engine: Styletron = new Styletron();
@@ -43,7 +42,7 @@ ReactDOM.render(
             </ThemeProvider>
         </StyletronProvider>
     </React.StrictMode>,
-    document.getElementById('root')
+    document.getElementById('root'),
 );
 
 // If you want to start measuring performance in your app, pass a function

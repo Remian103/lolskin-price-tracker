@@ -1,8 +1,11 @@
-import { createContext } from "react";
-import { UserInfo } from "../interfaces/User.interface";
+import * as React from 'react';
+import { createContext } from 'react';
+import { UserInfo } from '../interfaces/User.interface';
 
-
-const UserContext = createContext<{ userInfo: UserInfo, setUserInfo: (userInfo: UserInfo) => void }>({
+const UserContext = createContext<{
+    userInfo: UserInfo,
+    setUserInfo: React.Dispatch<React.SetStateAction<UserInfo>>
+}>({
     userInfo: {
         userId: null,
         tokenId: null,
@@ -10,7 +13,7 @@ const UserContext = createContext<{ userInfo: UserInfo, setUserInfo: (userInfo: 
         imageUrl: null,
         isLogin: false,
     },
-    setUserInfo: (userInfo: UserInfo) => { }
+    setUserInfo: () => { },
 });
 
 export default UserContext;

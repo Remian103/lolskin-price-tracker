@@ -1,22 +1,22 @@
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function escapeRegExp(s: string): string {
-    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $&는 일치한 전체 문자열을 의미합니다.
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $&는 일치한 전체 문자열을 의미합니다.
 }
 
-export function hangulFuzzyMatch(inputString: string): RegExp { // reference : https://taegon.kim/archives/9919
+function hangulFuzzyMatch(inputString: string): RegExp { // reference : https://taegon.kim/archives/9919
     const offset1 = '가'.charCodeAt(0);
     const offset2 = 'ㅅ'.charCodeAt(0);
     const con2syl: { [key: string]: number } = { // consonant to syllable
-        'ㄱ': '가'.charCodeAt(0),
-        'ㄲ': '까'.charCodeAt(0),
-        'ㄴ': '나'.charCodeAt(0),
-        'ㄷ': '다'.charCodeAt(0),
-        'ㄸ': '따'.charCodeAt(0),
-        'ㄹ': '라'.charCodeAt(0),
-        'ㅁ': '마'.charCodeAt(0),
-        'ㅂ': '바'.charCodeAt(0),
-        'ㅃ': '빠'.charCodeAt(0),
-        'ㅅ': '사'.charCodeAt(0),
+        ㄱ: '가'.charCodeAt(0),
+        ㄲ: '까'.charCodeAt(0),
+        ㄴ: '나'.charCodeAt(0),
+        ㄷ: '다'.charCodeAt(0),
+        ㄸ: '따'.charCodeAt(0),
+        ㄹ: '라'.charCodeAt(0),
+        ㅁ: '마'.charCodeAt(0),
+        ㅂ: '바'.charCodeAt(0),
+        ㅃ: '빠'.charCodeAt(0),
+        ㅅ: '사'.charCodeAt(0),
     };
     const final2initial: { [key: number]: string } = {
         1: 'ㄱ',
@@ -35,7 +35,7 @@ export function hangulFuzzyMatch(inputString: string): RegExp { // reference : h
         25: 'ㅌ',
         26: 'ㅍ',
         27: 'ㅎ',
-    }
+    };
 
     const pattern = inputString.split('').map((ch: string, index: number) => {
         // 한글 음절 확인
@@ -54,26 +54,25 @@ export function hangulFuzzyMatch(inputString: string): RegExp { // reference : h
                     const end = begin + 587;
                     return `(${ch}|${String.fromCharCode(chCode - finalCon + offset1)}[${initCon}${String.fromCharCode(begin)}-${String.fromCharCode(end)}])`;
                 }
-                else {
-                    return ch;
-                }
+
+                return ch;
             }
-            else {
-                const end = ch.charCodeAt(0) + 27;
-                return `[${ch}-${String.fromCharCode(end)}]`;
-            }
+
+            const end = ch.charCodeAt(0) + 27;
+            return `[${ch}-${String.fromCharCode(end)}]`;
         }
-        //한글 초성 확인
-        else if (/[ㄱ-ㅎ]/.test(ch)) {
+        // 한글 초성 확인
+        if (/[ㄱ-ㅎ]/.test(ch)) {
             const begin = con2syl[ch] || (ch.charCodeAt(0) - offset2) * 588 + con2syl['ㅅ'];
             const end = begin + 587;
             return `[${ch}${String.fromCharCode(begin)}-${String.fromCharCode(end)}]`;
         }
         // 한글 아닐 경우
-        else {
-            return ch;
-        }
+
+        return ch;
     }).join('.*?');
 
     return new RegExp(pattern);
 }
+
+export default hangulFuzzyMatch;
