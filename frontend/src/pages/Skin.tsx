@@ -27,6 +27,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
             { id: 1, name: '가격 그래프', link: '#chart', type: 'hash' },
             { id: 2, name: '다른 스킨들', link: '#other_skins', type: 'hash' },
             { id: 3, name: '댓글', link: '#comments', type: 'hash' },
+            { id: 4, name: '소개', link: '/info', type: 'link' },
         ]);
     }, [setNav]);
 
@@ -69,7 +70,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
             <Div
                 className="background-skin"
                 d={{ xs: 'none', md: 'block' }}
-                bgImg={`https://cdn-store.leagueoflegends.co.kr/images/v2/champion-splashes/${skinId}.jpg`}
+                bgImg={skin.full_image_url}
             />
             <Div
                 d={{ xs: 'none', md: 'block' }}
@@ -99,7 +100,7 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
                             />
                             <Image
                                 d={{ xs: 'block', md: 'none' }}
-                                src={`https://cdn-store.leagueoflegends.co.kr/images/v2/champion-splashes/${skinId}.jpg`}
+                                src={skin.full_image_url}
                                 alt={skin.name}
                             />
                         </Div>

@@ -14,6 +14,7 @@ function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
             { id: 0, name: '홈', link: '/', type: 'link' },
             { id: 1, name: '추천 스킨', link: '#recommend-skins', type: 'hash' },
             { id: 2, name: '챔피언 목록', link: '#champions', type: 'hash' },
+            { id: 3, name: '소개', link: '/info', type: 'link' },
         ]);
     }, [setNav]);
 
@@ -30,7 +31,7 @@ function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
             >
                 <Text
                     p={{ l: '0.5rem', r: '0.5rem' }}
-                    textSize="display3"
+                    textSize={{ xs: 'display2', md: 'display3' }}
                     textAlign="center"
                     textColor="white"
                 >

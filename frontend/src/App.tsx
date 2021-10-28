@@ -3,15 +3,16 @@ import { useState, useEffect, useContext } from 'react';
 import { Div, Button, Icon, Image, Text } from 'atomize';
 import './css/App.css';
 import jwt from 'jwt-decode';
-
-// route
 import { Route, Switch, useLocation, useHistory, Link } from 'react-router-dom';
 
-import Nav from './components/Nav';
-import { AnchorObj } from './interfaces/Nav.interface';
+// pages
 import Home from './pages/Home';
 import Skin from './pages/Skin';
 import MyPage from './pages/MyPage';
+import Info from './pages/Info';
+
+import Nav from './components/Nav';
+import { AnchorObj } from './interfaces/Nav.interface';
 import UserContext from './context/UserContext';
 import config from './config.json';
 
@@ -202,6 +203,9 @@ function App() {
                 </Route>
                 <Route exact path="/myPage">
                     <MyPage setNav={setList} />
+                </Route>
+                <Route exact path="/info">
+                    <Info setNav={setList} />
                 </Route>
                 <Route path="/">
                     <p>404 error</p>
