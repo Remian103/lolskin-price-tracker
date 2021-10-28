@@ -13,7 +13,8 @@ function ContentWrapper({ id, title, children }: Props) {
             {id === undefined ? null : <div className="hash-link" id={id} />}
             <div className="content-title">
                 <Text
-                    textSize={{ xs: '1rem', md: '1.5rem' }}
+                    textSize={{ xs: '1.5rem', md: '2rem' }}
+                    textWeight="600"
                 >
                     {title}
                 </Text>
