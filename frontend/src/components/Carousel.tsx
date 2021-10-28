@@ -1,21 +1,20 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
-import Flickity, { FlickityOptions } from "react-flickity-component";
-import { useHistory } from "react-router-dom";
-import { Div } from "atomize";
-import "../css/flickity.css";
-import "../css/Carousel.css";
-import { SkinFullObj, SkinObj } from "../interfaces/Fetch.interface";
-
+import * as React from 'react';
+import { useState, useEffect } from 'react';
+import Flickity, { FlickityOptions } from 'react-flickity-component';
+import { useHistory } from 'react-router-dom';
+import { Div } from 'atomize';
+import '../css/flickity.css';
+import '../css/Carousel.css';
+import { SkinObj } from '../interfaces/Fetch.interface';
 
 // 타입 추가될 때마다 추가
 interface SkinObjProp {
     list: SkinObj[];
-    type: "champion-skins" | "recommend";
+    type: 'champion-skins' | 'recommend';
 }
 interface TestDummy {
     list: any[];
-    type: "dummy";
+    type: 'dummy';
 }
 type Props =
     | SkinObjProp
@@ -28,11 +27,11 @@ function Carousel(props: Props) {
     const [flkty, setFlkty] = useState<undefined | Flickity>(undefined);
     const getFlickityRef = (ref: Flickity) => {
         setFlkty(ref);
-    }
+    };
     useEffect(() => {
         if (flkty !== undefined && props.list.length !== 0) {
-            if (props.type === "recommend" || props.type === "champion-skins") {
-                flkty.on('staticClick', function (event: Event, pointer: Element | Touch, cellElement: Element, cellIndex: number) {
+            if (props.type === 'recommend' || props.type === 'champion-skins') {
+                flkty.on('staticClick', (event: Event, pointer: Element | Touch, cellElement: Element, cellIndex: number) => {
                     if (!cellElement) {
                         return;
                     }
@@ -45,7 +44,7 @@ function Carousel(props: Props) {
 
     const setFlickity = (): [FlickityOptions, React.ReactNode[]] => {
         switch (props.type) {
-            case "recommend":
+            case 'recommend':
                 return [
                     {
                         initialIndex: 1,
@@ -53,17 +52,17 @@ function Carousel(props: Props) {
                         autoPlay: 3000,
                         pageDots: false,
                     },
-                    props.list.map((item) =>
+                    props.list.map((item) => (
                         <Div
                             key={item.id}
                             id={item.id}
                             className="carousel-cell recommand shadowDiv"
                             m={{
-                                x: { xs: "0.25rem", md: "1rem" },
-                                b: "2rem"
+                                x: { xs: '0.25rem', md: '1rem' },
+                                b: '2rem',
                             }}
-                            h={{ xs: "210px", md: "350px" }}
-                            w={{ xs: "390px", md: "650px" }}
+                            h={{ xs: '210px', md: '350px' }}
+                            w={{ xs: '390px', md: '650px' }}
                         >
                             <img
                                 src={item.full_image_url}
@@ -71,29 +70,29 @@ function Carousel(props: Props) {
                                 title={item.name}
                             />
                         </Div>
-                    )
+                    )),
                 ];
-            case "champion-skins":
+            case 'champion-skins':
                 return [
                     {
                         initialIndex: 0,
-                        cellAlign: "left",
+                        cellAlign: 'left',
                         contain: true,
                         pageDots: false,
-                        //wrapAround: true,
-                        //autoPlay: 3000,
+                        // wrapAround: true,
+                        // autoPlay: 3000,
                     },
-                    props.list.map((item) =>
+                    props.list.map((item) => (
                         <Div
                             key={item.id}
                             id={item.id}
-                            p={{ x: "1rem" }}
+                            p={{ x: '1rem' }}
                         >
                             <Div
                                 className="carousel-cell champion-skin shadowDiv"
-                                h={{ xs: "336px", md: "336px" }}
-                                w={{ xs: "185px", md: "185px" }}
-                                m={{ b: "2rem" }}
+                                h={{ xs: '336px', md: '336px' }}
+                                w={{ xs: '185px', md: '185px' }}
+                                m={{ b: '2rem' }}
                             >
                                 <img
                                     src={item.trimmed_image_url}
@@ -102,14 +101,13 @@ function Carousel(props: Props) {
                                 />
                             </Div>
                         </Div>
-                    )
+                    )),
                 ];
             default:
                 return [{}, [<></>]];
         }
-    }
+    };
     const [flktyOption, inside] = setFlickity();
-
 
     return (
         <Flickity

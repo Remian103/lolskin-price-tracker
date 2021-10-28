@@ -1,8 +1,8 @@
-import * as React from "react";
-import { useEffect, useRef } from "react";
-import { Chart, registerables } from "chart.js";
+import * as React from 'react';
+import { useEffect, useRef } from 'react';
+import { Chart, registerables } from 'chart.js';
 
-import { PriceHistory } from "../interfaces/Fetch.interface";
+import { PriceHistory } from '../interfaces/Fetch.interface';
 
 interface Props {
     priceHistory: PriceHistory[];
@@ -11,16 +11,18 @@ interface Props {
 function HistoryChart({ priceHistory }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
-    const graphColorTheme = {
-        info600: "rgb(2, 132, 254)"
-    }
+    const graphColorTheme = { info600: 'rgb(2, 132, 254)' };
 
     useEffect(() => {
-        const ctx = canvasRef.current?.getContext("2d");
+        const ctx = canvasRef.current?.getContext('2d');
         Chart.register(...registerables);
 
         const history = priceHistory;
-        history.sort((a: PriceHistory, b: PriceHistory) => a.date < b.date ? -1 : a.date > b.date ? 1 : 0);
+        history.sort((a: PriceHistory, b: PriceHistory) => {
+            if (a.date < b.date) return -1;
+            if (a.date > b.date) return 1;
+            return 0;
+        });
         const chartLabel = history.map((item: PriceHistory) => item.date);
         const chartData = history.map((item: PriceHistory) => item.sale_price);
 
@@ -30,7 +32,7 @@ function HistoryChart({ priceHistory }: Props) {
                 datasets: [{
                     type: 'line',
                     data: chartData,
-                    tension: 0
+                    tension: 0,
                 }, {
                     type: 'bar',
                     data: chartData,
@@ -46,60 +48,53 @@ function HistoryChart({ priceHistory }: Props) {
                     y: {
                         beginAtZero: true,
                         stackWeight: 1,
-                        ticks: {
-                            color: "black"
-                        },
+                        ticks: { color: 'black' },
                     },
                     x: {
                         ticks: {
                             font: { size: 10 },
-                            color: "black"
+                            color: 'black',
                         },
                     },
                 },
                 elements: {
-                    line: {
-                        borderColor: graphColorTheme.info600,
-                    },
+                    line: { borderColor: graphColorTheme.info600 },
                     point: {
                         radius: 7,
-                        backgroundColor: "transparent",
-                        borderColor: "transparent",
+                        backgroundColor: 'transparent',
+                        borderColor: 'transparent',
                     },
                     bar: {
-                        backgroundColor: "transparent",
+                        backgroundColor: 'transparent',
                         hoverBackgroundColor: graphColorTheme.info600,
                     },
                 },
                 plugins: {
-                    legend: {
-                        display: false
-                    },
+                    legend: { display: false },
                     tooltip: {
                         displayColors: false,
-                        titleFont: {size: 15},
-                        bodyFont: {size: 20},
+                        titleFont: { size: 15 },
+                        bodyFont: { size: 20 },
                         callbacks: {
-                            label: function(context) {
-                                console.log(context)
-                                return [`원가: ${history[context.dataIndex].price}RP`, `가격: ${context.raw}RP`]
+                            label(context) {
+                                return [`원가: ${history[context.dataIndex].price}RP`, `가격: ${context.raw}RP`];
                             },
                         },
                     },
                 },
             },
         });
-        if (process.env.NODE_ENV !== "production") console.log("chart generated");
+        if (process.env.NODE_ENV !== 'production') console.log('chart generated');
 
         return () => {
             chart.destroy();
-            if (process.env.NODE_ENV !== "production") console.log("chart destroy");
+            if (process.env.NODE_ENV !== 'production') console.log('chart destroy');
         };
     }, [priceHistory]);
 
     return (
         <div className="shadowDiv chart-container">
-            <canvas ref={canvasRef}></canvas>
+            <canvas ref={canvasRef} />
         </div>
     );
 }

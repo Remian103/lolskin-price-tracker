@@ -1,5 +1,5 @@
-import * as React from "react";
-import { Text } from "atomize";
+import * as React from 'react';
+import { Text } from 'atomize';
 
 interface Props {
     id?: string; // for hash link
@@ -7,19 +7,24 @@ interface Props {
     children?: React.ReactNode;
 }
 
-function ContentWrapper(props: Props) {
-
-    return (<>
-        {props.id === undefined ? null : <div className="hash-link" id={props.id} />}
-        <div className="content-title">
-            <Text
-                textSize={{ xs: "1rem", md: "1.5rem" }}
-            >
-                {props.title}
-            </Text>
-        </div>
-        {props.children}
-    </>)
+function ContentWrapper({ id, title, children }: Props) {
+    return (
+        <>
+            {id === undefined ? null : <div className="hash-link" id={id} />}
+            <div className="content-title">
+                <Text
+                    textSize={{ xs: '1rem', md: '1.5rem' }}
+                >
+                    {title}
+                </Text>
+            </div>
+            {children}
+        </>
+    );
 }
+ContentWrapper.defaultProps = {
+    id: undefined,
+    children: null,
+};
 
 export default ContentWrapper;

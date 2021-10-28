@@ -3,5 +3,4 @@ interface Window {
     google: any;
 }
 
-declare module "atomize";
-
+declare module 'atomize';

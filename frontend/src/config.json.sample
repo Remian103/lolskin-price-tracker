@@ -1,7 +1,5 @@
 {
-    "proxy" : {
-        "backendAPI": "your backend domain or ip"
-    },
+    "backendAPI" : "your backend domain or ip",
     "googleAPI" : {
         "clientId": "your google client id"
     }

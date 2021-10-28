@@ -1,4 +1,3 @@
-
 export interface FetchState<S> {
     isLoading: boolean;
     isError: boolean;
