@@ -94,7 +94,7 @@ function Comment({ comment, modifyRequest, deleteRequest }: Props) {
 
         setLoading(true);
         if (content.length !== 0 && content !== comment.content) {
-            await modifyRequest(`/api/comments/${comment.id}`, { content });
+            await modifyRequest(`${api.backendAPI}/api/comments/${comment.id}`, { content: content });
         }
         setLoading(false);
         setMode(false);
@@ -108,8 +108,10 @@ function Comment({ comment, modifyRequest, deleteRequest }: Props) {
         setLoading(true);
         if (window.confirm('삭제하시겠습니까?')) {
             try {
-                await deleteRequest(`/api/comments/${comment.id}`, comment.id);
-            } catch (error) {
+
+                await deleteRequest(`${api.backendAPI}/api/comments/${comment.id}`, comment.id);
+            }
+            catch (error) {
                 setLoading(false);
             }
         } else {
