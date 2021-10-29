@@ -17,19 +17,26 @@ try:
     engine = create_engine(DB_URL)
     print(f'[Current DB]: {db_config["prompt_name"]}')
 except Exception:
-    DB_URL = f'sqlite:///{os.path.join(os.path.dirname(__file__), "../sqlite3.db")}'
-    engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
-    print(f'[Current DB]: local SQLite')
+    try:
+        print('"db_config.ini" is not found or invalid.')
+        print('Reading from environment variable...')
+        db_config = os.environ
+        DB_URL = f'postgresql+psycopg2://{db_config["POSTGRESQL_USERNAME"]}:{db_config["POSTGRESQL_PASSWORD"]}@{db_config["POSTGRESQL_HOST"]}:{db_config["POSTGRESQL_PORT"]}/{db_config["POSTGRESQL_DB"]}'
+        engine = create_engine(DB_URL)
+    except:
+        DB_URL = f'sqlite:///{os.path.join(os.path.dirname(__file__), "../sqlite3.db")}'
+        engine = create_engine(DB_URL, connect_args={"check_same_thread": False})
+        print(f'[Current DB]: local SQLite')
 
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 convention = {
-  "ix": 'ix_%(column_0_label)s',
-  "uq": "uq_%(table_name)s_%(column_0_name)s",
-  "ck": "ck_%(table_name)s_%(constraint_name)s",
-  "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-  "pk": "pk_%(table_name)s"
+    "ix": 'ix_%(column_0_label)s',
+    "uq": "uq_%(table_name)s_%(column_0_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s"
 }
 
 Base = declarative_base(metadata=MetaData(naming_convention=convention))
