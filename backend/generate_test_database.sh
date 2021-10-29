@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Generate an empty database on 12.7 PostgreSQL container, configured by $src_profile.
 # And populate the database with some random test data
-# If -c|--clone argument is passed, clone the database pointed by $dst_profile to the generated database.
-# If -e|--empty arugment is passed, the generated database is kept empty.
+# -m|--mode CLONE to clone the production server
+# -m|--mode GEN_TEST_DATA to populate with test data
+# no -m|--mode to create empty database
 
 src_profile=production
 dst_profile=test
