@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react';
-import { Div } from 'atomize';
 
 import PageTitle from '../components/PageTitle';
 import ContentContainer from '../components/ContentContainer';
@@ -20,9 +19,7 @@ function MyPage({ setNav }: { setNav: React.Dispatch<React.SetStateAction<Anchor
 
     return (
         <>
-            <Div className="background-skin" bgImg="https://store.leagueoflegends.co.kr/assets/bg.jpg" />
-            <PageTitle />
-
+            <PageTitle title="LoL Price Tracker" />
             <ContentContainer>
                 <ContentWrapper title={userInfo.isLogin ? `My Page ${userInfo.name}` : '로그인을 해주세요!'} />
             </ContentContainer>

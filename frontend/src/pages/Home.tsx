@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Div } from 'atomize';
 
 import PageTitle from '../components/PageTitle';
 import ContentContainer from '../components/ContentContainer';
@@ -21,9 +20,7 @@ function Home({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
 
     return (
         <>
-            <Div className="background-skin" bgImg="https://store.leagueoflegends.co.kr/assets/bg.jpg" />
-            <PageTitle />
-
+            <PageTitle title="LoL Price Tracker" />
             <ContentContainer>
                 <ContentWrapper id="recommend-skins" title="추천 스킨">
                     <RecommendCarousel />

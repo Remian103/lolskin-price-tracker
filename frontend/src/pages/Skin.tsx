@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Div, Text, Image } from 'atomize';
 import { useParams } from 'react-router-dom';
 
+import PageTitle from '../components/PageTitle';
 import ContentContainer from '../components/ContentContainer';
 import ContentWrapper from '../components/ContentWrapper';
 import useDataFetch from '../hooks/useDataFetch';
@@ -67,16 +68,11 @@ function Skins({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorO
 
     return (
         <>
-            <Div
-                className="background-skin"
-                d={{ xs: 'none', md: 'block' }}
-                bgImg={skin.full_image_url}
-            />
+            <PageTitle bgImg={skin.full_image_url} />
             <Div
                 d={{ xs: 'none', md: 'block' }}
                 p="200px 0 200px 0"
             />
-
             <ContentContainer className="skins">
                 <ContentWrapper id="info" title={skin.name === 'default' ? '기본 스킨' : skin.name}>
                     <Div d="flex" flexDir={{ xs: 'column', md: 'row' }} p={{ x: '1rem' }}>

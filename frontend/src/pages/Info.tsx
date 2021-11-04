@@ -19,9 +19,7 @@ function Info({ setNav }: { setNav: React.Dispatch<React.SetStateAction<AnchorOb
 
     return (
         <>
-            <Div className="background-skin" bgImg="https://store.leagueoflegends.co.kr/assets/bg.jpg" />
-            <PageTitle />
-
+            <PageTitle title="LoL Price Tracker" />
             <ContentContainer>
                 <ContentWrapper title="Remian103">
                     <Div p={{ x: '1rem' }}>
